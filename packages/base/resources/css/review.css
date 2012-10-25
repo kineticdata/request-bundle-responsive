@@ -1,0 +1,70 @@
+@charset "utf-8";
+/* Form */
+#reviewContent {
+    margin: 20px 0px 0px 0px;
+    padding: 20px 20px 20px 20px;
+    background-color: #F2F2F2;
+}
+
+/* Checkboxes */
+#reviewContent .answerCheckbox { display: block !important; }
+
+/* default page submit button */
+#reviewContent .submitButton { display: none; }
+
+/* Template Content */
+#reviewContent .templateContent { overflow: visible !important; }
+
+/* Template Section */
+#reviewContent .templateSection {
+    margin: 0px 0px 20px 0px;
+    padding: 10px 20px 10px 20px;
+    overflow: visible !important;
+}
+
+/* Section header */
+#reviewContent .sectionHeader {
+    overflow: visible !important;  
+    font-weight: bold;
+    font-size: 12pt;
+    position: relative;
+    top: -20px;
+    padding-left: 3px;
+    padding-right: 3px;
+    color: #006698;
+    background-color: #F2F2F2;
+    display: inline-block;
+}
+
+/* Question layer */
+#reviewContent .questionLayer { padding: 10px 0px 0px 0px; }
+#reviewContent .dynamicText, 
+#reviewContent .questionLayer { position: relative; }
+#reviewContent .questionAnswer { position: relative; margin-left: 205px; }
+#reviewContent .questionLayer:after {
+    content: "";
+    clear: both;
+    display: block;
+}
+
+/* Label */
+#reviewContent .questionLabel{
+    float: left;
+    width: 200px;
+    padding-right: 5px;
+    font-weight: normal;
+}
+
+/* Pre-required label */
+#reviewContent .preRequiredLabel:before { color: red !important; content: "* "; }
+#reviewContent .preRequiredLabel .preRequiredLabel_checkbox:after { content: ""; }
+#reviewContent *.preRequiredLabel { zoom: expression(setIE7PreRequired(this)); }
+
+/* Buttons */
+#reviewContent .saveButton, 
+#reviewContent .cancelButton { padding: 2px !important; float: left; }
+
+/* Form Controls */
+input[type="radio"] { float: left; margin: 4px 5px 0px 0px; }
+input[type="checkbox"] { float: left; margin: 4px 5px 0px 0px; }
+textarea { width: 98.5%; }

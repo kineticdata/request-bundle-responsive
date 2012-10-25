@@ -1,0 +1,86 @@
+@charset "utf-8";
+/* Form */
+#pageQuestionsForm {
+    margin: 20px 0px 0px 0px;
+    padding: 20px 20px 20px 20px;
+    background-color: #F2F2F2;
+}
+
+/* Checkboxes */
+#pageQuestionsForm .answerCheckbox { display: block !important; }
+
+/* default page submit button */
+#pageQuestionsForm .submitButton { display: none; }
+
+/* Template Content */
+#pageQuestionsForm .templateContent { overflow: visible !important; }
+
+/* Template Section */
+#pageQuestionsForm .templateSection {
+    margin: 0px 0px 20px 0px;
+    padding: 10px 20px 10px 20px;
+    overflow: visible !important;
+}
+
+/* Section header */
+#pageQuestionsForm .sectionHeader {
+    overflow: visible !important;  
+    font-weight: bold;
+    font-size: 12pt;
+    position: relative;
+    top: -20px;
+    padding-left: 3px;
+    padding-right: 3px;
+    color: #006698;
+    background-color: #F2F2F2;
+    display: inline-block;
+}
+
+/* Question layer */
+#pageQuestionsForm .questionLayer { padding: 10px 0px 0px 0px; }
+#pageQuestionsForm .dynamicText, 
+#pageQuestionsForm .questionLayer { position: relative; }
+/* #pageQuestionsForm .questionAnswer { position: relative; margin-left: 205px; } */
+#pageQuestionsForm .questionLayer:after {
+    content: "";
+    clear: both;
+    display: block;
+}
+
+/* Label */
+#pageQuestionsForm .questionLabel{
+    float: left;
+    /* width: 200px; */
+    padding-right: 5px;
+    font-weight: normal;
+}
+
+/* Pre-required label */
+#pageQuestionsForm .preRequiredLabel:before { color: red !important; content: "* "; }
+#pageQuestionsForm .preRequiredLabel .preRequiredLabel_checkbox:after { content: ""; }
+#pageQuestionsForm *.preRequiredLabel { zoom: expression(setIE7PreRequired(this)); }
+
+/* Buttons */
+#pageQuestionsForm .saveButton, 
+#pageQuestionsForm .cancelButton { padding: 2px !important; float: left; }
+
+/* Form Controls */
+input[type="radio"] { float: left; margin: 4px 5px 0px 0px; }
+input[type="checkbox"] { float: left; margin: 4px 5px 0px 0px; }
+textarea { width: 98.5%; }
+
+/* Contact Details */
+div.lookupAnswer { margin: 15px 2px 0px 0px; }
+#yesContactEditMsg { margin: 10px 0px 0px 10px; }
+#close { float: right; margin: 10px 0px 0px 0px; }
+
+/* Dialog Custom */
+div.ui-dialog-titlebar { display: none; }
+div.ui-dialog .ui-dialog-content { padding: 5px 5px 5px 5px; }
+
+/* Tabs Custom */
+#tabs .ui-widget-content { border: none; }
+
+/* User Lookup Infield label */
+#lookupForm form p { position: relative; }
+#lookupForm label { margin: 2px 0px 0px 10px; position: absolute; }

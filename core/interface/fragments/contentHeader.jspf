@@ -1,0 +1,29 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <% if (context != null) {%>
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            <% }%>
+            <a class="brand" href="<%= bundle.getProperty("homeUrl")%>">Acme</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <% if (context != null) {%>
+                    <li class="">
+                        <a href="<%= bundle.getProperty("homeUrl")%>">Return to Catalog</a>
+                    </li>
+                    <li class="">
+                        <a href="#">Submissions</a>
+                    </li>
+                    <li class="">
+                        <a href="<%= bundle.getProperty("logoutUrl")%>">Logout</a>
+                    </li>
+                    <% }%>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

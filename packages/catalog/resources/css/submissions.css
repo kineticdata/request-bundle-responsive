@@ -1,0 +1,89 @@
+@charset "utf-8";
+
+/* Submissions */
+#submissionsTable {
+    font-size: 12px;
+    margin: 10px;
+    width: 980px;
+}
+
+#submissionsTable .tableContainer { width: 980px; }
+
+.dataTables_wrapper .ui-toolbar { padding: 5px; }
+div.dataTables_wrapper .ui-widget-header { font-weight: normal; }
+.css_right { float: right; }
+
+/* Pagination */
+.dataTables_paginate { padding-top: 0; float: right; text-align: right; }
+.paging_full_numbers .ui-button { padding: 2px 6px; margin: 0; cursor: pointer; }
+.dataTables_paginate .ui-button { margin-right: -0.1em !important; }
+.paging_full_numbers { width: 350px !important; }
+
+ /* Processing Message */
+.dataTables_processing {
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    width: 250px;
+    margin-left: -125px;
+    text-align: center;
+    font-size: 11px;
+    padding: 2px 0;
+}
+
+/* Entries selection for datatables */
+.dataTables_length { width: 40%; float: left; }
+
+/* Search */
+.dataTables_filter { width: 50%; float: right; text-align: right; }
+
+/* Info displayed in footer */
+.dataTables_info { width: 50%; float: left; padding-top: 3px; }
+
+/* Submission Details */
+.submissionDetails {
+    padding: 5px;
+    overflow-y: scroll;
+}
+
+.submissionDetails .header {
+    font-size: 1.1em;
+    padding: 5px;
+}
+
+.submissionDetails .header a:hover {
+    text-decoration: underline;
+}
+
+.submissionDetails .header .serviceItem {
+    margin-right: 150px;
+}
+
+.submissionDetails .header .requestId {
+    float: right;
+    text-align: right;
+    width: 150px;
+}
+
+.submissionDetails .info {
+    padding: 5px;
+}
+
+.submissionDetails .cancel {
+    text-align: right;
+}
+
+.submissionDetails .label {
+    float: left;
+    font-weight: bold;
+    width: 150px;
+}
+
+.submissionDetails .value {
+    margin-left: 150px;
+}
+
+.submissionDetails .tasks .task {
+    margin-top: 5px;
+    padding: 5px;
+}
