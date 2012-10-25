@@ -178,7 +178,7 @@
         public String getTemplateName() {return entry.getEntryFieldValue(FIELD_TEMPLATE_NAME);}
         public String getStatus() {return entry.getEntryFieldValue(FIELD_STATUS);}
         public String getRequestStatus() {return entry.getEntryFieldValue(FIELD_REQUEST_STATUS);}
-		public String getRequestClosedDate() {return entry.getEntryFieldValue(FIELD_REQUEST_CLOSED_DATE);}
+        public String getRequestClosedDate() {return entry.getEntryFieldValue(FIELD_REQUEST_CLOSED_DATE);}
         public String getValiationStatus() {return entry.getEntryFieldValue(FIELD_VALIDATION_STATUS);}
     }
 %>
