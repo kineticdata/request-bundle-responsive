@@ -2,6 +2,9 @@ $(document).ready(function() {
     var searchResult = '#search-result';
     var resultsFor = '#results-for';
     var msg = new Message();
+    // Focus catalog search input
+    $('#search-input').focus();
+
     // Click event for search
     $('#catalogSearchForm').on('submit', function(event) {
         // Prevent default action.
