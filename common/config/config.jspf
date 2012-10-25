@@ -5,7 +5,7 @@
 --%>
 <%
     bundle.setProperty("companyName", "Acme");
-    bundle.setProperty("catalogName", "Search");
+    bundle.setProperty("catalogName", "responsive");
 
     bundle.setProperty("homeUrl", bundle.applicationPath() + "DisplayPage?name=SearchCatalog");
     bundle.setProperty("loginUrl", bundle.applicationPath() + "DisplayPage?name=SearchLogin");

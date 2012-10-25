@@ -23,6 +23,7 @@
 --%>
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/ajaxLogin.css" />
+<link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/jquery-ui-1.9.0.custom.css" />
 <!--[if IE 6]><link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/common.ie6.css" /><![endif]-->
 <!--[if IE 7]><link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/common.ie7.css" /><![endif]-->
 <%-- 
