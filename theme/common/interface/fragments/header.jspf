@@ -1,0 +1,62 @@
+<header class="main">
+    <div class="container">
+        <a class="logo" href="<%= bundle.getProperty("catalogUrl")%>"><%= bundle.getProperty("companyName") %></a>
+        <button type="button" class="fa fa-bars" data-target="div.navigation-slide">
+        </button>
+        <div class="collapse">
+            <form class="user-search" method="get" action="<%= bundle.applicationPath()%>DisplayPage">
+                <input type="hidden" name="name" value="<%= bundle.getProperty("searchNameParam") %>" />
+                <p>
+                    <label class="hide" for="search">Search Catalog</label>
+                    <input id="search" class="form-control" type="search" name="q" value="<% if(request.getParameter("q") != null && !request.getParameter("q").equals("")) {%> <%= request.getParameter("q") %> <% }%>" autofocus="autofocus" placeholder="Search Catalog" />
+                    <span>
+                        <button class="btn btn-primary fa fa-search" type="submit"></button>
+                    <span>
+                </p>
+            </form>
+            <ul>
+                <% if(bundle.getProperty("profileUrl") != null ) { %>
+                    <li class="profile">
+                        <a href="<%= bundle.getProperty("profileUrl")%>">
+                            <i class="fa fa-user"></i>
+                            Me
+                        </a>
+                    </li>
+                <% } %>
+                <li class="catalog">
+                    <a href="<%= bundle.getProperty("catalogUrl")%>">
+                        <i class="fa fa-home"></i>
+                        Home
+                    </a> 
+                </li>
+                <li class="popular-requests">
+                    <a href="<%= bundle.getProperty("popularRequestsUrl")%>">
+                        <i class="fa fa-star-o"></i>
+                        Popular Requests
+                    </a> 
+                </li>
+                <li class="approvals">
+                    <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals">
+                        <i class="fa fa-exchange"></i>
+                        Approvals
+                    </a>
+                </li>
+                <li class="requests">
+                    <a href="<%= bundle.getProperty("submissionsUrl")%>&type=requests">
+                        <i class="fa fa-exchange"></i>
+                        Requests
+                    </a>
+                </li>
+                <% if (logoutEnabled && context != null) {%>
+                    <li>
+                        <a href="<%= bundle.getProperty("logoutUrl")%>">
+                            <i class="fa fa-sign-out"></i>
+                            Sign Out
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="fixed-header-spacer"></div>

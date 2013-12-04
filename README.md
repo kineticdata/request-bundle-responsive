@@ -1,31 +1,42 @@
-request-bundle-responsive
-=========================
-The Klean bundle is a simple theming skeleton intended to function as a drop in
-solution or to be extended and modified to fit your theming and branding needs.
+# Request Bundle Responsive Documentation
 
-For more information about bundle development, see the Kinetic Request Bundle
-Guide on our community site:  http://community.kineticdata.com/
-  10_Kinetic_Request/Documentation/Kinetic_Request_Bundle_Guide
+## Overview
+This project represents an out of the box Bundle solution for Kinetic Request. It contains the Responsive Theme and a Kurl catalog. See the Readme in each directory for further installation instructions and details.
 
-For more information about the Klean bundle, see the Klean Bundle Reference
-Guide on our community site: http://community.kineticdata.com/
-  10_Kinetic_Request/Documentation/Kinetic_Request_Bundle_Guide/Bundle%3A_Klean
+## Installation / Quick Start
 
+### Bundle
+The "theme" directory should be placed into the "themes" directory of your kinetic installation and renamed to match your catalog name
 
-== Theming and Branding with Kinetic Request
-Kinetic Request allows you to completely customize the look and feel of your 
-service catalog, forms, and other consoles.  Since Kinetic Request is a Java 
-web application, accessed by a web browser (such as Internet Explorer, Firefox,
-Safari, or Chrome), specifying the overall look and feel is accomplished using
-standard and well established web development technologies: HTML, CSS, 
-Javascript, and a little bit of Java.
+Parent path:  
+.../apache-tomcat-X.X.XX-sr/webapps/kinetic/themes
 
-A Bundle is a self contained collection of files intended to simplify the 
-improvement of web-based Kinetic Request interfaces. These files are stored 
-with the Kinetic Request web application, and help to define both interface 
-architecture (such as how to retrieve dynamic Kinetic Request information) 
-and the interface look and feel. The Kinetic Bundle strategy leverages common 
-web technologies (HTML, CSS, Javascript) together with JSP to implement a 
-fully brandable service interface.  A Bundle represents a consistent web 
-presence or identity for the Kinetic Request application, and allows a single 
-Kinetic Request installation to serve multiple themes and brands.
+### Catalog
+1. Unzip the catalog.zip file 
+
+2. Open the config.rb file in a text editor
+
+3. Edit the “CATALOG_NAME” variable with the name you want to call your catalog. Use underscores or dashes instead of spaces.
+
+4. Edit the “THEMES_BASE” with the path to the bundle directory
+
+5. Using Kurl (http://community.kineticdata.com/10_Kinetic_Request/KURL/02_Get_Started), use the following command to start your catalog import by replacing the text, "path-to-kurl-catalog-directory", with the path (from your kurl directory) to your unzipped kurl catalog files:
+~~~~
+java -jar kurl.jar -action=build_catalog -directory=path-to-kurl-catalog-directory
+~~~~
+
+6. When the import is complete, verify that the catalog is visible in Remedy and all the service items are imported.
+    * About
+    * Catalog
+    * Catalog Listing
+    * Category
+    * Profile
+    * Search
+    * Service Item Example with Person Lookup
+    * Site Feedback
+    * Submissions
+
+7. In the bundle directory open the your-theme-name/common/config/config.jspf file. Update each line where the word "Responsive" is with the name of your catalog then save the file.
+
+8. Verify configuration by opening the web site in a browser:  
+http://_your-web-server_/kinetic/DisplayPage?name=_your-catalog-name_
