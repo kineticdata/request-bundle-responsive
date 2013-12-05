@@ -3,20 +3,6 @@
 /* Loader */
 div#loader { float: none; width: auto; text-align: center; margin: 20px auto; clear: both; }
 
-/* Submission Navigation */
-nav.submissions-navigation { padding: 5px; }
-nav.submissions-navigation ul { margin: 0; }
-nav.submissions-navigation ul li { 
-    float: left;
-    display: inline;
-    margin-left: .5em;
-    padding-left: .5em;
-    border-left: 1px solid rgb(150, 150, 150);
-    font-weight: bold;
-}
-nav.submissions-navigation ul li a.active { color: #E16B1E; }
-nav.submissions-navigation ul li:first-child { border: none; margin-left: 0; padding-left: 0; }
-
 /* Header */
 div.console-list div.header nav.submissions-navigation { float: left; }
 section.container > nav.submissions-navigation,

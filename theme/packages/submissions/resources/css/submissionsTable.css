@@ -1,16 +1,11 @@
 @charset "utf-8";
 
 /* Loader */
-div#loader { float: left; width: 785px; text-align: center; margin: 20px auto; }
+div#loader { text-align: center; margin: 20px auto; }
 
 /* Results */
 div.results,
-div.results-message { 
-    float: left;
-    line-height: 15px;
-    margin: 10px 10px 10px 0;
-    width: 775px;
-}
+div.results-message { line-height: 15px; margin: 10px 10px 10px 0; }
 div.results-message h3 { margin-left: 10px; }
 div.console { font-size: 11px; }
 div.console div.header,
@@ -145,41 +140,16 @@ nav.pagination ul li a.current {
     font-weight: bold;
     outline: 0 none;
 }
-/* Submissions Navigation */
-nav.submissions-navigation { margin: 10px 0;}
-nav.submissions-navigation ul {
-    float: left;
-    margin: 0;
-    padding: 0;
-}
-nav.submissions-navigation ul li {
-    padding: 0 0 10px 0;
-}
-nav.submissions-navigation ul li a {
-    display: inline-block;
-    padding: 5px;
-    width: 150px;
-    font-weight: bold;
-    border-radius: 5px;
-    border: 1px solid #e3e3e3;
-}
-nav.submissions-navigation ul li a:hover,
-nav.submissions-navigation ul li a.active { 
-    /* IE10 Consumer Preview */ 
-    background-image: -ms-linear-gradient(top, #4C80BF 30%, #3D6699 100%);
-    /* IE9 and lower */
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4C80BF', endColorstr='#3D6699');
-    /* Mozilla Firefox */ 
-    background-image: -moz-linear-gradient(top, #4C80BF 30%, #3D6699 100%);
-    /* Opera */ 
-    background-image: -o-linear-gradient(top, #4C80BF 30%, #3D6699 100%);
-    /* Webkit (Safari/Chrome 10) */ 
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(.3, #4C80BF), color-stop(1, #3D6699));
-    /* Webkit (Chrome 11+) */ 
-    background-image: -webkit-linear-gradient(top, #4C80BF 30%, #3D6699 100%);
-    /* W3C Markup, IE10 Release Preview */ 
-    background-image: linear-gradient(to bottom, #4C80BF 30%, #3D6699 100%);
-    background-color: #3D6699;
-    color: white;
-    text-decoration: none; 
+
+/* Buttons */
+a.review,
+a.complete-form,
+a.complete-approval,
+a.view-activity-details {
+    margin: 10px 0 0 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    float: none;
+    text-align: center;
+    width: 120px;
 }

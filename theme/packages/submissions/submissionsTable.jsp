@@ -32,78 +32,83 @@
                 My&nbsp;Approvals&nbsp;(<%= totalApprovals%>)
             <%}%>
         </title>
-        <!-- Common Flyout navigation -->
-        <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/flyout.js"></script>
-
         <!-- Page Stylesheets -->
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/jquery.qtip.css" type="text/css" />
+        <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/footable.core.css" type="text/css" />
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/package.css" type="text/css" />
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/submissionsTable.css" type="text/css" />
         <!-- Page Javascript -->
+        <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/footable.js"></script>
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/moment.min.js"></script>
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/jquery.qtip.min.js"></script>
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/jquery.consoleTable.js"></script>
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/submissionsTable.js"></script>
     </head>
     <body>
-        <div class="sticky-footer">
-            <%@include file="../../common/interface/fragments/header.jspf"%>
-            <section class="container">
-                <%-- LOADER --%>
-                <div id="loader">
-                    <img alt="Please Wait." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
-                    <br />
-                    Loading Results
-                </div>
-                <%-- SUBMISSIONS VIEW --%>
-                <div class="results hidden">
-                </div>
-                <div class="results-message hidden"></div>
-                <%-- SUBMISSION TABLE LINKS --%>
-                <% if (context != null) { %>
-                    <nav class="submissions-navigation">
-                        <ul>
-                            <% if(submissionType.equals("requests")) {%>
-                                <% for (String groupName : submissionGroups.keySet()) { %>
-                                    <% if(requestsFilter.contains(groupName)) {%>
-                                        <%-- Count the number of submissions that match the current query --%>
-                                        <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
-                                        <li class="">
-                                            <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=requests&status=<%=groupName%>">
-                                                <%=count%>&nbsp;
-                                                <% if (count != 1) { %>
-                                                    <%=groupName%>s
-                                                <% } else {%>
-                                                    <%=groupName%>
-                                                <% }%>
-                                            </a>
-                                        </li>
+        <div class="view-port">
+            <%@include file="../../common/interface/fragments/navigationSlide.jspf"%>
+            <div class="content-slide" data-target="div.navigation-slide">
+                <%@include file="../../common/interface/fragments/header.jspf"%>
+                <div class="pointer-events">
+                    <%-- SUBMISSION TABLE LINKS --%>
+                    <% if (context != null) { %>
+                        <header class="sub">
+                            <div class="container">
+                                <ul class="unstyled">
+                                    <% if(submissionType.equals("requests")) {%>
+                                        <% for (String groupName : submissionGroups.keySet()) { %>
+                                            <% if(requestsFilter.contains(groupName)) {%>
+                                                <%-- Count the number of submissions that match the current query --%>
+                                                <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
+                                                <li class="">
+                                                    <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=requests&status=<%=groupName%>">
+                                                        <%=count%>&nbsp;
+                                                        <% if (count != 1) { %>
+                                                            <%=groupName%>s
+                                                        <% } else {%>
+                                                            <%=groupName%>
+                                                        <% }%>
+                                                    </a>
+                                                </li>
+                                            <%}%>
+                                        <% }%>
+                                    <% } else if(submissionType.equals("approvals")) {%>
+                                        <% for (String groupName : submissionGroups.keySet()) { %>
+                                            <% if(approvalsFilter.contains(groupName)) {%>
+                                                <%-- Count the number of submissions that match the current query --%>
+                                                <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
+                                                <li class="">
+                                                    <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals&status=<%=groupName%>">
+                                                        <%=count%>&nbsp;
+                                                        <% if (count != 1) { %>
+                                                            <%=groupName%>s
+                                                        <% } else {%>
+                                                            <%=groupName%>
+                                                        <% }%>
+                                                    </a>
+                                                </li>
+                                            <%}%>
+                                        <% }%>
                                     <%}%>
-                                <% }%>
-                            <% } else if(submissionType.equals("approvals")) {%>
-                                <% for (String groupName : submissionGroups.keySet()) { %>
-                                    <% if(approvalsFilter.contains(groupName)) {%>
-                                        <%-- Count the number of submissions that match the current query --%>
-                                        <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
-                                        <li class="">
-                                            <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals&status=<%=groupName%>">
-                                                <%=count%>&nbsp;
-                                                <% if (count != 1) { %>
-                                                    <%=groupName%>s
-                                                <% } else {%>
-                                                    <%=groupName%>
-                                                <% }%>
-                                            </a>
-                                        </li>
-                                    <%}%>
-                                <% }%>
-                            <%}%>
-                        </ul>
-                    </nav>
-                <% }%>
-            </section>
-            <div class="sticky-footer-push"></div>
+                                </ul>
+                            </div>
+                        </header>
+                    <% }%>
+                    <section class="container">
+                        <%-- LOADER --%>
+                        <div id="loader">
+                            <img alt="Please Wait." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
+                            <br />
+                            Loading Results
+                        </div>
+                        <%-- SUBMISSIONS VIEW --%>
+                        <div class="results hide">
+                        </div>
+                        <div class="results-message hide"></div>
+                    </section>
+                </div>
+                <%@include file="../../common/interface/fragments/footer.jspf"%>
+            </div>
         </div>
-        <%@include file="../../common/interface/fragments/footer.jspf"%>
     </body>
 </html>
