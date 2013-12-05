@@ -9,9 +9,11 @@ ul.templates li .highlighted { padding: 0px 0px 0px 0px; }
 ul.templates li div.description-wide { margin: 0 50px 0 0; }
 div.col-sm-6 { margin: 0 0 10px 0; }
 ul.templates li div.description-wide p,
-ul.templates li div.description-small p { overflow: hidden; height: 55px; }
+ul.templates li div.description-small p { overflow: hidden; max-height: 55px; }
 
+/* Responsive */
 @media (max-width: 767px) {
     ul.templates li div.description-wide p,
-    ul.templates li div.description-small p { overflow: hidden; height: 35px; }
+    ul.templates li div.description-small p { overflow: hidden; max-height: 35px; }
+    a.read-more { margin: 0 0 0 10px; }
 }

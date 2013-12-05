@@ -1,1 +1,51 @@
 @charset "utf-8";
+div.content-slide { padding: 0 0 40px 0 !important; }
+div.fixed-header-spacer { height: 50px; }
+/* Navgiation */
+ul.templates,
+ul.categories,
+ul.breadcrumbs { width: 100%; overflow: hidden; }
+ul.templates li,
+ul.categories li,
+ul.breadcrumbs li,
+ul.templates li:first-child {
+    padding: 15px 0;
+    text-indent: 20px;
+    display: block;
+    float: left;
+    position: relative;
+    width: 100%;
+    /* This makes the naviation unselectable and smoother user experience */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: inherit; 
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    display: block;
+    vertical-align: text-bottom;
+}
+div.template-details a { margin: 0 0 0 10px; }
+div.template-details p { margin: 10px; overflow: hidden; max-height: 55px; }
+div.template-details div.image { float: left; margin: 5px; }
+ul.breadcrumbs li {
+    text-indent: 5px;
+    background: #f2f2f2;
+    color: #666;
+}
+ul.templates li:active,
+ul.templates li:hover,
+ul.categories li:hover,
+ul.categories li:active {
+    background-color: #DDD;
+    color: #111; 
+    text-decoration: none;
+}
+ul.templates li:hover,
+ul.categories li:hover,
+ul.breadcrumbs li:hover { cursor: pointer; }
+ul.categories li i.fa-chevron-circle-right { float: right; margin: 3px 20px 0 0; }
+ul.breadcrumbs li i.fa-chevron-circle-left { float: left; margin: 3px 5px 0 10px; }
+ul.breadcrumbs li:not(:last-child) { display: none; }

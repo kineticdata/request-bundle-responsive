@@ -114,8 +114,13 @@
                                             <p>
                                                 <%= matchingTemplates[i].getDescription()%>
                                             </p>
+                                            <div class="visible-xs left">
+                                                <a class="templateButton" href="<%= matchingTemplates[i].getAnonymousUrl()%>">
+                                                    <i class="fa fa-share"></i>Request
+                                                </a>
+                                            </div>
                                             <% if (templateDescriptions.get(matchingTemplates[i].getId()) != null ) { %>
-                                                <a href="<%= bundle.applicationPath()%>DisplayPage?srv=<%= templateDescriptions.get(matchingTemplates[i].getId()) %>">
+                                                <a class="read-more" href="<%= bundle.applicationPath()%>DisplayPage?srv=<%= templateDescriptions.get(matchingTemplates[i].getId()) %>">
                                                     Read More
                                                 </a>
                                             <% }%>
@@ -151,9 +156,11 @@
                                                     <% }%>
                                                 <%}%>
                                             </div>
-                                            <a class="templateButton" href="<%= matchingTemplates[i].getAnonymousUrl()%>">
-                                                <i class="fa fa-share"></i>Request this Service
-                                            </a>
+                                            <div class="hidden-xs">
+                                                <a class="templateButton" href="<%= matchingTemplates[i].getAnonymousUrl()%>">
+                                                    <i class="fa fa-share"></i>Request
+                                                </a>
+                                            </div>
                                         </div>
                                     </li>
                                 <% }%>

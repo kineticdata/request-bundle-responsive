@@ -59,11 +59,16 @@
                                             <p>
                                                 <%= popularRequest.getDescription() %>
                                             </p>
+                                            <div class="visible-xs left">
+                                                <a class="templateButton" href="<%= popularRequest.getAnonymousUrl() %>">
+                                                    <i class="fa fa-share"></i>Request
+                                                </a>
+                                            </div>
                                             <% if (templateDescriptions.get(popularRequest.getId()) != null ) { %>
-                                                <a class="" href="<%= bundle.applicationPath()%>DisplayPage?srv=<%= templateDescriptions.get(popularRequest.getId()) %>">
+                                                <a class="read-more" href="<%= bundle.applicationPath()%>DisplayPage?srv=<%= templateDescriptions.get(popularRequest.getId()) %>">
                                                     Read More
                                                 </a>
-                                            <% }%>                                           
+                                            <% }%>                                         
                                         </div>
                                         <div class="col-sm-5">
                                             <div class="hidden-xs">
@@ -76,9 +81,11 @@
                                                     <% }%>
                                                 <%}%>
                                             </div>
-                                            <a class="templateButton" href="<%= popularRequest.getAnonymousUrl() %>">
-                                                <i class="fa fa-share"></i>Request this Service
-                                            </a>
+                                            <div class="hidden-xs">
+                                                <a class="templateButton" href="<%= popularRequest.getAnonymousUrl() %>">
+                                                    <i class="fa fa-share"></i>Request
+                                                </a>
+                                            </div>
                                         </div>
                                     </li>
                                 <% } %>
