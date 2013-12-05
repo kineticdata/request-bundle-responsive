@@ -27,9 +27,8 @@ java -jar kurl.jar -action=build_catalog -directory=path-to-kurl-catalog-directo
 
 6. When the import is complete, verify that the catalog is visible in Remedy and all the service items are imported.
     * About
-    * Catalog
-    * Catalog Listing
-    * Category
+    * Catalog (home page to browse catalog)
+    * Popular Requests
     * Profile
     * Search
     * Service Item Example with Person Lookup
