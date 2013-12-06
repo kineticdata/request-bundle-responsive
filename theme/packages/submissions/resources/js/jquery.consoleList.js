@@ -9,7 +9,7 @@
             entryOptions: [5, 10, 50, 100],
             page: 1,
             total: 0,
-            range: 5,
+            paginationPageRange: 5,
             resultsPerPage: 0,
             entries: true,
             serverSidePagination: true,

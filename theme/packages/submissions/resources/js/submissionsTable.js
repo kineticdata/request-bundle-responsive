@@ -109,8 +109,7 @@ var tableParams = {
  * Default row callback
  */
 function defaultRowCallback(tr, value, index) {
-    // This is used to create new links for the row dropdown
-    tr.addClass('new');
+    // Data used for links and buttons
     tr.data('Originating Id', value['Originating Id']);
     tr.data('Originating Request Id', value['Originating Request Id']);
     tr.data('Id', value['Id']);
@@ -127,38 +126,41 @@ function defaultColumnCallback(td, value, fieldname, label) {
             moment(td.text()).fromNow()
         )
     }
+    if(fieldname === 'Originating Request Id') { td.html($('<a>').addClass('review').attr('href', 'javascript:void()').append(value)); }
 }
 
 /**
  * Default Complete callback
  */
-function defaultCompleteCallback() {
+function defaultCompleteCallback() {   
     // Create Review and activity details links
-    this.consoleTable.on('click', 'table tbody tr.new', function(event) {
+    this.consoleTable.on('click touchstart', 'table tbody tr', function(event) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        // Prevents recreation of link below since onclick event looks for tr.new
-        $(this).removeClass('new');
-        $(this).next('tr.footable-row-detail')
-            .find('div.footable-row-detail-inner')
-            .append(
-                $('<div>').addClass('footable-row-detail-row').append(
-                    $('<a>').addClass('requests view-activity-details')
-                        .attr('href', 'javascript:void()')
-                        .attr('data-submission-id', $(this).data('Originating Id'))
-                        .append('View Activity Details')
-                )
-            ).append(
-                $('<div>').addClass('footable-row-detail-row').append(
-                    $('<a>').addClass('requests review')
-                        .attr('href', 'javascript:void()')
-                        .attr('data-submission-id', $(this).data('Originating Id'))
-                        .append('View Submitted Form')
-                )
-            ); 
+        if($(window).width() < 536) {
+            // Determine if buttons were created before
+            if($(this).next('tr.footable-row-detail').find('button').length === 0) {
+                $(this).next('tr.footable-row-detail')
+                    .find('div.footable-row-detail-inner')
+                    .append(
+                        $('<div>').addClass('footable-row-detail-row').append(
+                            $('<button>').addClass('requests view-activity-details btn-xs btn-gray')
+                                .attr('data-submission-id', $(this).data('Originating Id'))
+                                .append('View Details')
+                        ).append(
+                            $('<button>').addClass('requests review btn-xs btn-gray')
+                                .attr('data-submission-id', $(this).data('Originating Id'))
+                                .append('View Form')
+                        )
+                    );
+            }
+        } else {
+            window.open(BUNDLE.config['submissionActivityUrl']+'&id=' + $(this).data('Originating Id'));
+        }
     });
+     
     // Unobstrusive live on click event for view activity details
-    this.consoleTable.on('click touchstart', 'a.view-activity-details', function(event) {
+    this.consoleTable.on('click touchstart', 'button.view-activity-details', function(event) {
         // Prevent default action.
         event.preventDefault();
         event.stopImmediatePropagation();
@@ -166,11 +168,18 @@ function defaultCompleteCallback() {
     });
 
     // Unobstrusive live on click event for review request
-    this.consoleTable.on('click touchstart', 'a.review', function(event) {
+    this.consoleTable.on('click touchstart', 'button.review', function(event) {
         // Prevent default action.
         event.preventDefault();
         event.stopImmediatePropagation();
         window.location = BUNDLE.applicationPath + 'ReviewRequest?excludeByName=Review%20Page&csrv=' + $(this).data('submission-id');
+    });
+
+    // jQuery unobstrusive live on click event for review request
+    this.consoleTable.on('click', 'table tbody tr td a.review', function(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        window.open(BUNDLE.applicationPath + 'ReviewRequest?excludeByName=Review%20Page&csrv=' + $(this).parents('tr').data('Originating Id'));
     });
 }
 
@@ -179,28 +188,34 @@ function defaultCompleteCallback() {
  */
 function requestsParkedCompleteCallback() {
     // Unobstrusive live on click event for complete form
-    this.consoleTable.on('click touchstart', 'a.complete-form', function(event) {
+    this.consoleTable.on('click touchstart', 'button.complete-form', function(event) {
         // Prevent default action.
         event.preventDefault();
         event.stopImmediatePropagation();
-        window.location = BUNDLE.applicationPath + 'DisplayPage?csrv=' + $(this).data('submission-id') + '&return=yes';
+        window.location = BUNDLE.applicationPath + 'DisplayPage?csrv=' + $(this).data('Originating Id') + '&return=yes';
     });
+
     // Create complete form link
-    this.consoleTable.on('click', 'table tbody tr.new', function(event) {
+    this.consoleTable.on('click touchstart', 'table tbody tr', function(event) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        // Prevents recreation of link below since onclick event looks for tr.new
-        $(this).removeClass('new');
-        $(this).next('tr.footable-row-detail')
-            .find('div.footable-row-detail-inner')
-            .append(
-                $('<div>').addClass('footable-row-detail-row').append(
-                    $('<a>').addClass('requests complete-form')
-                        .attr('href', 'javascript:void()')
-                        .attr('data-submission-id', $(this).data('Originating Id'))
-                        .append('Complete Form')
-                )
-            ); 
+        if($(window).width() < 536) {
+            // Determine if buttons were created before
+            if($(this).next('tr.footable-row-detail').find('button').length === 0) {
+                $(this).next('tr.footable-row-detail')
+                    .find('div.footable-row-detail-inner')
+                    .append(
+                        $('<div>').addClass('footable-row-detail-row').append(
+                            $('<button>').addClass('requests complete-form btn-xs btn-gray')
+                                .attr('href', 'javascript:void()')
+                                .attr('data-submission-id', $(this).data('Originating Id'))
+                                .append('Complete Form')
+                        )
+                    );
+            }
+        } else {
+            window.open(BUNDLE.applicationPath + 'DisplayPage?csrv=' + $(this).data('Originating Id') + '&return=yes');
+        }
     });
 }
 
@@ -209,28 +224,34 @@ function requestsParkedCompleteCallback() {
  */
 function approvalsPendingCompleteCallback() {
     // Unobstrusive live on click event for complete form
-    this.consoleTable.on('click touchstart', 'a.complete-approval', function(event) {
+    this.consoleTable.on('click touchstart', 'button.complete-approval', function(event) {
         // Prevent default action.
         event.preventDefault();
         event.stopImmediatePropagation();
-        window.location = BUNDLE.applicationPath + 'DisplayPage?csrv=' + $(this).data('submission-id');
+        window.location = BUNDLE.applicationPath + 'DisplayPage?csrv=' + $(this).data('Originating Id');
     });
+
     // Create complete approval link
-    this.consoleTable.on('click', 'table tbody tr.new', function(event) {
+    this.consoleTable.on('click touchstart', 'table tbody tr', function(event) {
         event.preventDefault();
         event.stopImmediatePropagation();
-        // Prevents recreation of link below since onclick event looks for tr.new
-        $(this).removeClass('new');
-        $(this).next('tr.footable-row-detail')
-            .find('div.footable-row-detail-inner')
-            .append(
-                $('<div>').addClass('footable-row-detail-row').append(
-                    $('<a>').addClass('requests complete-approval')
-                        .attr('href', 'javascript:void()')
-                        .attr('data-submission-id', $(this).data('Id'))
-                        .append('Complete Approval')
-                )
-            ); 
+        if($(window).width() < 536) {
+            // Determine if buttons were created before
+            if($(this).next('tr.footable-row-detail').find('button').length === 0) {
+                $(this).next('tr.footable-row-detail')
+                    .find('div.footable-row-detail-inner')
+                    .append(
+                        $('<div>').addClass('footable-row-detail-row').append(
+                            $('<button>').addClass('requests complete-approval btn-xs btn-gray')
+                                .attr('href', 'javascript:void()')
+                                .attr('data-submission-id', $(this).data('Originating Id'))
+                                .append('Complete Approval')
+                        )
+                    );
+            }
+        } else {
+            window.open(BUNDLE.applicationPath + 'DisplayPage?csrv=' + $(this).data('Originating Id'));
+        }
     });
 }
 
@@ -240,7 +261,7 @@ function initialize(table, status, entryOptionSelected) {
     // Start list
     $('div.results').consoleTable({
         displayFields: table.displayFields,
-        range: 3,
+        paginationPageRange: 3,
         pagination: true,
         entryOptionSelected: entryOptionSelected,
         entryOptions: [5, 10, 20, 50, 100],
@@ -287,7 +308,7 @@ function initialize(table, status, entryOptionSelected) {
             this.table.find('thead tr th:nth-child(4)').attr('data-hide', 'phone');
             this.table.footable();
             this.table.trigger('footable_initialize');
-            table.completeCallback.call(this); 
+            table.completeCallback.call(this);
         }
     });
 }
