@@ -12,7 +12,8 @@
             range: 5,
             resultsPerPage: 0,
             entries: true,
-            serverSidePagination: true
+            serverSidePagination: true,
+            emptyPreviousResults: true
         },
         _create: function() {
             // Set current object context to use inside jquery objects
@@ -128,8 +129,9 @@
             var widget = this;
             widget.records = records;
             widget.recordCount = recordCount;
-            // Empty
-            widget.ul.empty();
+            // Empty/clear previous results from list
+            if(widget.options.emptyPreviousResults) { widget.ul.empty(); }
+            // Empty information to set new information
             widget.information.empty();
             // List that gets built
             function buildList(index, record) {

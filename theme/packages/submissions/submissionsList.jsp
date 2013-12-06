@@ -92,17 +92,17 @@
                             </div>
                         </header>
                     <% }%>
-                    <section class="container">
+                    <section class="container">  
+                        <%-- SUBMISSIONS VIEW --%>
+                        <div class="results hide">
+                        </div>
+                        <div class="results-message hide"></div>
                         <%-- LOADER --%>
                         <div id="loader">
                             <img alt="Please Wait." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
                             <br />
                             Loading Results
                         </div>
-                        <%-- SUBMISSIONS VIEW --%>
-                        <div class="results hide">
-                        </div>
-                        <div class="results-message hide"></div>
                     </section>
                 </div>
                 <%@include file="../../common/interface/fragments/footer.jspf"%>

@@ -36,9 +36,9 @@ $(function() {
     // Get table specific properties
     var table = tableParams[urlParameters.status];
     // How many entries to show on page load
-    var entryOptionSelected = 5;
+    var entryOptionSelected = 10;
     // Start table
-    initialize(table, urlParameters.status, entryOptionSelected);  
+    initialize(table, urlParameters.status, entryOptionSelected);
 });
 
 var displayFields = {
@@ -243,8 +243,7 @@ function defaultFieldCallback(li, value, fieldname, label) {}
 /**
  * Complete callback
  */
-function defaultCompleteCallback() { $('div.console-list div.header').prepend($('nav.submissions-navigation').removeClass('gradient border').show()); }
-
+function defaultCompleteCallback() {}
 
 function initialize(table, status, entryOptionSelected) {
     var loader = $('div#loader');
@@ -253,11 +252,12 @@ function initialize(table, status, entryOptionSelected) {
     $('div.results').consoleList({
         displayFields: table.displayFields,
         paginationPageRange: 5,
-        pagination: false,
+        pagination: true,
         entryOptionSelected: entryOptionSelected,
         entryOptions: [5, 10, 20, 50, 100],
         entries: false,
         info: false,
+        emptyPreviousResults: false,
         sortOrder: 'DESC',
         serverSidePagination: true,
         sortOrderField: table.sortField,
@@ -270,7 +270,6 @@ function initialize(table, status, entryOptionSelected) {
                 type: 'get',
                 url: BUNDLE.packagePath + 'interface/callbacks/submissions.json.jsp?qualification=' + status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
                 beforeSend: function(jqXHR, settings) {
-                    widget.consoleList.hide();
                     responseMessage.empty();
                     loader.show();
                 },
@@ -280,6 +279,8 @@ function initialize(table, status, entryOptionSelected) {
                         widget.buildResultSet(data.data, data.count);
                         $('h3').hide();
                         widget.consoleList.show();
+                        // Allow scroll to fire again
+                        killScroll = false;
                     } else {
                         $('section.container nav.submissions-navigation').show();
                         responseMessage.html('<h4>There Are No ' + status + 's</h4>').show();
@@ -294,5 +295,22 @@ function initialize(table, status, entryOptionSelected) {
         rowCallback: function(li, record, index, displayFields) { table.rowCallback.call(this, li, record, index, displayFields); },
         fieldCallback: function(li, value, fieldname, label) { table.fieldCallback.call(this, li, value, fieldname, label); },
         completeCallback: function() { table.completeCallback.call(this); }
+    });
+
+    // If window height larger than content slide, get more results
+    if($(window).height() > $('div.content-slide').height()) {
+        $('nav.pagination ul.links li.active').next().find('a').trigger('click')
+    }
+    // Keeps the scroll from firing until ajax completed
+    var killScroll = false;
+    // Paginate more results when user is close to bottom of page on scroll
+    $(window).on('scroll', function(event) {    
+        if(($(window).scrollTop() + window.innerHeight + 300) > $(document).height()) {
+            if (killScroll == false) {
+                // Prevent event stacking
+                killScroll = true;
+                $('nav.pagination ul.links li.active').next().find('a').trigger('click');
+            }
+        }
     });
 }
