@@ -42,6 +42,7 @@
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/moment.min.js"></script>
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/jquery.qtip.min.js"></script>
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/jquery.consoleTable.js"></script>
+        <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/package.js"></script>
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/submissionsTable.js"></script>
     </head>
     <body>

@@ -40,6 +40,7 @@
         <!-- Page Javascript -->
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/moment.min.js"></script>
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/jquery.consoleList.js"></script>
+        <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/package.js"></script>
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/submissionsList.js"></script>
     </head>
     <body>
