@@ -4,18 +4,18 @@
 <%
     bundle.setProperty("companyName", "ACME");
     bundle.setProperty("catalogName", "Responsive");
-
+    // Slug used for urls
+    bundle.setProperty("slug", "Responsive");
     // Urls
-    bundle.setProperty("catalogUrl", bundle.applicationPath() + "DisplayPage?name=Responsive-Catalog");
-    bundle.setProperty("popularRequestsUrl", bundle.applicationPath() + "DisplayPage?name=Responsive-PopularRequests");
-    bundle.setProperty("searchUrl", bundle.applicationPath() + "DisplayPage?name=Responsive-Search");
-    bundle.setProperty("submissionsUrl", bundle.applicationPath() + "DisplayPage?name=Responsive-Submissions");
-    bundle.setProperty("categoryUrl", bundle.applicationPath() + "DisplayPage?name=Responsive-Category");
-    bundle.setProperty("aboutUrl", bundle.applicationPath() + "DisplayPage?name=Responsive-About");
-    bundle.setProperty("profileUrl", bundle.applicationPath() + "DisplayPage?name=Responsive-Profile");
-    bundle.setProperty("feedbackUrl", bundle.applicationPath() + "DisplayPage?name=Responsive-Feedback");
-    bundle.setProperty("serviceLevelsUrl", bundle.applicationPath() + "DisplayPage?name=Responsive-ServiceLevels");
-    bundle.setProperty("searchNameParam", "Responsive-Search");
+    bundle.setProperty("catalogUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug") + "-Catalog");
+    bundle.setProperty("popularRequestsUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug") + "-PopularRequests");
+    bundle.setProperty("searchUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug") + "-Search");
+    bundle.setProperty("submissionsUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug") + "-Submissions");
+    bundle.setProperty("categoryUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug") + "-Category");
+    bundle.setProperty("aboutUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug") + "-About");
+    bundle.setProperty("profileUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug") + "-Profile");
+    bundle.setProperty("feedbackUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug") + "-Feedback");
+    bundle.setProperty("searchNameParam", bundle.getProperty("slug") + "-Search");
     bundle.setProperty("logoutUrl", "KSAuthenticationServlet?Logout=true");
 
     // This is a path to the review jsp to be used by review request.
