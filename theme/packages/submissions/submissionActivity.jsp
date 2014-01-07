@@ -98,7 +98,7 @@
                                     <div class="content-wrap">
                                         <% if(submissionTemplate.hasTemplateAttribute("ServiceItemImage")) {%>
                                             <div class="image">
-                                                <img width="40" src="<%= bundle.getProperty("serviceItemImagePath")%><%= submissionTemplate.getTemplateAttributeValue("ServiceItemImage")%>">
+                                                <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(submissionTemplate.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>">
                                             </div>
                                         <%}%>
                                         <div class="originating-name">

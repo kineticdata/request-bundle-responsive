@@ -1,6 +1,16 @@
 <header class="main">
     <div class="container">
-        <a class="logo" href="<%= bundle.getProperty("catalogUrl")%>"><%= bundle.getProperty("companyName") %></a>
+        <a class="logo" href="<%= bundle.getProperty("catalogUrl")%>">
+            <!-- <img alt="<%= bundle.getProperty("companyName") %>" src="<%= bundle.bundlePath()%>common/resources/images/logo.png" /> -->
+            <div class="company">
+                <div>
+                    <%= bundle.getProperty("companyName") %>
+                </div>
+                <div style="font-size: 11px;">
+                    Service Catalog
+                </div>
+            </div>
+        </a>
         <button type="button" class="fa fa-bars" data-target="div.navigation-slide">
         </button>
         <div class="collapse">
@@ -15,29 +25,15 @@
                 </p>
             </form>
             <ul>
-                <% if(bundle.getProperty("profileUrl") != null ) { %>
-                    <li class="profile">
-                        <a href="<%= bundle.getProperty("profileUrl")%>">
-                            <i class="fa fa-user"></i>
-                            Me
-                        </a>
-                    </li>
-                <% } %>
                 <li class="catalog">
                     <a href="<%= bundle.getProperty("catalogUrl")%>">
                         <i class="fa fa-home"></i>
                         Home
                     </a> 
                 </li>
-                <li class="popular-requests">
-                    <a href="<%= bundle.getProperty("popularRequestsUrl")%>">
-                        <i class="fa fa-star-o"></i>
-                        Popular Requests
-                    </a> 
-                </li>
                 <li class="approvals">
                     <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals">
-                        <i class="fa fa-exchange"></i>
+                        <i class="fa fa-check"></i>
                         Approvals
                     </a>
                 </li>
@@ -47,14 +43,7 @@
                         Requests
                     </a>
                 </li>
-                <% if (logoutEnabled && context != null) {%>
-                    <li>
-                        <a href="<%= bundle.getProperty("logoutUrl")%>">
-                            <i class="fa fa-sign-out"></i>
-                            Sign Out
-                        </a>
-                    </li>
-                <% } %>
+                <%@include file="contentUser.jspf"%>
             </ul>
         </div>
     </div>

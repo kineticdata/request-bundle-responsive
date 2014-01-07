@@ -102,7 +102,7 @@
                                         <div class="content-wrap">
                                             <% if (matchingTemplates[i].hasTemplateAttribute("ServiceItemImage")) { %>
                                                 <div class="image">
-                                                    <img width="40" src="<%= bundle.getProperty("serviceItemImagePath") + matchingTemplates[i].getTemplateAttributeValue("ServiceItemImage")%>" />
+                                                    <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(matchingTemplates[i].getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" />
                                                 </div>
                                                 <div class="col-sm-6 description-small">
                                             <% } else {%>

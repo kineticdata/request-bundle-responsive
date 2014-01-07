@@ -10,3 +10,9 @@
     text-decoration: none;
 }
 .ln-letters .ln-last { border-right: none; }
+
+@media (max-width: 767px) {
+    section.container {
+        display: block;
+    }
+}

@@ -40,6 +40,12 @@
                 <div class="pointer-events">
                     <section class="container">
                         <% if(globalTopTemplates.size() > 0){%>
+                        	<header class="container">
+                                <h2>
+                                    Popular Requests
+                                </h2>
+                                <hr class="soften">
+                            </header>
                             <ul class="templates unstyled">
                                 <% for(String templateName : globalTopTemplates) { %>
                                     <li class="border-top clearfix">

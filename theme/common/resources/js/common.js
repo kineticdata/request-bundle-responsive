@@ -70,7 +70,7 @@ function startMobileNavigation(contentWrap, menuWrap, top) {
     // Disable click events on content wrap
     $(contentWrap).find('div.pointer-events').css({'pointer-events':'none'});
     $(contentWrap).find('header.main, header.sub').css({'left': '240px'});
-    $(contentWrap).css({'position':'fixed', 'min-width':'480px', 'top': top, 'bottom':'0', 'right':'0', 'left':'240px', 'background-color': 'white'});
+    $(contentWrap).css({'position':'fixed', 'min-width':'480px', 'top': top, 'bottom':'0', 'right':'0', 'left':'240px'});
     $(menuWrap).show();
     // Set the scroll top again for navigation slide. This will not affect content wrap since it's position is now fixed.
     // @TODO might want to adjust based on which li is active $(window).scrollTop($(menuWrap).find('ul li.active').offset().top - 60);
@@ -162,6 +162,17 @@ setIE7PreRequired = function(obj) {
             $(obj).append("*");
         }
     }
+}
+
+/**
+ * @param email string
+ * @param displaySelector string
+ */
+function gravatar(email, displaySelector) {
+    var lowercaseEmail = email.toLocaleLowerCase();
+    var md5 = $.md5(lowercaseEmail);
+    var gravatarHtml = '<img src="https://secure.gravatar.com/avatar/'+md5+'" />';
+    $(displaySelector).html(gravatarHtml);
 }
 
 /**

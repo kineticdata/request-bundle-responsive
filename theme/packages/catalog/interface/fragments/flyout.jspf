@@ -1,0 +1,91 @@
+<header class="sub">
+    <div class="container">
+        <nav>
+            <ul class="nav" role="navigation">
+                <li class="dropdown">
+                    <span class="nav-button-inner">
+                        <span>
+                            Browse by
+                        </span>
+                        <span class="nav-button-title nav-button-line2">
+                            Category
+                        </span>
+                        <i class="hidden nav-sprite"></i>
+                    </span>
+                    <div class="flyout-table-wrap">
+                        <table cellspacing="0" cellpadding="0" surround="0,30,30,30" class="flyout-table exposed-skin">
+                            <tbody>
+                                <tr>
+                                    <td class="nav-pop-tl nav-pop-h">
+                                        <div class="nav-pop-lr-min"></div>
+                                    </td>
+                                    <td class="nav-pop-tc nav-pop-h"></td>
+                                    <td class="nav-pop-tr nav-pop-h">
+                                        <div class="nav-pop-lr-min"></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="nav-pop-cl nav-pop-v"></td>
+                                    <td class="nav-pop-cc ap-content">
+                                        <div class="flyout" class="nav-super">
+                                            <div class="subcats-wrap subcats-wrap-super hide">
+                                                <ul class="subcats">
+                                                </ul>
+                                                <div class="subcats-border">
+                                                </div>
+                                                <div class="subcats-border subcats-border-fix">
+                                                </div>
+                                            </div>
+                                            <div class="rootcats-wrap">
+                                                <ul class="dropdown-menus unstyled" role="menu" aria-labelledby="services">
+                                                <% for (Category category : catalog.getRootCategories(context)) { %>
+                                                    <% if(!categoryFilterHashSet.contains(category.getName())) {%>
+                                                        <% if (category.hasTemplates() || category.hasNonEmptySubcategories()) { %>
+                                                            <li class="category" data-id="<%= category.getId()%>" data-name="<%= category.getName()%>">
+                                                                <a href="<%= bundle.getProperty("categoryUrl") %>&category=<%= URLEncoder.encode(category.getFullName(), "UTF-8")%>" class="name">
+                                                                    <%= category.getName()%>
+                                                                </a>
+                                                                <div class="description">
+                                                                    <%= category.getDescription()%>
+                                                                </div>
+                                                                <%-- SUBCATEGORIES DATA --%>
+                                                                <% if (category.hasNonEmptySubcategories()) {%>
+                                                                <ul class="subcategories hide">
+                                                                    <% for (Category subcategory : category.getSubcategories()) { %>
+                                                                        <% if (subcategory.hasTemplates()) { %>
+                                                                        <li class="subcategory" data-id="<%= subcategory.getId()%>" data-name="<%= subcategory.getName()%>">
+                                                                            <a href="<%= bundle.getProperty("categoryUrl") %>&category=<%= URLEncoder.encode(subcategory.getFullName(), "UTF-8")%>" class="name">
+                                                                                <%= subcategory.getName()%>
+                                                                            </a>
+                                                                            <div class="description">
+                                                                                <%= subcategory.getDescription()%>
+                                                                            </div>
+                                                                        </li>
+                                                                        <% }%>
+                                                                    <% }%>
+                                                                    <div class="clearfix"></div>
+                                                                </ul>
+                                                                <% }%>
+                                                            </li>
+                                                        <% } %>
+                                                    <% } %>
+                                                <% }%>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="nav-pop-cr nav-pop-v"></td>
+                                </tr>
+                                <tr>
+                                    <td class="nav-pop-bl nav-pop-v"></td>
+                                    <td class="nav-pop-bc nav-pop-h"></td>
+                                    <td class="nav-pop-br nav-pop-v"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>          
+                </li>         
+            </ul>
+        </nav>
+    </div>
+</header>

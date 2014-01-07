@@ -1,13 +1,16 @@
 $(function() {
+    $(window).hashchange(function(event) {
+        console.log(window.location.hash.substring(1))
+    });
     // Set some states
     $('ul li.catalog').addClass('active').append($('<div>').addClass('arrow-left'));
     $('ul.categories').append($('ul.root-category-data').html());
 
     // Selectors that are used quite a bit
-    var breadcrumbs = 'ul.breadcrumbs';
-    var templates = 'ul.templates';
-    var templateDetails = 'div.template-details';
-    var categories = 'ul.categories';
+    var breadcrumbs = 'nav.catalog ul.breadcrumbs';
+    var templates = 'nav.catalog ul.templates';
+    var templateDetails = 'nav.catalog div.template-details';
+    var categories = 'nav.catalog ul.categories';
     
     // Click event for menus
     $(categories).on('click', 'li', function(event) {
@@ -32,6 +35,8 @@ $(function() {
                     $('<i>').addClass('fa fa-chevron-circle-left')
                 )
         ).show();
+        // Update hash
+        window.location.hash = categoryName;
     });
     // Click event for template details
     $(templates).on('click', 'li', function(event) {

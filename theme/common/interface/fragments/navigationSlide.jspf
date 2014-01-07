@@ -14,7 +14,7 @@
         <% if(bundle.getProperty("profileUrl") != null ) { %>
             <li class="profile">
                 <a href="<%= bundle.getProperty("profileUrl")%>">
-                    <i class="fa fa-user"></i>
+                    <i class="gravatar-icon"></i>
                     Me
                 </a>
             </li>
@@ -33,7 +33,7 @@
         </li>
         <li class="approvals">
             <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals">
-                <i class="fa fa-exchange"></i>
+                <i class="fa fa-check"></i>
                 Approvals
             </a>
         </li>

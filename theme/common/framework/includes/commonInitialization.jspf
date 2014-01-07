@@ -22,6 +22,8 @@
 <%@include file="../../framework/helpers/MobileDetectionHelper.jspf" %>
 <%@include file="../../framework/helpers/DescriptionHelper.jspf" %>
 <%@include file="../../framework/helpers/LogHelper.jspf" %>
+<%@include file="../../framework/helpers/ServiceItemImageHelper.jspf" %>
+<%@include file="../../framework/helpers/CategoryHelper.jspf" %>
 
 <%--
     Include any model files.
@@ -32,6 +34,7 @@
       <%@include file="../models/kineticSample/Person.jspf
 --%>
 <%@include file="../models/Person.jspf"%>
+<%@include file="../models/KSSamplePeople.jspf"%>
 
 <%-- Include the configuration file in the common package. --%>
 <%@include file="../../config/config.jspf" %>

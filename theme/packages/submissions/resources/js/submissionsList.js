@@ -1,3 +1,10 @@
+if (typeof String.prototype.startsWith != 'function') {
+  // see below for better implementation!
+  String.prototype.startsWith = function (str){
+    return this.indexOf(str) == 0;
+  };
+}
+
 var displayFields = {
     'Closed': 'CLOSED ON',
     'Customer Survey Status': 'Customer Survey Status',
@@ -77,13 +84,17 @@ function defaultRowCallback(li, record, index, displayFields) {
         ).append(
             $('<div>').addClass('request-id-value')
                 .append(record['Originating Request Id'])
-        ).append(
+        );
+
+    if(record['Requested For'] !== null) {
+        leftColumn.append(
             $('<div>').addClass('requested-for-label')
                 .append(displayFields['Requested For'] + '&nbsp;')
         ).append(
             $('<div>').addClass('requested-for-value')
                 .append(record['Requested For'])
         );
+    }
 
     // Draft date
     if(record['Customer Survey Status'] === 'In Progress') {
@@ -138,10 +149,16 @@ function defaultRowCallback(li, record, index, displayFields) {
 
     // Service item image
     if(record['Service Item Image'] !== null) {
+        var imagePath;
+        if(record['Service Item Image'].startsWith('http://')) {
+            imagePath = record['Service Item Image'];
+        } else {
+            imagePath = BUNDLE.config.serviceItemImagePath + record['Service Item Image'];
+        }
         var image = $('<div>').addClass('image')
             .append(
                 $('<img>').attr('width', '40')
-                    .attr('src', BUNDLE.config.serviceItemImagePath + record['Service Item Image'])
+                    .attr('src', imagePath)
             )
         contentWrap.prepend(image);
     }

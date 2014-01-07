@@ -56,6 +56,7 @@
 <script type='text/javascript' src='<%=bundle.bundlePath()%>common/resources/js/modernizr.custom.js'></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/jquery.md5.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/Bridges.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/ajaxLogin.js"></script>

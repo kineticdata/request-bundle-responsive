@@ -1,14 +1,14 @@
 @charset "utf-8";
 div.content-slide { padding: 0 0 40px 0 !important; }
-div.fixed-header-spacer { height: 50px; }
-/* Navgiation */
-ul.templates,
-ul.categories,
-ul.breadcrumbs { width: 100%; overflow: hidden; }
-ul.templates li,
-ul.categories li,
-ul.breadcrumbs li,
-ul.templates li:first-child {
+
+/* Navgiation small devices */
+nav.catalog ul.templates,
+nav.catalog ul.categories,
+nav.catalog ul.breadcrumbs { width: 100%; overflow: hidden; }
+nav.catalog ul.templates li,
+nav.catalog ul.categories li,
+nav.catalog ul.breadcrumbs li,
+nav.catalog ul.templates li:first-child {
     padding: 15px 0;
     text-indent: 20px;
     display: block;
@@ -27,25 +27,32 @@ ul.templates li:first-child {
     display: block;
     vertical-align: text-bottom;
 }
-div.template-details a { margin: 0 0 0 10px; }
-div.template-details p { margin: 10px; overflow: hidden; max-height: 55px; }
-div.template-details div.image { float: left; margin: 5px; }
-ul.breadcrumbs li {
+nav.catalog div.template-details a { margin: 0 0 0 10px; }
+nav.catalog div.template-details p { margin: 10px; overflow: hidden; max-height: 55px; }
+nav.catalog div.template-details div.image { float: left; margin: 5px; }
+nav.catalog ul.breadcrumbs li {
     text-indent: 5px;
     background: #f2f2f2;
     color: #666;
 }
-ul.templates li:active,
-ul.templates li:hover,
-ul.categories li:hover,
-ul.categories li:active {
+nav.catalog ul.templates li:active,
+nav.catalog ul.templates li:hover,
+nav.catalog ul.categories li:hover,
+nav.catalog ul.categories li:active {
     background-color: #DDD;
     color: #111; 
     text-decoration: none;
 }
-ul.templates li:hover,
-ul.categories li:hover,
-ul.breadcrumbs li:hover { cursor: pointer; }
-ul.categories li i.fa-chevron-circle-right { float: right; margin: 3px 20px 0 0; }
-ul.breadcrumbs li i.fa-chevron-circle-left { float: left; margin: 3px 5px 0 10px; }
-ul.breadcrumbs li:not(:last-child) { display: none; }
+nav.catalog ul.templates li:hover,
+nav.catalog ul.categories li:hover,
+nav.catalog ul.breadcrumbs li:hover { cursor: pointer; }
+nav.catalog ul.categories li i.fa-chevron-circle-right { float: right; margin: 3px 20px 0 0; }
+nav.catalog ul.breadcrumbs li i.fa-chevron-circle-left { float: left; margin: 3px 5px 0 10px; }
+nav.catalog ul.breadcrumbs li:not(:last-child) { display: none; }
+
+@media (min-width: 767px) {
+    div.fixed-header-spacer { height: 90px; }
+}
+@media (max-width: 767px) {
+    div.fixed-header-spacer { height: 50px; }
+}
