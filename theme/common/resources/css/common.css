@@ -490,6 +490,7 @@ div.collapse form.user-search input[type="search"] {
     border-bottom-right-radius: 0; 
     height: 28px;
     margin: 0;
+    -webkit-appearance: none;
 }
 div.collapse form.user-search button[type="submit"].fa-search {
     width: 40px;
@@ -622,6 +623,7 @@ div.navigation-slide form.user-search input[type="search"] {
     border-bottom-right-radius: 0; 
     height: 28px;
     margin: 0;
+    -webkit-appearance: none;
 }
 div.navigation-slide form.user-search button[type="submit"].fa-search {
     width: 40px;
