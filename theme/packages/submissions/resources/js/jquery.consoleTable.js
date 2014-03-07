@@ -5,6 +5,7 @@
     $.widget('custom.consoleTable', {
         // Default opitons
         options: {
+            escapeHtml: true,
             entryOptionSelected: 5,
             entryOptions: [5, 10, 50, 100],
             page: 1,
@@ -19,6 +20,8 @@
             var widget = this;
             // This is the first request, make a server call
             widget.firstRequest = true;
+            // For client side pagination value manipulation
+            widget.checkOnce = true;
             // Hide
             widget.element.hide();
             // Build HTML
@@ -169,43 +172,52 @@
             var tbody = $('<tbody>');
             // Build client or server side pagination
             if(widget.options.serverSidePagination) {
-                $.each(widget.records, function(index, value) {
+                $.each(widget.records, function(index, record) {
+                    // Check escape html option for values
+                    record = widget._htmlEscape(record);
                     // Create row
                     var tr = $('<tr>');
                     $.each(widget.options.displayFields, function(fieldname, label) {
                         // Create Column
                         var td = $('<td>');
-                        // Append value
-                        td.append(((value[fieldname] !== null) ? value[fieldname] : ""));
+                        // Append record
+                        td.append(((record[fieldname] !== null) ? record[fieldname] : ""));
                         // Column callback
-                        if (widget.options.columnCallback != undefined) { widget.options.columnCallback.call(widget, td, value[fieldname], fieldname, label); }
+                        if (widget.options.columnCallback != undefined) { widget.options.columnCallback.call(widget, td, record[fieldname], fieldname, label); }
                         tr.append(td);
                     });
                     // Striping
                     ((index % 2 == 0) ? tr.addClass('kd-odd') : tr.addClass('kd-even'));
                     // Row callback
-                    if (widget.options.rowCallback != undefined) { widget.options.rowCallback.call(widget, tr, value, index); }
+                    if (widget.options.rowCallback != undefined) { widget.options.rowCallback.call(widget, tr, record, index); }
                     // Append to tbody
                     tbody.append(tr);
                 });
             } else {
-                $.each(widget.records, function(index, value) {
+                $.each(widget.records, function(index, record) {
+                    // Only run this escape once for client side
+                    if(widget.checkOnce) {
+                        // Check escape html option for values
+                        record = widget._htmlEscape(record);
+                        // disable this 
+                        widget.checkOnce = false;
+                    }
                     if(index >= widget._getIndex() && index <= (widget._getIndex() + (widget.options.resultsPerPage  - 1))) {
                         // Create row
                         var tr = $('<tr>');
                         $.each(widget.options.displayFields, function(fieldname, label) {
                             // Create Column
                             var td = $('<td>');
-                            // Append value
-                            td.append(((value[fieldname] !== null) ? value[fieldname] : ""));
+                            // Append record
+                            td.append(((record[fieldname] !== null) ? record[fieldname] : ""));
                             // Column callback
-                            if (widget.options.columnCallback != undefined) { widget.options.columnCallback.call(widget, td, value[fieldname], fieldname, label); }
+                            if (widget.options.columnCallback != undefined) { widget.options.columnCallback.call(widget, td, record[fieldname], fieldname, label); }
                             tr.append(td);
                         });
                         // Striping
                         ((index % 2 == 0) ? tr.addClass('kd-odd') : tr.addClass('kd-even'));
                         // Row callback
-                        if (widget.options.rowCallback != undefined) { widget.options.rowCallback.call(widget, tr, value, index); }
+                        if (widget.options.rowCallback != undefined) { widget.options.rowCallback.call(widget, tr, record, index); }
                         // Append to tbody
                         tbody.append(tr);
                     }
@@ -233,6 +245,17 @@
             this.element.show();
             // Run complete callback
             widget._complete();
+        },
+        _htmlEscape: function(record) {
+            // Check escape html option for values
+            if(this.options.escapeHtml) {
+                $.each(record, function(key, value) {
+                    if(value !== null && value !== '') {
+                        record[key] = $('<span>').text(value).html();
+                    }
+                });
+            }
+            return record;
         },
         _complete: function() {
             if (this.options.completeCallback != undefined) { this.options.completeCallback.call(this); }
