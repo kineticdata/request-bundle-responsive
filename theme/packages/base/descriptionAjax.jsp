@@ -5,5 +5,5 @@
 <%@include file="framework/includes/packageInitialization.jspf"%>
 
 <!-- Page Stylesheets -->
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/description.css" type="text/css" />
+<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/descriptionAjax.css" type="text/css" />
 <%@include file="../../core/interface/fragments/displayBodyContent.jspf"%>

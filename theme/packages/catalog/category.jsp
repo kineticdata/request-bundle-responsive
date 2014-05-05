@@ -13,9 +13,11 @@
     catalog.preload(context);
     Category currentCategory = catalog.getCategoryByName(request.getParameter("category"));
     // Get map of description templates
-    Map<String, String> templateDescriptions = new java.util.HashMap<String, String>();
+    Map<String, String> templateDescriptions = new HashMap<String, String>();
+    Map<String, String> categoryDescriptions = new HashMap<String, String>();
     if (currentCategory != null) {
         templateDescriptions = DescriptionHelper.getTemplateDescriptionMap(context, catalog);
+        categoryDescriptions = DescriptionHelper.getCategoryDescriptionMap(context, catalog);
     }
 %>
 <!DOCTYPE html>
@@ -75,8 +77,13 @@
                             <% } else { %>
                                 <div class="wrap">
                             <% }%>
-                                <div class="description">
+                                <div class="category-description hide" data-description-id="<%= categoryDescriptions.get(currentCategory.getId()) %>">
                                     <%= currentCategory.getDescription()%>
+                                </div>
+                                <div id="loader" class="hide">
+                                    <img alt="Please Wait." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
+                                    <br />
+                                    Loading Results
                                 </div>
                             </div>
                             <div class="clearfix"></div>
