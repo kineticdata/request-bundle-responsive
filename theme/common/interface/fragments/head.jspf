@@ -50,14 +50,23 @@
     BUNDLE.config.user = '<%= (context == null) ? "" : context.getUserName()%>';
 </script>
 
-<%--
-    Load the common bundle javascript files
---%>
+<!-- HTML5 modernizr and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
 <script type='text/javascript' src='<%=bundle.bundlePath()%>common/resources/js/modernizr.custom.js'></script>
+<script type='text/javascript' src='<%=bundle.bundlePath()%>common/resources/js/respond.min.js'></script>
+<![endif]-->
+<script type='text/javascript' src='<%=bundle.bundlePath()%>common/resources/js/placeholders.min.js'></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/jquery-ui-1.10.3.custom.min.js"></script>
+<script type='text/javascript' src='<%=bundle.bundlePath()%>common/resources/js/jquery.cookie.js'></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/jquery.md5.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/Bridges.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/ajaxLogin.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/common.js"></script>
+<script type="text/javascript">
+$(function() {
+    // Remove KDCACHE cookie until servlet stops creating it.
+    $.removeCookie('KDCACHE-CHECK' + '<%=customerSurvey.getPageInstanceID()%>');
+});
+</script>
