@@ -9,7 +9,7 @@
         if (rawString == null || "".equals(rawString)) {
             return "";
         } else {
-            return org.apache.commons.lang3.StringEscapeUtils.escapeHtml4(rawString.toString());
+            return StringEscapeUtils.escapeHtml4(rawString.toString());
         }
     }
     
@@ -26,7 +26,7 @@
         if (rawString == null || "".equals(rawString)) {
             return "";
         } else {
-            return org.apache.commons.lang3.StringEscapeUtils.escapeXml(rawString.toString());
+            return StringEscapeUtils.escapeXml(rawString.toString());
         }
     }
 %>
