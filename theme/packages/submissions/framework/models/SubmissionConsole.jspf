@@ -198,7 +198,7 @@
             put("Ticketing Id", FIELD_ATTRIBUTE_52);
         }};
 
-        public String toJson() {
+        public String toString() {
             // Build linked hash map for JSON conversion
             Map<String, String> result = new LinkedHashMap<String, String>();
             for (Map.Entry<String, String> element : JSON_FIELDMAP.entrySet()) {
@@ -207,9 +207,7 @@
                 String fieldValue = null;
                 if(fieldAlias.equals("Requested For")) {
                     // Append first name and last name for requested for
-                    if(!this.getFirstName().equals("") && !this.getLastName().equals("")) {
-                        fieldValue = this.getFirstName() + " " + this.getLastName();
-                    }
+                    fieldValue = this.getFirstName() + " " + this.getLastName();
                 } else {
                     if(!entry.getEntryFieldValue(fieldId).equals("")) { fieldValue = entry.getEntryFieldValue(fieldId); }
                 }
