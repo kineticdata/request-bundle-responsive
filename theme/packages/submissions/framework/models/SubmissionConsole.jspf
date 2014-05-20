@@ -207,7 +207,9 @@
                 String fieldValue = null;
                 if(fieldAlias.equals("Requested For")) {
                     // Append first name and last name for requested for
-                    fieldValue = this.getFirstName() + " " + this.getLastName();
+                    if(!this.getFirstName().equals("") && !this.getLastName().equals("")) {
+                        fieldValue = this.getFirstName() + " " + this.getLastName();
+                    }
                 } else {
                     if(!entry.getEntryFieldValue(fieldId).equals("")) { fieldValue = entry.getEntryFieldValue(fieldId); }
                 }
