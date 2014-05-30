@@ -6,9 +6,18 @@ var tableParams = {
     'Open Request': {
         displayFields: {
             'Originating Request Id': 'Request ID',
-            'Submitted': 'Submitted',
-            'Originating Name': 'Service Item',
-            'Display Status': 'Status'
+            'Submitted': {
+                columnLabel: 'Submitted',
+                sortable: true
+            },
+            'Originating Name': {
+                columnLabel: 'Service Item',
+                sortable: true
+            },
+            'Display Status': {
+                columnLabel: 'Status',
+                sortable: true
+            }
         },
         sortField: 'Submitted',
         rowCallback: defaultRowCallback,
@@ -17,10 +26,22 @@ var tableParams = {
     },
     'Closed Request': {
         displayFields: {
-            'Originating Request Id': 'Request ID',
-            'Closed': 'Closed',
-            'Originating Name': 'Service Item',
-            'Display Status': 'Status'
+            'Originating Request Id': {
+                columnLabel: 'Request ID',
+                sortable: true
+            },
+            'Closed': {
+                columnLabel: 'Closed',
+                sortable: true
+            },
+            'Originating Name': {
+                columnLabel: 'Service Item',
+                sortable: true
+            },
+            'Display Status': {
+                columnLabel: 'Status',
+                sortable: true
+            }
         },
         sortField: 'Closed',
         rowCallback: defaultRowCallback,
@@ -29,10 +50,22 @@ var tableParams = {
     },
     'Draft Request': {
         displayFields: {
-            'Originating Request Id': 'Request ID',
-            'Modified': 'Started',
-            'Originating Name': 'Service Item',
-            'Display Status': 'Status'
+            'Originating Request Id': {
+                columnLabel: 'Request ID',
+                sortable: true
+            },
+            'Modified': {
+                columnLabel: 'Modified',
+                sortable: true
+            },
+            'Originating Name': {
+                columnLabel: 'Service Item',
+                sortable: true
+            },
+            'Display Status': {
+                columnLabel: 'Status',
+                sortable: true
+            }
         },
         sortField: 'Modified',
         rowCallback: defaultRowCallback,
@@ -41,10 +74,22 @@ var tableParams = {
     },
     'Pending Approval': {
         displayFields: {
-            'Originating Request Id': 'Request ID',
-            'Sent': 'Sent',
-            'Originating Name': 'Service Item',
-            'Display Status': 'Status'
+            'Originating Request Id': {
+                columnLabel: 'Request ID',
+                sortable: true
+            },
+            'Sent': {
+                columnLabel: 'Sent',
+                sortable: true
+            },
+            'Originating Name': {
+                columnLabel: 'Service Item',
+                sortable: true
+            },
+            'Display Status': {
+                columnLabel: 'Status',
+                sortable: true
+            }
         },
         sortField: 'Sent',
         rowCallback: defaultRowCallback,
@@ -53,10 +98,22 @@ var tableParams = {
     },
     'Completed Approval': {
         displayFields: {
-            'Originating Request Id': 'Request ID',
-            'Submitted': 'Submitted',
-            'Originating Name': 'Service Item',
-            'Display Status': 'Status'
+            'Originating Request Id': {
+                columnLabel: 'Request ID',
+                sortable: true
+            },
+            'Submitted': {
+                columnLabel: 'Submitted',
+                sortable: true
+            },
+            'Originating Name': {
+                columnLabel: 'Service Item',
+                sortable: true
+            },
+            'Display Status': {
+                columnLabel: 'Status',
+                sortable: true
+            }
         },
         sortField: 'Submitted',
         rowCallback: defaultRowCallback,

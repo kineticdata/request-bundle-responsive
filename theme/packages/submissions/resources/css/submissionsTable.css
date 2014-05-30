@@ -52,7 +52,8 @@ table.kd-table thead tr th {
 }
 table.kd-table tbody th, 
 table.kd-table tbody td { text-align: justify; padding: 10px 5px 10px 5px; }
-table.kd-table th, tr { cursor: pointer; }
+table.kd-table tbody tr { cursor: pointer; }
+table.kd-table thead th[data-sorting="true"] { cursor: pointer; }
 table.kd-table tr { background: #E3F0E3; }
 table.kd-table tr.kd-odd { background: #FFFFFF; }
 /* Sorting */

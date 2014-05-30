@@ -95,7 +95,7 @@
             });
 
             // Click event for sorting
-            widget.table.on('click touchstart', 'thead tr th', function(event) {
+            widget.table.on('click touchstart', 'thead tr th[data-sorting="true"]', function(event) {
                 event.preventDefault();
                 event.stopImmediatePropagation();
                 var sortOrder;
@@ -151,21 +151,28 @@
             var tr = $('<tr>');
             // Build tbody
             var tbody = $('<tbody>');
-            $.each(widget.options.displayFields, function(fieldname, label) {
+            $.each(widget.options.displayFields, function(fieldname, metaData) {
                 var th = $('<th>');
-                th.append(label)
-                    .data('field', fieldname)
-                    .data('sort-order', widget.options.sortOrder);
-                // Sorting
-                if(fieldname === widget.options.sortOrderField) {
-                    th.addClass('kd-header-sorting-selected')
-                        .append(
-                        $('<span>').addClass('kd-header-sorting-' + widget.options.sortOrder)
-                    );
-                } else {
-                    th.append(
-                        $('<span>').addClass('kd-header-sorting')
-                    );
+                // Set column label based on column label field or default column label to metaData field
+                var columnLabel = (metaData.columnLabel === undefined) ? metaData : metaData.columnLabel;
+                th.append(columnLabel)
+                    .attr('data-sorting', false) // Data not working for th
+                    .attr('data-field', fieldname)
+                    .attr('data-sort-order', widget.options.sortOrder);
+                // Check if sorting is undefined or specified to true
+                if(metaData.sortable === undefined || (metaData.sortable !== undefined && metaData.sortable)) {
+                    // Sorting
+                    th.attr('data-sorting', true); // Used for sorting event
+                    if(fieldname === widget.options.sortOrderField) {
+                        th.addClass('kd-header-sorting-selected')
+                            .append(
+                            $('<span>').addClass('kd-header-sorting-' + widget.options.sortOrder)
+                        );
+                    } else {
+                        th.append(
+                            $('<span>').addClass('kd-header-sorting')
+                        );
+                    }
                 }
                 tr.append(th);
             });
@@ -174,13 +181,15 @@
             function buildTableBody(index, record) {
                 // Create row
                 var tr = $('<tr>');
-                $.each(widget.options.displayFields, function(fieldname, label) {
+                $.each(widget.options.displayFields, function(fieldname, metaData) {
                     // Create Column
                     var td = $('<td>');
                     // Append record
                     td.append(((record[fieldname] !== null) ? record[fieldname] : ""));
+                    // Set column label based on column label field or default column label to metaData field
+                    var columnLabel = (metaData.columnLabel === undefined) ? metaData : metaData.columnLabel;
                     // Column callback
-                    if (widget.options.columnCallback != undefined) { widget.options.columnCallback.call(widget, td, record[fieldname], fieldname, label); }
+                    if (widget.options.columnCallback != undefined) { widget.options.columnCallback.call(widget, td, record[fieldname], fieldname, columnLabel); }
                     tr.append(td);
                 });
                 // Striping
@@ -343,7 +352,7 @@
             // Set current object context to use inside jquery objects
             var widget = this;
             var paginationData = this._buildPaginatationData();
-            var paginationList = $('<ul>').addClass('unstyled links');
+            var paginationList = $('<ul>').addClass('list-unstyled unstyled links');
             $.each(paginationData.pages, function(index, value) {
                 if(index === 'pageRange') {
                     $.each(value, function(index, value) {
