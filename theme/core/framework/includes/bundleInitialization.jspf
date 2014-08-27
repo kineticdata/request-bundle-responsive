@@ -58,6 +58,7 @@
 <%@include file="../models/ArsBase.jspf" %>
 <%@include file="../models/BridgeBase.jspf" %>
 <%@include file="../models/kineticRequest/Catalog.jspf" %>
+<%@include file="../models/kineticRequest/CatalogAttribute.jspf" %>
 <%@include file="../models/kineticRequest/Category.jspf" %>
 <%@include file="../models/kineticRequest/Submission.jspf" %>
 <%@include file="../models/kineticRequest/Template.jspf" %>
