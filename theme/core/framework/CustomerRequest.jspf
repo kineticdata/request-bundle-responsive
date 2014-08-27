@@ -38,6 +38,15 @@
         }
 
         /**
+         * Returns the id of the catalog the request form belongs to.
+         *
+         * @return String the id of the catalog
+         */
+        public String getCatalogId() {
+            return customerSurvey.getCategoryId();
+        }
+
+        /**
          * Returns the value stored in the "Company Name" field on the base 
          * submission form.  This field is typically mapped from an answer that
          * collects the submitter's company name.
