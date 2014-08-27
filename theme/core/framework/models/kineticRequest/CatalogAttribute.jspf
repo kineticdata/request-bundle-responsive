@@ -6,18 +6,14 @@
         public static final String FIELD_CATEGORY_INSTANCE_ID = "710000078";
         public static final String[] FIELD_IDS = new String[]{
             FIELD_ATTRIBUTE_NAME, FIELD_ATTRIBUTE_VALUE, FIELD_CATEGORY_INSTANCE_ID};
-
         private SimpleEntry entry = null;
-
         public CatalogAttribute(SimpleEntry entry) {
             this.entry = entry;
         }
 
         public static CatalogAttribute[] findByCategoryInstanceId(HelperContext context, String categoryId) {
-            CatalogAttribute[] results = null;
-
+            CatalogAttribute[] results = new CatalogAttribute[0];
             String qualification = "'" + FIELD_CATEGORY_INSTANCE_ID + "' = \"" + categoryId + "\"";
-
             SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS);
             if (entries != null && entries.length > 0) {
                 results = new CatalogAttribute[entries.length];
@@ -25,15 +21,14 @@
                     results[i] = new CatalogAttribute(entries[i]);
                 }
             }
-
             return results;
         }
 
-		public static CatalogAttribute[] getAttributeValue(HelperContext context, String categoryId, String attrName) {
+		public static CatalogAttribute[] getAttributeValue(HelperContext context, String categoryId, String attributeName) {
 			CatalogAttribute[] results = new CatalogAttribute[0];
-
-			String qualification = "'" + FIELD_CATEGORY_INSTANCE_ID + "' = \"" + categoryId + "\" AND '" + FIELD_ATTRIBUTE_NAME + "' = \"" + attrName + "\"";
-
+			String qualification = 
+                "'" + FIELD_CATEGORY_INSTANCE_ID + "' = \"" + categoryId + "\" AND "+
+                "'" + FIELD_ATTRIBUTE_NAME + "' = \"" + attributeName + "\"";
 			SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS);
 			if (entries != null && entries.length > 0) {
 				results = new CatalogAttribute[entries.length];
@@ -41,7 +36,6 @@
 					results[i] = new CatalogAttribute(entries[i]);
 				}
 			}
-			
 			return results;
 		}
         public String getName() {return entry.getEntryFieldValue(FIELD_ATTRIBUTE_NAME);}
