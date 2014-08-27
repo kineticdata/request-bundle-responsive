@@ -2,6 +2,9 @@
     NOTE: This file is required.
 --%>
 <%
+    // Retrieve the survey logger that can be used to write to the kslog (useful for debugging and testing)
+    Logger logger = LogHelper.getLogger();
+
     bundle.setProperty("companyName", "ACME");
     bundle.setProperty("catalogName", "Responsive");
     // Slug used for urls
