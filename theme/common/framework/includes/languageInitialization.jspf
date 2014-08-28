@@ -1,0 +1,31 @@
+<%@page import="java.io.File"%>
+<%@page import="java.net.URI"%>
+<%@page import="java.net.URL"%>
+<%@page import="java.net.URLClassLoader"%> 
+<%@page import="java.net.MalformedURLException"%>
+<%@page import="java.util.ResourceBundle"%>
+
+<%-- 
+    Include any helper files.
+--%>
+<%@include file="../helpers/LocaleHelper.jspf" %>
+<%@include file="../helpers/ThemeLocalizer.jspf" %>
+
+<%--
+    Include any model files.
+--%>
+<%@include file="../models/LocalePreference.jspf"%>
+<%
+    // Get preferred language from preference helper
+    String preferredLocale = LocaleHelper.getPreferredLocale(context, session, request, customerRequest.getTemplateId());
+    // Set real path to the common package on the webserver
+    String commonRealPath = getServletContext().getRealPath(bundle.relativeBundlePath() + "common");
+    // Set the absolute path to the directory containing the locale property files
+    String commonTranslationPath = commonRealPath + File.separator + "resources" + File.separator + "languages";
+    // Start the common resource bundle
+    ResourceBundle commonResourceBundle = ThemeLocalizer.getResourceBundle("common", preferredLocale, commonTranslationPath);
+    // i18nValues holds the translations that will be used by javascript code.  After it is populated with all the value
+    // from all the resourceBundles in the packages, it is used to populate the Localize javascript variable later on in the load process.
+    String i18nValues = "";
+    i18nValues = ThemeLocalizer.getJavaScriptValues(commonResourceBundle, i18nValues);
+%>
