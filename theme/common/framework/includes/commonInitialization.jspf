@@ -36,3 +36,6 @@
 
 <%-- Include the configuration file in the common package. --%>
 <%@include file="../../config/config.jspf" %>
+
+<%-- Include the language initialization file in the common package. --%>
+<%@include file="languageInitialization.jspf" %>
