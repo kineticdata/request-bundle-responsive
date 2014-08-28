@@ -27,7 +27,7 @@
                     if(vals.length > 1) {
                         country = vals[1];
                     }
-                    // Set the variant if it exists (the variation of the language, Hans vs Hant)
+                    // Set the variant if it exists (the variation of the language, for example, Hans vs Hant)
                     String variant = "";
                     if(vals.length > 2) {
                         variant = vals[2];

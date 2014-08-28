@@ -16,7 +16,7 @@
 --%>
 <%@include file="../models/LocalePreference.jspf"%>
 <%
-    // Get preferred language from preference helper
+    // Get preferred locale from the locale helper
     String preferredLocale = LocaleHelper.getPreferredLocale(context, session, request, customerRequest.getTemplateId());
     // Set real path to the common package on the webserver
     String commonRealPath = getServletContext().getRealPath(bundle.relativeBundlePath() + "common");
