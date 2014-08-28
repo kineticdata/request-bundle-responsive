@@ -1,0 +1,149 @@
+<%!
+    public static class LocalePreference {
+        public static final String FORM_NAME = "KS_SRV_Helper";
+        public static final String FIELD_INDEX_1 = "750000601";
+        public static final String FIELD_INDEX_2 = "750000602";
+        public static final String FIELD_INDEX_3 = "750000603";
+        public static final String FIELD_CHARACTER_1 = "750000001";
+        public static final String FIELD_INTEGER_1 = "750000501";
+        public static final String FIELD_REQUEST_ID = "1";
+        
+        public static final String[] FIELD_IDS = new String[] {
+            FIELD_INDEX_1, FIELD_INDEX_2, FIELD_INDEX_3, FIELD_CHARACTER_1, FIELD_REQUEST_ID
+        };
+        public static final String[] SORT_FIELD_IDS = new String[] { FIELD_INTEGER_1 };
+        
+        private SimpleEntry entry = null;
+        
+        /**
+         * Constructor
+         */
+        public LocalePreference(SimpleEntry entry) {
+            this.entry = entry;
+        }
+        
+        public static LocalePreference[] find(HelperContext context, String qualification) {
+            // Define result
+            LocalePreference[] result = new LocalePreference[0];
+            // Find entries
+            SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS, SORT_FIELD_IDS);
+            // Determine if entries exist
+            if (entries != null && entries.length > 0) {
+                // Define length
+                result = new LocalePreference[entries.length];
+                // Loop and create objects
+                for(int i=0; i < entries.length;i++) {
+                    result[i] = new LocalePreference(entries[i]);
+                }
+            }
+            return result;
+        }
+        
+        public static LocalePreference findSingle(HelperContext context, String qualification) {
+            // Define result
+            LocalePreference result = null;
+            // Query
+            SimpleEntry entry = ArsBase.findSingle(context, FORM_NAME, qualification, FIELD_IDS);
+            // Determine if result is not null
+            if(entry !=null) {
+                // Create object
+                result = new LocalePreference(entry);
+            }
+            return result;
+        }
+
+        public static Map<String,List<LocalePreference>> findByUser(HelperContext context, String username) {
+            // Define result
+            Map<String,List<LocalePreference>> result = new HashMap<String,List<LocalePreference>>();
+            // Define qualification
+            String qualification = "'Index Field1' = \"Preference\" AND 'Index Field2' = \"" + username + "\" AND 'Status' = \"Active\"";
+            // Query
+            LocalePreference[] preferences = LocalePreference.find(context, qualification);
+            // Loop
+            for (LocalePreference preference : preferences) {
+                // Define type
+                String type = preference.getType();
+                // Determine if type exists
+                if (!result.containsKey(type)) {
+                    result.put(type, new ArrayList<LocalePreference>());
+                }
+                result.get(type).add(preference);
+            }
+            return result;
+        }
+
+        public static Map<String, List<LocalePreference>> create(HelperContext context, String username, String languageValue) {
+            SimpleEntry entrySave = new SimpleEntry();
+            entrySave.setSchemaName(FORM_NAME);
+            entrySave.setEntryItems(new Hashtable());
+            entrySave.setEntryFieldValue(FIELD_INDEX_1, "Preference");
+            entrySave.setEntryFieldValue(FIELD_INDEX_2, username);         
+            entrySave.setEntryFieldValue(FIELD_INDEX_3, "Language");
+            entrySave.setEntryFieldValue(FIELD_CHARACTER_1, languageValue);
+    
+            // Build the helper
+            ArsHelper helper = null;
+            try {
+                helper = new ArsHelper(context, FORM_NAME);
+            } catch (com.bmc.arsys.api.ARException e) {
+                throw new RuntimeException("Unable to initialize an ArsHelper instance.", e);
+            }
+
+            try {
+                helper.doSetSimpleEntry(entrySave);
+            } catch (Exception e) {
+                throw new RuntimeException("There was a problem saving the "+FORM_NAME+" record.", e);
+            }
+                        
+            return LocalePreference.findByUser(context, username);
+       }
+        
+        public static boolean update(HelperContext context, String username, String langauge) {
+            String qualification = "'Index Field1' = \"Preference\" AND 'Index Field2' = \"" + username + "\" AND 'Index Field3' = \"Language\" AND 'Status' = \"Active\"";
+            LocalePreference[] language = find(context, qualification);
+            return update(context, username, language[0].getEntryID(), langauge);
+        }
+
+        public static boolean update(HelperContext context, String username, String requestId, String langauge) {
+            // Assume failure
+            boolean result = false;
+            // Create simple entry object
+            SimpleEntry entrySave = new SimpleEntry();
+            // Set fields
+            entrySave.setEntryId(requestId);
+            entrySave.setSchemaName(FORM_NAME);
+            entrySave.setEntryItems(new Hashtable());
+            entrySave.setEntryFieldValue(FIELD_CHARACTER_1, langauge);
+            // Build the helper
+            ArsHelper helper = null;
+            try {
+                helper = new ArsHelper(context, FORM_NAME);
+            } catch (Exception e) {
+                throw new RuntimeException("Unable to initialize an ArsHelper instance.", e);
+            }
+            try {
+                helper.doSetSimpleEntry(entrySave, true);
+                result = true;
+            } catch (com.bmc.arsys.api.ARException e) {
+                boolean recordIsMissing = false;
+                for (com.bmc.arsys.api.StatusInfo info : e.getLastStatus()) {
+                    // If the status info is an Error (2) and indicates a missing record (302)
+                    if (info.getMessageType() == 2 && info.getMessageNum() == 302) {
+                        recordIsMissing = true;
+                        break;
+                    }
+                }
+                if (recordIsMissing) {
+                    throw new RuntimeException("There was a problem saving the "+FORM_NAME+" record. Record is missing with request id: "+ requestId +"", e);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException("There was a problem saving the "+FORM_NAME+" record.", e);
+            }
+            return result;
+        }
+        
+        public String getType() {return entry.getEntryFieldValue(FIELD_INDEX_3);}
+        public String getValue() {return entry.getEntryFieldValue(FIELD_CHARACTER_1);}
+        public String getEntryID() {return entry.getEntryFieldValue(FIELD_REQUEST_ID);}
+    }
+%>
