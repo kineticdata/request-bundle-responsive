@@ -1,0 +1,89 @@
+<%!
+    public static class ThemeLocalizer {
+        /**
+         *  @param String bundleName, the name of the properties file without the locale
+         *  @param String locale, the locale settings (zh_CN_Hans, zh_CN_Hant, de, en)
+         *  Note on locale: it goes in the following order: language, country, variant 
+         *  (variant is arbitrary but it is usually the variation of the language)
+         *  @param String absoluteTranslationPath, the the path to the properties
+         */
+        public static ResourceBundle getResourceBundle(String bundleName, String locale, String absoluteTranslationPath) {
+            // Establish var
+            ResourceBundle resourceBundle = null;
+            // Check if the locale contains any characters
+            if (locale.length() >0 ) {
+                // Set file with translation path
+                File file = new File(absoluteTranslationPath);
+                try {
+                    // Add the translation path to the class loader
+                    URL[] urls = {file.toURI().toURL()};
+                    ClassLoader classLoader = new URLClassLoader(urls);
+                    // Take the locale and split it to build up the langauge, country and variant
+                    String vals[] = locale.split("_");
+                    // Set the langauge
+                    String language = vals[0];
+                    // Set the country if it exists
+                    String country = "";
+                    if(vals.length > 1) {
+                        country = vals[1];
+                    }
+                    // Set the variant if it exists (the variation of the language, Hans vs Hant)
+                    String variant = "";
+                    if(vals.length > 2) {
+                        variant = vals[2];
+                    }
+                    // Instantiate locale object
+                    Locale resourceBundleLocale = new Locale(language, country, variant);
+                    resourceBundle = ResourceBundle.getBundle(bundleName, resourceBundleLocale, classLoader,
+                        new ResourceBundle.Control() {
+                            public long getTimeToLive(String baseName, Locale locale) {
+                                return 0;
+                            }
+                        }
+                    );
+                } catch (MalformedURLException e) {
+                    System.err.println("Caught MalformedURLException: " + e.getMessage());
+                } catch (MissingResourceException e) { 
+                    // Ignore errors if a translation file cannot be retrieved.  One may not always be available
+                }
+            } else {
+                   resourceBundle = ResourceBundle.getBundle(bundleName,
+                     new ResourceBundle.Control() {
+                        public long getTimeToLive(String baseName, Locale locale) {
+                            return 0;
+                        }
+                   });
+            }  
+            return resourceBundle;
+        }
+        
+        public static String getString(ResourceBundle resourceBundle, String key) {
+            try {
+                String formatKey = key.replaceAll(" ","_");
+                String translatedString = resourceBundle.getString(formatKey);
+                if (translatedString.equals(formatKey)) {
+                    return key;
+                } 
+                return translatedString;
+            } catch(Exception e){
+                return key;
+            }
+        }
+
+        public static String getJavaScriptValues(ResourceBundle resourceBundle, String i18nValues) {
+            if(resourceBundle != null) {
+                for(Enumeration en = resourceBundle.getKeys(); en.hasMoreElements(); ){
+                    String key = (String) en.nextElement();
+                    if (key.indexOf("javascript.") >= 0){
+                        String keyVal = key.replaceAll("javascript.", "");
+                        if (i18nValues != ""){
+                            i18nValues += ",";
+                        }
+                        i18nValues += "\"" + keyVal + "\" : \"" + resourceBundle.getString(key) + "\"";
+                    }
+                }
+            }
+            return i18nValues;
+        }
+    }
+%>
