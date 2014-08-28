@@ -7,6 +7,7 @@
         public static final String FIELD_ATTRIBUTE_VALUE = "710000073";
         public static final String FIELD_CATALOG_NAME = "600000500";
         public static final String FIELD_TEMPLATE_NAME = "700001000";
+        public static final String FIELD_TEMPLATE_ID = "179";
         public static final String[] FIELD_IDS = new String[]{
             FIELD_ATTRIBUTE_NAME, FIELD_ATTRIBUTE_VALUE, FIELD_CATALOG_NAME,
             FIELD_TEMPLATE_NAME};
@@ -29,7 +30,21 @@
                     results[i] = new TemplateAttribute(entries[i]);
                 }
             }
+            return results;
+        }
 
+        public static TemplateAttribute[] getAttributeValue(HelperContext context, String templateId, String attrName) {
+            TemplateAttribute[] results = new TemplateAttribute[0];
+
+            String qualification = "'"+FIELD_TEMPLATE_ID+"' = \""+templateId+"\" AND '"+FIELD_ATTRIBUTE_NAME+"' = \""+attrName+"\"";
+
+            SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS);
+            if (entries != null && entries.length > 0) {
+                results = new TemplateAttribute[entries.length];
+                for(int i=0;i<results.length;i++) {
+                    results[i] = new TemplateAttribute(entries[i]);
+                }
+            }
             return results;
         }
 
