@@ -1,3 +1,22 @@
+<%@page import="java.io.File"%>
+<%@page import="com.kd.arsHelpers.SimpleEntry"%>
+<%@page import="com.kd.kineticSurvey.beans.CustomerSurvey"%>
+<%@page import="com.kd.ksr.beans.Page"%>
+<%@page import="com.kd.ksr.beans.Question"%>
+<%@page import="com.kd.ksr.cache.PageCache"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.Enumeration"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.Locale"%>
+<%@page import="java.util.MissingResourceException"%>
+<%@page import="java.util.ResourceBundle"%>
+<%@page import="java.util.regex.Matcher"%>
+<%@page import="java.util.regex.Pattern"%>
+<%@page import="java.net.MalformedURLException"%>
+<%@page import="java.net.URI"%>
+<%@page import="java.net.URL"%>
+<%@page import="java.net.URLClassLoader"%>
 <%!
     public static class ThemeLocalizer {
         /**
@@ -47,7 +66,7 @@
                     );
                 } catch (MalformedURLException e) {
                     throw new RuntimeException("Caught MalformedURLException: " + e.getMessage());
-                } catch (MissingResourceException e) { 
+                } catch (MissingResourceException e) {
                     // Ignore errors if a translation file cannot be retrieved.  One may not always be available
                 }
             }
@@ -71,7 +90,7 @@
          */
         public static String getString(ResourceBundle resourceBundle, String key) {
             try {
-                String formatKey = key.replaceAll(" ","_");
+                String formatKey = key.replaceAll(" ", "_");
                 String translatedString = resourceBundle.getString(formatKey);
                 if (translatedString.equals(formatKey)) {
                     return key;
@@ -126,6 +145,325 @@
                 }
             }
             return i18nValues;
+        }
+        
+        /**
+         * Sets up the proper language for the entire template's dynamic page content
+         * Includes buttons, question labels, template description with the <LOCALIZE_SERVICE_ITEM_DESCRIPTION> tag,
+         * any defined <LOCALIZE_SI></LOCALIZE_SI> tags and any defined <LOCALIZE_TEMPLATE></LOCALIZE_TEMPLATE> tags.
+         *
+         * @param CustomerSurvey
+         * @param ResourceBundle, the service item name and description resource bundle
+         * @param ResourceBundle, the template shared resource bundle
+         * @param ResourceBundle, the template specific resource bundle
+         */
+        public static String localizeTemplate(
+            CustomerSurvey customerSurvey,
+            ResourceBundle serviceItemsResourceBundle,
+            ResourceBundle templateSharedResourceBundle,
+            ResourceBundle templateResourceBundle) {
+            // Define and get the page content
+            String pageContent = customerSurvey.getQuestions();
+            // Convert template buttons to proper locale
+            pageContent = ThemeLocalizer.localizeTemplateButtons(pageContent, templateSharedResourceBundle);
+             // Define page
+            Page page = null;
+            try {
+                // Attempt to get the page
+                page = PageCache.getPageByInstanceId(customerSurvey.getSurveyTemplateInstanceID(), customerSurvey.getPageInstanceID()); 
+            } catch(Exception e) {
+                throw new RuntimeException("Unable to load page cache: " + e.getMessage());
+            }
+            // Define and get the questions
+            SimpleEntry[] questions = page.getPageQuestions();
+            // Convert template question labels to proper locale
+            pageContent = ThemeLocalizer.localizeTemplateQuestionLabels(pageContent, questions, templateSharedResourceBundle, templateResourceBundle);
+            // Convert dynamic template content to proper locale with the localize template tags
+            pageContent = ThemeLocalizer.localizeTemplate(pageContent,templateSharedResourceBundle, templateResourceBundle);
+            // Define template name
+            String templateName = customerSurvey.getSurveyTemplateName();
+            // Convert template description to proper locale
+            pageContent = ThemeLocalizer.localizeTemplateDescription(pageContent, templateName, serviceItemsResourceBundle);
+            // Convert remaining localize si tags to proper locale
+            pageContent = ThemeLocalizer.localizeTemplateNameAndDescription(pageContent, serviceItemsResourceBundle);
+            return pageContent;
+        }
+        
+        /**
+         * Sets up the proper language for the template description field when using <LOCALIZE_SERVICE_ITEM_DESCRIPTION> tag.
+         * A match is found in the properties file based on the "template_name_DESCRIPTION".
+         * The translations come from the service items resource bundle, which holds template name and description translations.
+         *
+         * @param String, dynamic page content
+         * @param String, name of template
+         * @param ResourceBundle, the template common resource bundle
+         */
+        public static String localizeTemplateDescription(String pageContent, String templateName, ResourceBundle serviceItemsResourceBundle) {
+            if(serviceItemsResourceBundle != null) {
+                // Determine if tag exists
+                if (pageContent.indexOf("<LOCALIZE_SERVICE_ITEM_DESCRIPTION>") >= 0) {
+                    // Update template name to include underscores because the properties key template name is stored with underscores
+                    templateName = templateName.replaceAll(" ","_");
+                    // Define translated value
+                    String localizedDescription = ThemeLocalizer.getString(serviceItemsResourceBundle, templateName + "_DESCRIPTION");
+                    // Update matched localize tag with translated value
+                    pageContent = pageContent.replace("<LOCALIZE_SERVICE_ITEM_DESCRIPTION>", localizedDescription);
+                }
+            }
+            return pageContent;
+        }
+        
+        /**
+         * Sets up the proper language for template dynamic content using the <LOCALIZE_SI></LOCALIZE_SI> tags.
+         * The translations come from the service items resource bundle, which holds template name and description translations.
+         * This is often used for translating service item name or description information inside dynamic content,
+         * which avoids having to duplicate service item name and description translations in a different resource bundle
+         * because the service item resource bundle is used in various portal pages as well.
+         *
+         * @param String, dynamic page content
+         * @param ResourceBundle, the service item name and description resource bundle
+         */
+        public static String localizeTemplateNameAndDescription(String pageContent, ResourceBundle serviceItemsResourceBundle) {
+            if(serviceItemsResourceBundle != null) {
+                // Define list that will hold the matched template values from the regex below
+                List<String> matchedTemplateValues = new ArrayList<String>();
+                // Define regex
+                Pattern localizePattern = Pattern.compile("<LOCALIZE_SI>(.*?)</LOCALIZE_SI>");
+                // Define matcher with pattern
+                Matcher localizeMatcher = localizePattern.matcher(pageContent);
+                 // Find and loop through matches
+                while(localizeMatcher.find()) {
+                    // Define match
+                    String matchString = localizeMatcher.group();
+                    // Build up matched values
+                    matchedTemplateValues.add(matchString);
+                }
+                // Define iterator of matched values
+                Iterator<String> iterator = matchedTemplateValues.iterator();
+                // Loop through matched values
+                while (iterator.hasNext()) {
+                    // Define match value and forward
+                    String matchString = (String) iterator.next();
+                    // Get original value without the localize tags in it
+                    String originalValue = matchString.replaceFirst("<LOCALIZE_SI>", "").replaceFirst("</LOCALIZE_SI>", "");
+                    // Define translated value
+                    String translatedValue = ThemeLocalizer.getString(serviceItemsResourceBundle, originalValue);
+                    // Update matched localize tag with translated value
+                    pageContent = pageContent.replaceAll(matchString, translatedValue);
+                }
+            }
+            return pageContent;
+        }
+        
+        /**
+         * Sets up the proper language for template buttons, for example, "back, continue, submit, upload and etc".
+         *
+         * @param String, dynamic page content
+         * @param ResourceBundle, the template shared resource bundle
+         */
+        public static String localizeTemplateButtons(String pageContent, ResourceBundle templateSharedResourceBundle) {
+            if(templateSharedResourceBundle != null) {
+                // Localize the templateButton like Submit and Previous
+                {
+                    // Define regex pattern
+                    Pattern pattern = Pattern.compile("(<input id='SUBMIT_.*>|<input id='PREV_.*>|<input id='BTNLOCALIZE_.*>|<input id=\"BTNLOCALIZE_.*>)");
+                    // Define matcher with regex
+                    Matcher matcher = pattern.matcher(pageContent);
+                    // Build up the results string
+                    StringBuilder builder = new StringBuilder();
+                    int lastMatch = 0;
+                    while(matcher.find()) {
+                        // Retrieve the necessary values
+                        String preMatch = pageContent.substring(lastMatch, matcher.start());
+                        String buttonDiv = matcher.group(1);
+                        buttonDiv = buttonDiv.replaceAll("= '", "='");
+                        if (buttonDiv.indexOf("value='") == -1) continue;
+                        int startIndex=buttonDiv.indexOf("value='") + "value='".length();
+                        String buttonValue = buttonDiv.substring(startIndex, buttonDiv.indexOf("'", startIndex)); 
+                        buttonDiv = buttonDiv.replaceAll(
+                            "value='" + buttonValue + "'", 
+                            "value='" + ThemeLocalizer.getString(templateSharedResourceBundle, buttonValue) + "'"
+                        );
+                        // Append any part of the qualification that exists before the match
+                        builder.append(preMatch);
+                        builder.append(buttonDiv);
+                        // Set the lastMatch index for use in the next loop
+                        lastMatch = matcher.end();
+                    }
+                    // Append any part of the qualification remaining after the last match
+                    builder.append(pageContent.substring(lastMatch));
+                    pageContent = builder.toString();
+                }
+
+                // Localize the Attachment Load button
+                {
+                    // Define regex pattern
+                    Pattern pattern = Pattern.compile("(<input type='button' id='ATTACHLOAD_.*>)");
+                    // Define matcher with regex
+                    Matcher matcher = pattern.matcher(pageContent);
+                    // Build up the results string
+                    StringBuilder builder = new StringBuilder();
+                    int lastMatch = 0;
+                    while(matcher.find()) {
+                        // Retrieve the necessary values
+                        String preMatch = pageContent.substring(lastMatch, matcher.start());
+                        String buttonDiv = matcher.group(1);
+                        buttonDiv=buttonDiv.replaceAll("= '", "='");
+                        if (buttonDiv.indexOf("value='") == -1) continue;
+                        int startIndex=buttonDiv.indexOf("value='") + "value='".length();
+                        String buttonValue = buttonDiv.substring(startIndex, buttonDiv.indexOf("'", startIndex)); 
+                        buttonDiv=buttonDiv.replaceAll(
+                            "value='" + buttonValue + "'", 
+                            "value='"+ThemeLocalizer.getString(templateSharedResourceBundle,buttonValue) + "'"
+                        );
+                        // Append any part of the qualification that exists before the match
+                        builder.append(preMatch);
+                        builder.append(buttonDiv);
+                        // Set the lastMatch index for use in the next loop
+                        lastMatch = matcher.end();
+                    }
+                    // Append any part of the qualification remaining after the last match
+                    builder.append(pageContent.substring(lastMatch));
+                    pageContent = builder.toString();
+                }
+
+                // Localize the Attachment Clear button
+                {                
+                    // Define regex pattern
+                    Pattern pattern = Pattern.compile("(<input type='button' id='ATTACHCLEAR_.*>)");
+                    // Define matcher with regex
+                    Matcher matcher = pattern.matcher(pageContent);
+                    // Build up the results string
+                    StringBuilder builder = new StringBuilder();
+                    int lastMatch = 0;
+                    while(matcher.find()) {
+                        // Retrieve the necessary values
+                        String preMatch = pageContent.substring(lastMatch, matcher.start());
+                        String buttonDiv = matcher.group(1);
+                        buttonDiv=buttonDiv.replaceAll("= '", "='");
+                        if (buttonDiv.indexOf("value='") == -1) continue;
+                        int startIndex=buttonDiv.indexOf("value='") + "value='".length();
+                        String buttonValue = buttonDiv.substring(startIndex, buttonDiv.indexOf("'", startIndex)); 
+                        buttonDiv = buttonDiv.replaceAll(
+                            "value='" + buttonValue + "'", 
+                            "value='" + ThemeLocalizer.getString(templateSharedResourceBundle,buttonValue) + "'"
+                        );
+                        // Append any part of the qualification that exists before the match
+                        builder.append(preMatch);
+                        builder.append(buttonDiv);
+                        // Set the lastMatch index for use in the next loop
+                        lastMatch = matcher.end();
+                    }
+                    // Append any part of the qualification remaining after the last match
+                    builder.append(pageContent.substring(lastMatch));
+                    pageContent = builder.toString();
+                }
+            }
+            return pageContent;
+        }
+        
+        /**
+         * Sets up the proper language for template question labels.
+         * No tags are needed; translate based on the template and standards resource bundles 
+         * using the question label.
+         * 
+         * @param String, dynamic page content
+         * @param SimpleEntry[], template questions
+         * @param ResourceBundle, the template shared resource bundle
+         * @param ResourceBundle, the template specific resource bundle
+         */
+        public static String localizeTemplateQuestionLabels(
+            String pageContent,
+            SimpleEntry[] questions,
+            ResourceBundle templateSharedResourceBundle,
+            ResourceBundle templateResourceBundle) {
+            // Localize all question labels.
+            // No tags are needed; translate based on the template and standards resource bundles
+            if(templateSharedResourceBundle != null && templateResourceBundle != null) {
+                for (SimpleEntry questionEntry : questions) {
+                    Question question = new Question(questionEntry);
+                    // Define regex
+                    Pattern pattern = Pattern.compile("(id='QLABEL_" + question.getId() + ".*>)(.*) ");
+                    // Define matcher with regex
+                    Matcher matcher = pattern.matcher(pageContent);
+                    // Build up the results string
+                    StringBuilder builder = new StringBuilder();
+                    int lastMatch = 0;
+                    // Find and loop through matches
+                    while(matcher.find()) {
+                        // Retrieve the necessary values
+                        String preMatch = pageContent.substring(lastMatch, matcher.start());
+                        String preLabel = matcher.group(1);
+                        String label = matcher.group(2);
+                        // Append any part of the qualification that exists before the match
+                        builder.append(preMatch);
+                        // This attempts to localize based on the template specific resource bundle first.
+                        // Note: two scenarios can play out.
+                        // Scenario 1: If match found, the value will not match with the template shared resource bundle
+                        // and the template specific translation will display.
+                        // Scenario 2: If match not found, the original key value is returned (getString) 
+                        // and a match is attempted at the template shared resource bundle level.
+                        String translatedValue = preLabel + ThemeLocalizer.getString(templateSharedResourceBundle, ThemeLocalizer.getString(templateResourceBundle, label));
+                        builder.append(translatedValue);
+                        // Set the lastMatch index for use in the next loop
+                        lastMatch = matcher.end();
+                    }
+                    // Append any part of the qualification remaining after the last match
+                    builder.append(pageContent.substring(lastMatch));
+                    pageContent = builder.toString();
+                }   
+            }
+            return pageContent;
+        }
+        
+        /**
+         * Find all LOCALIZE_TEMPLATE tags and translate.
+         * These Tags will translate based on the template and shared resource bundles.
+         *
+         * @param String, dynamic page content
+         * @param SimpleEntry[], template questions
+         * @param ResourceBundle, the template shared resource bundle
+         * @param ResourceBundle, the template specific resource bundle
+         */
+        public static String localizeTemplate(
+            String pageContent,
+            ResourceBundle templateSharedResourceBundle,
+            ResourceBundle templateResourceBundle) {
+            if(templateSharedResourceBundle != null && templateResourceBundle != null) {
+                // Define list of matched template values.
+                // These matches include any page content with the open and closed localize tags
+                List<String> matchedTemplateValues = new ArrayList<String>();
+                // Define regex
+                Pattern localizeTemplatePattern = Pattern.compile("<LOCALIZE_TEMPLATE>(.*?)</LOCALIZE_TEMPLATE>"); // text elements, list buttons
+                // Define matcher with pattern
+                Matcher localizeTemplateMatcher = localizeTemplatePattern.matcher(pageContent);
+                // Find and loop through matches
+                while(localizeTemplateMatcher.find()) {
+                    // Define match
+                    String matchString = localizeTemplateMatcher.group();
+                    // Build up matched values
+                    matchedTemplateValues.add(matchString);
+                }
+                // Define iterator of matched values
+                Iterator<String> iterator = matchedTemplateValues.iterator();
+                // Loop through matched values
+                while (iterator.hasNext()) {
+                    // Define match value and forward
+                    String matchString = (String) iterator.next();
+                    // Get original value without the localize tags in it
+                    String originalValue = matchString.replaceFirst("<LOCALIZE_TEMPLATE>", "").replaceFirst("</LOCALIZE_TEMPLATE>", "");
+                    // This attempts to localize based on the template specific resource bundle first.
+                    // Note: two scenarios can play out.
+                    // Scenario 1: If match found, the value will not match with the template shared resource bundle
+                    // and the template specific translation will display.
+                    // Scenario 2: If match not found, the original key value is returned (getString) 
+                    // and a match is attempted at the template shared resource bundle level.
+                    String translatedValue = ThemeLocalizer.getString(templateSharedResourceBundle, ThemeLocalizer.getString(templateResourceBundle, originalValue));
+                    // Update matched localize tag with translated value
+                    pageContent = pageContent.replaceAll(matchString, translatedValue);
+                }
+            }
+            return pageContent;
         }
     }
 %>
