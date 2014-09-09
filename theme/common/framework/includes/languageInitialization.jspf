@@ -2,7 +2,6 @@
     Include any helper files.
 --%>
 <%@include file="../helpers/LocaleHelper.jspf" %>
-<%@include file="../helpers/ThemeLocalizer.jspf" %>
 
 <%--
     Include any model files.
