@@ -133,6 +133,11 @@
          */
         public static String getJavaScriptValues(ResourceBundle resourceBundle, String i18nValues) {
             if(resourceBundle != null) {
+                // Determine if null
+                if(i18nValues == null) {
+                    // Update to empty string
+                    i18nValues = "";
+                }
                 for(Enumeration en = resourceBundle.getKeys(); en.hasMoreElements(); ){
                     String key = (String) en.nextElement();
                     if (key.indexOf("javascript.") >= 0){

@@ -19,8 +19,6 @@
     String commonTranslationPath = commonRealPath + File.separator + "resources" + File.separator + "languages";
     // Start the common resource bundle
     ResourceBundle commonResourceBundle = ThemeLocalizer.getResourceBundle("common", preferredLocale, commonTranslationPath);
-    // i18nValues holds the translations that will be used by javascript code.  After it is populated with all the value
-    // from all the resourceBundles in the packages, it is used to populate the Localize javascript variable later on in the load process.
-    String i18nValues = "";
-    i18nValues = ThemeLocalizer.getJavaScriptValues(commonResourceBundle, i18nValues);
+    // Set the i18nValues for common resource bundle
+    bundle.setProperty("i18nValues", ThemeLocalizer.getJavaScriptValues(commonResourceBundle, bundle.getProperty("i18nValues")));
 %>

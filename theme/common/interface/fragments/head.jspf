@@ -52,6 +52,16 @@
     <% }%>
     // Set any additional BUNDLE properties
     BUNDLE.config.user = '<%= (context == null) ? "" : context.getUserName()%>';
+    
+    // Define localization object
+    var Localization = { <%= bundle.getProperty("i18nValues") != null ? bundle.getProperty("i18nValues") : "" %> };
+    // Create .localize() string function.  This allows any JavaScript string to be
+    // localized by adding ".localize()" to the end.  Examples: "hello".localize().
+    String.prototype.localize = function() {
+        var key = this.replace(/ /g, "_");
+        var s = Localization[key];
+        return ( s ) ? s : this;
+    }
 </script>
 
 <!-- HTML5 modernizr and Respond.js IE8 support of HTML5 elements and media queries -->
