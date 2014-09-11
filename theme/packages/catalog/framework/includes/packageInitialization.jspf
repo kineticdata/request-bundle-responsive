@@ -57,3 +57,6 @@
     Include the package configuration file.
 --%>
 <%@include file="../../config/config.jspf" %>
+
+<%-- Include the package language initialization file. --%>
+<%@include file="languageInitialization.jspf" %>
