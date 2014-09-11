@@ -15,7 +15,15 @@
 <!-- START Kinetic Form Content -->
 <form name='pageQuestionsForm' id='pageQuestionsForm' class='pageQuestionsForm' method='post' action='SubmitPage'>
     <!-- Kinetic SR Form Page Content -->
-    <jsp:getProperty name="customerSurvey" property="questions"/>
+    <%
+    // Determine if custom template page content has been set as a bundle property
+    if(StringUtils.isNotBlank(bundle.getProperty("templatePageContent"))) {%>
+        <%= bundle.getProperty("templatePageContent")%>
+    <%}
+    // Display default template page content from customer survey
+    else {%>
+        <jsp:getProperty name="customerSurvey" property="questions"/>
+    <%}%>
 
     <!-- Kinetic SR Reference Values -->
     <% if (request.getParameter("srv") != null) { %>
@@ -29,6 +37,6 @@
     <input type="hidden" name="templateID" id= "templateID" value="<%=customerSurvey.getSurveyTemplateInstanceID()%>"/>
     <input type="hidden" name="sessionID" id="sessionID" value="<%=customerSurvey.getCustomerSessionInstanceID()%>"/>
     <input type="hidden" name="surveyRequestID" id="surveyRequestID" value="<%=customerSurvey.getCustomerSurveyRequestID()%>"/>
-    <input type="hidden" name="pageID" id="pageID"value="<%=customerSurvey.getPageInstanceID()%>"/>
+    <input type="hidden" name="pageID" id="pageID" value="<%=customerSurvey.getPageInstanceID()%>"/>
 </form>
 <!--   END Kinetic Form Content -->
