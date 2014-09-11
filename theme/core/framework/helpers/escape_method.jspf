@@ -29,4 +29,18 @@
             return StringEscapeUtils.escapeXml(rawString.toString());
         }
     }
+
+    /**
+     * Escapes the characters in a String using EcmaScript String rules.
+     *
+     * @param Object
+     * @return String
+     */
+    public static String escapeEcmaScript(Object rawString) {
+        if (rawString == null || "".equals(rawString)) {
+            return "";
+        } else {
+            return StringEscapeUtils.escapeEcmaScript(rawString.toString());
+        }
+    }
 %>
