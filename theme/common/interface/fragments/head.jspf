@@ -45,7 +45,7 @@
     // Set all of the bundle configuration properties
     <% for (String name : bundle.propertyNames()) {%>
         <% if(bundle.getProperty(name) != null) {%>
-            BUNDLE.config['<%=name%>'] = '<%=bundle.getProperty(name).replaceAll("'", "\\\\'")%>';
+            BUNDLE.config['<%=name%>'] = '<%= escapeEcmaScript(bundle.getProperty(name))%>';
         <%} else {%>
             BUNDLE.config['<%=name%>'] = <%=bundle.getProperty(name)%>;
         <%}%>
