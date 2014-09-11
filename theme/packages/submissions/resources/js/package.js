@@ -1,6 +1,6 @@
 $(function() {
     // Get query string parameters into an object
-    var urlParameters = getUrlParameters();
+    var urlParameters = BUNDLE.common.getUrlParameters();
     // Determine if type is a real type
     if(urlParameters.type !== 'requests' && urlParameters.type !== 'approvals') {
         urlParameters.type = 'requests';
