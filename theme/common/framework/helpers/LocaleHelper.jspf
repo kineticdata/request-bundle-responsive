@@ -1,7 +1,10 @@
 <%!
     public static class LocaleHelper {
         public static String getPreferredLocale(HelperContext context, HttpSession session, HttpServletRequest request, String templateInstanceId) {
-            String preferredLocale = null;
+            // Define default preferred locale using HttpServletRequest:
+            // Returns the preferred Locale that the client will accept content in, based on the Accept-Language header. 
+            // If the client request doesn't provide an Accept-Language header, this method returns the default locale for the server.
+            String preferredLocale = request.getLocale().toString();
             // Determine if the perferredLocale is stored in session
             if (session.getAttribute("preferredLocale") != null) {
                 // Get preferredLocale from session
@@ -9,38 +12,50 @@
             }
             // Set preferred locale from preference
             else {
-                // Retrieve the user's preferences from helper using the preference model
-                Map<String,List<LocalePreference>> preferences = LocalePreference.findByUser(context, context.getUserName());
-                // If no language preference record is found, create one for the user.
-                if (!preferences.containsKey("Language")) {
-                    // Create preference for user
-                    preferences = LocalePreference.create(context, context.getUserName(), request.getLocale().toString());
+                // Determine if there is an authenticated user
+                if(context != null) {
+                    // Retrieve the user's preferences from helper using the preference model
+                    Map<String,List<LocalePreference>> preferences = LocalePreference.findByUser(context, context.getUserName());
+                    // If no language preference record is found, create one for the user.
+                    if (!preferences.containsKey("Language")) {
+                        // Create preference for user
+                        preferences = LocalePreference.create(context, context.getUserName(), request.getLocale().toString());
+                    }
+                    // Get locale from the top of the list
+                    preferredLocale = preferences.get("Language").get(0).getValue();
                 }
-                // Get locale
-                preferredLocale = preferences.get("Language").get(0).getValue();
+                // Store locale in session
                 session.setAttribute("preferredLocale", preferredLocale);
             }
             
-            // Check if the preferred locale exists on the template, or use the default preferred locale
-            TemplateAttribute[] templateLocaleAttributes = TemplateAttribute.getAttributeValue(
-                context,
-                (String) templateInstanceId,
-                "locale"
-            );
-            if (templateLocaleAttributes != null && templateLocaleAttributes.length > 0) {
-                Boolean templateAttributeValueCheck = false;
-                for(TemplateAttribute templateLocaleAttribute : templateLocaleAttributes) {
-                    String templateLocaleValue = templateLocaleAttribute.getValue();
-                    // Loop through attributes and find a value match with preferredLocale
-                    if(templateLocaleValue != null && templateLocaleValue.equals(preferredLocale)) {
-                        // Set check if value match
-                        templateAttributeValueCheck = true;
-                        break;
+            // Determine if there is an authenticated user
+            if(context != null) {
+                // Define locale template attributes
+                TemplateAttribute[] templateLocaleAttributes = TemplateAttribute.getAttributeValue(
+                    context,
+                    (String) templateInstanceId,
+                    "locale"
+                );
+                // Determine if template attributes exist
+                if (templateLocaleAttributes.length > 0) {
+                    // Define check to false
+                    Boolean templateAttributeValueCheck = false;
+                    // Loop through template attributes
+                    for(TemplateAttribute templateLocaleAttribute : templateLocaleAttributes) {
+                        // Define value
+                        String templateLocaleValue = templateLocaleAttribute.getValue();
+                        // Find a value match with preferredLocale
+                        if(templateLocaleValue != null && templateLocaleValue.equals(preferredLocale)) {
+                            // Set check to true if value match found with preferred locale
+                            templateAttributeValueCheck = true;
+                            // Stop loop
+                            break;
+                        }
                     }
-                }
-                // If no match, use default language
-                if(!templateAttributeValueCheck) {
-                    preferredLocale = request.getLocale().toString();
+                    // If no match, use default locale from the server
+                    if(!templateAttributeValueCheck) {
+                        preferredLocale = request.getLocale().toString();
+                    }
                 }
             }
             return preferredLocale;
