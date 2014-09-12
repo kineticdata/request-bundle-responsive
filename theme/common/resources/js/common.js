@@ -4,11 +4,15 @@
      *   This section is executed on page load to register events and otherwise manipulate the DOM.
      *--------------------------------------------------------------------------------------------*/
     $(function() {
-        // Slide navigation
+        // Define content area that will need to shift
+        // right for the slide in navigation.
         var contentSlide = $('div.content-slide');
-        var firstToggleClick = true;
+        // Set to first time
+        var firstToggleClick = true; 
+        // Define scroll top positions
         var previousScrollTop = $(window).scrollTop();
         var currentScrollTop = '-' + $(window).scrollTop() + 'px';
+        // Set click event for slide in navigation, which is used for devices with small screens (tablets and cell phones)
         $('button.fa-bars').on('click', function(event) {
             event.preventDefault();
             event.stopImmediatePropagation();
@@ -24,7 +28,7 @@
                 BUNDLE.common.startMobileNavigation(contentSlide, $(this).data('target'), currentScrollTop);
                 // Create one reset display event for resize
                 $(window).one('resize', function() {
-                    // If the current active element is a text input, we can assume the soft keyboard is visible.
+                    // If the current active element is a text input, we can assume the soft keyboard is visible
                    if($(document.activeElement).attr('type') !== 'search') {
                         firstToggleClick = true;
                         BUNDLE.common.resetDisplay(contentSlide, contentSlide.data('target'), previousScrollTop);
@@ -68,9 +72,9 @@
      * 
      * @param {String} messageType
      * @param {String} messageContent
-     * @return {String} message
+     * @returns {String} message
      **/
-    BUNDLE.common.messageHandler = function(messageType, messageContent) {
+    common.messageHandler = function(messageType, messageContent) {
         var message = $('<div>').addClass('message alert alert-' + messageType).append(
                 $('<a>').addClass('close').attr({'data-dismiss':'alert'}).text('x')
         ).append(messageContent);
@@ -79,17 +83,19 @@
      
     /**
      * Hides the url bar inside mobile devices
+     * 
+     * @returns {undefined}
      */
-    BUNDLE.common.hideUrlBar = function() {
+    common.hideUrlBar = function() {
         if (window.location.hash.indexOf('#') === -1) {
             window.scrollTo(0, 1);
         }
     };
 
     /**
-     * @return {Object} url parameters
+     * @returns {Object} url parameters
      */
-    BUNDLE.common.getUrlParameters = function() {
+    common.getUrlParameters = function() {
         var searchString = window.location.search.substring(1)
             , params = searchString.split("&")
             , hash = {}
@@ -106,9 +112,9 @@
      * @param {String} contentWrap selector
      * @param {String} menuWrap selector
      * @param {Integer} top
-     * @return void
+     * @returns {undefined}
      */
-    BUNDLE.common.startMobileNavigation = function(contentWrap, menuWrap, top) {
+    common.startMobileNavigation = function(contentWrap, menuWrap, top) {
         // Disable click events on content wrap
         $(contentWrap).find('div.pointer-events').css({'pointer-events':'none'});
         $(contentWrap).find('header.main, header.sub').css({'left': '240px'});
@@ -122,10 +128,10 @@
     /**
      * @param {String} contentWrap selector
      * @param {String} menuWrap selector
-     * @param {Integer} top
-     * @return void
+     * @param {Number} top
+     * @returns {undefined}
      */
-    BUNDLE.common.resetDisplay = function(contentWrap, menuWrap, top) {
+    common.resetDisplay = function(contentWrap, menuWrap, top) {
        $(contentWrap).find('header.main, header.sub').css({'left': '0'});
        $(contentWrap).css({'position':'static', 'left':'0', 'width':'auto', 'min-width':'0'});
        // Enable click events on content wrap
@@ -142,7 +148,7 @@
      * @param {Integer} end
      * @returns {Array}
      */
-    BUNDLE.common.range = function(start, end) {
+    common.range = function(start, end) {
         var array = new Array();
         for(var i = start; i <= end; i++) {
             array.push(i);
@@ -153,9 +159,9 @@
     /**
      * Returns the version of Internet Explorer or a -1 (indicating the use of another browser).
      * From: http://msdn.microsoft.com/en-us/library/ms537509(v=vs.85).aspx
-     * @returns {unresolved}
+     * @returns {Number}
      */
-    BUNDLE.common.getInternetExplorerVersion = function() {
+    common.getInternetExplorerVersion = function() {
         var rv = -1; // Return value assumes failure.
         if (navigator.appName == 'Microsoft Internet Explorer') {
             var ua = navigator.userAgent;
@@ -175,9 +181,9 @@
      * @param {String} childSelector
      * @param {Function} mouseEnter
      * @param {Function} mouseLeave
-     * @returns {void}
+     * @returns {undefined}
      */
-    BUNDLE.common.hover = function(parentSelector, childSelector, mouseEnter, mouseLeave) {
+    common.hover = function(parentSelector, childSelector, mouseEnter, mouseLeave) {
        $(parentSelector).on({
            mouseenter: function() {
                if(mouseEnter !== null) {
@@ -199,10 +205,10 @@
      * Example: *.preRequiredLabel { zoom: expression(BUNDLE.common.setIE7PreRequired(this)); }
      * @returns {undefined}
      */
-    BUNDLE.common.setIE7PreRequired = function(obj) {
-        if($(obj).hasClass('preRequiredLabel')) {
-            if(obj.innerHTML.indexOf("*") == -1) {
-                $(obj).append("*");
+    common.setIE7PreRequired = function(object) {
+        if($(object).hasClass('preRequiredLabel')) {
+            if(object.innerHTML.indexOf("*") == -1) {
+                $(object).append("*");
             }
         }
     };
@@ -211,12 +217,12 @@
      * 
      * @param {String} email
      * @param {String} displaySelector
-     * @returns {void}
+     * @returns {undefined}
      */
-    BUNDLE.common.gravatar = function(email, displaySelector) {
+    common.gravatar = function(email, displaySelector) {
         var lowercaseEmail = email.toLocaleLowerCase();
         var md5 = $.md5(lowercaseEmail);
-        var gravatarHtml = '<img src="https://secure.gravatar.com/avatar/'+md5+'" />';
+        var gravatarHtml = '<img src="https://secure.gravatar.com/avatar/' + md5 + '" />';
         $(displaySelector).html(gravatarHtml);
     };
     
