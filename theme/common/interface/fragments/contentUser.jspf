@@ -43,8 +43,8 @@ if(context != null) {
 
 <script type="text/javascript">
 $(function() {
-    gravatar($.trim('<%= gravatarEmail %>'), 'i.gravatar-icon');
-    gravatar($.trim('<%= gravatarEmail %>'), 'div.user-card a.user');
+    BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'i.gravatar-icon');
+    BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'div.user-card a.user');
     $('li.profile').on('click touchstart touch', function(event) {
         event.stopImmediatePropagation();
         event.preventDefault(); /* Needed for Ipad, stopImmediatePropagation doesn't work */
