@@ -207,7 +207,7 @@
      */
     common.setIE7PreRequired = function(object) {
         if($(object).hasClass('preRequiredLabel')) {
-            if(object.innerHTML.indexOf("*") == -1) {
+            if(object.innerHTML.indexOf("*") === -1) {
                 $(object).append("*");
             }
         }
