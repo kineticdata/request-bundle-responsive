@@ -12,21 +12,69 @@
  */
 (function($, _) {
     $.widget('custom.consoleList', {
-        // Default opitons
+        // Default widget opitons
         options: {
-            escapeHtml: true,
-            entryOptionSelected: 5,
-            entryOptions: [5, 10, 50, 100],
-            page: 1,
-            total: 0,
-            paginationPageRange: 5,
-            resultsPerPage: 0,
-            entries: true,
-            serverSidePagination: true,
-            emptyPreviousResults: true,
-            paginationControlsTop: true,
-            displayOnPageLoad: true
+            escapeHtml: true, // Will escape any html in the json data
+            entryOptionSelected: 5, // Determines how many results to show on load
+            entryOptions: [5, 10, 50, 100], // Determines the available display options for results
+            page: 1, // Default page to start on
+            total: 0, // Total results
+            paginationPageRange: 5, // How many pagination page links are avilable (excluding first, last and next and previous)
+            resultsPerPage: 0, // How many results to show per page
+            entries: true, // Displays the entry options (select menus for determing how many results we want to show)
+            serverSidePagination: true, // Determines if pagination will be handled client or server side
+            emptyPreviousResults: true, // Determines if the console widget will remove previous result data 
+            // while the is building new result data to display
+            paginationControlsTop: true, // Determines where the entry options should go (top or bottom of the UI)
+            displayOnPageLoad: true, // Determines if the results should be shown on page load or left hidden
+            /**
+             * This function is used to get/set the data for the console and add it to the console ui
+             * using the widet's buildResultSet.
+             * 
+             * @example
+             * var data = new Array();
+             * var record = new Object({'name':'Johnny Doe', 'email':'johnny@doe.com'});
+             * data.push(record);
+             * data.push(record);
+             * var dataCount = data.length;
+             * this.buildResultSet(data, dataCount);
+             * @param {Number} limit
+             * @param {Number} index
+             * @param {String} sortOrder, ASC or DESC
+             * @param {String} sortOrderField
+             * @returns {undefined}
+             */
+            dataSource: function(limit, index, sortOrder, sortOrderField) {},
+            /**
+             * This callback is called while the widget iterates through each record
+             * 
+             * @param {Object} li, list element object
+             * @param {Object} record of key name pairs
+             * @param {Number} record index
+             * @param {Object} displayFields option object
+             * @returns {undefined}
+             */
+            rowCallback: function(li, record, index, displayFields) {},
+            /**
+             * This callback is called while the widget iterates through each field inside the record
+             * 
+             * @param {Object} li, list element object
+             * @param {String|Number|Object|Array} value
+             * @param {String} fieldname
+             * @param {String} label is the display fields label name used in side the UI
+             * @returns {undefined}
+             */
+            fieldCallback: function(li, value, fieldname, label) {},
+            /**
+             * This callback is called after the widget has finished rendering the list
+             */
+            completeCallback: function() {}
         },
+        /**
+         * Create fires as soon as the widget is initialized on a DOM element.
+         * 
+         * @returns {undefined}
+         */
         _create: function() {
             // Set current object context to use inside jquery objects
             var widget = this;
@@ -77,10 +125,19 @@
                 .append(widget.footer);
             // Add html to selector
             widget.element.html(widget.consoleList);
+            // Start create events
             widget._createEvents();
+            // Make request for data
             widget._makeRequest(1, widget.select.val());
             if (this.options.initializeCallback != undefined) { this.options.initializeCallback.call(this); }
         },
+        /**
+         * Creates all the available events required for using the widget
+         * For example, click events for the pagination controls,
+         * and entry option select.
+         * 
+         * @returns {undefined}
+         */
         _createEvents: function() {
             // Set current object context to use inside jquery objects
             var widget = this;
@@ -114,6 +171,11 @@
                 widget._makeRequest(1, widget.select.val());
             });
         },
+        /**
+         * @param {Number} page
+         * @param {Number} resultsPerPage
+         * @returns {undefined}
+         */
         _makeRequest: function(page, resultsPerPage) {
             // Set current object context to use inside jquery objects
             var widget = this;
@@ -144,6 +206,12 @@
                 if(!widget.options.serverSidePagination) { widget.firstRequest = false; }
             }
         },
+        /**
+         * 
+         * @param {Array} records, an array of record objects
+         * @param {Number} recordCount, total length of array
+         * @returns {undefined}
+         */
         buildResultSet: function(records, recordCount) {
             // Set current object context to use inside jquery objects
             var widget = this;
@@ -210,6 +278,14 @@
             // Run complete callback
             widget._complete();
         },
+        /**
+         * When the escapeHtml option is set to true,
+         * this recursive function escapes any html from 
+         * the record including nested data
+         * 
+         * @param {Object} record
+         * @returns {Object}
+         */
         _htmlEscape: function(record) {
             // Set current object context to use inside jquery objects
             var widget = this;
@@ -229,6 +305,11 @@
             }
             return record;
         },
+        /**
+         * Calls the complete callback option
+         * 
+         * @returns {undefined}
+         */
         _complete: function() {
             if (this.options.completeCallback != undefined) { this.options.completeCallback.call(this); }
         },
@@ -238,6 +319,12 @@
         _getTotalPages: function() {
             return Math.ceil(this.options.total / this.options.resultsPerPage);
         },
+        /**
+         * Builds an object of pagination data which can be used for
+         * building things like pagination links.
+         * 
+         * @returns {Object}
+         */
         _buildPaginatationData: function() { 
             var startPage = 1;
             var currentPage = this.options.page;
@@ -316,6 +403,11 @@
             }
             return new Object({'pages':pages});
         },
+        /**
+         * Builds a Html ul li pagination link list
+         * 
+         * @returns {Object}
+         */
         _buildHtmlPaginatationList: function() {
             // Set current object context to use inside jquery objects
             var widget = this;
@@ -347,6 +439,11 @@
             });
             return paginationList;
         },
+        /**
+         * jQuery widget destroy function
+         * 
+         * @returns {undefined}
+         */
         _destroy: function() {
             this.consoleList.remove();
         }
