@@ -219,7 +219,7 @@
                     // Check the value for object or array
                     if(value instanceof Object === false && value instanceof Array === false) {
                         if(value !== null && value !== '') {
-                            record[key] = $('<span>').text(value).html();
+                            record[key] = _.escape(value);
                         }
                     } else {
                         // Recursion
@@ -243,7 +243,7 @@
             var currentPage = this.options.page;
             var endPage = this._getTotalPages();
             // Assume total pages is less than range
-            var currentPageRange = this._range(1, endPage);
+            var currentPageRange = _.range(1, endPage);
             // If total pages is greater than range, calculate page range based on current page
             if(endPage > this.options.paginationPageRange) {
                 // Determine start range
@@ -269,7 +269,7 @@
                 }
                 // Ensure start range is still 1 or greater
                 if(startRange <= 0) { startRange = startPage; }
-                currentPageRange = this._range(startRange, endRange);
+                currentPageRange = _.range(startRange, endRange);
             }
             // Initialize object
             var pages = new Object();
@@ -315,13 +315,6 @@
                 pages = new Array();
             }
             return new Object({'pages':pages});
-        },
-        _range: function(start, end) {
-            var array = new Array();
-            for(var i = start; i <= end; i++) {
-                array.push(i);
-            }
-            return array;
         },
         _buildHtmlPaginatationList: function() {
             // Set current object context to use inside jquery objects
