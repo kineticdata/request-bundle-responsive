@@ -11,6 +11,21 @@
  * jQuery and Underscore.
  */
 (function($, _) {
+    // Create the bundle namespace
+    BUNDLE = BUNDLE || {};
+    // Create the package namespace
+    BUNDLE.package = BUNDLE.package || {};
+    // Create the widgets namespace
+    BUNDLE.package.widgets = BUNDLE.package.widgets || {};
+    // Create function that will return an instance of the widget
+    BUNDLE.package.widgets.ConsoleList = function(selector, options) {
+        return $(selector).consoleTable(options);
+    };
+    
+    /**
+     * Define the jQuery widget that will be made available under the
+     * widgets namespace above.
+     */
     $.widget('custom.consoleList', {
         // Default widget opitons
         options: {
@@ -27,6 +42,14 @@
             // while the is building new result data to display
             paginationControlsTop: true, // Determines where the entry options should go (top or bottom of the UI)
             displayOnPageLoad: true, // Determines if the results should be shown on page load or left hidden
+            /**
+             * This callback can be used to intialize UI events before the buildResultsSet is called.
+             * For example, this can be useful for changing UI state while the client waits for
+             * buildResultsSet to finish.
+             * 
+             * @returns {undefined}
+             */
+            initializeCallback: function() {},
             /**
              * This function is used to get/set the data for the console and add it to the console ui
              * using the widet's buildResultSet.
@@ -129,7 +152,8 @@
             widget._createEvents();
             // Make request for data
             widget._makeRequest(1, widget.select.val());
-            if (this.options.initializeCallback != undefined) { this.options.initializeCallback.call(this); }
+            // Call initalize
+            this.options.initializeCallback.call(this);
         },
         /**
          * Creates all the available events required for using the widget
@@ -184,29 +208,34 @@
             if(widget.options.pagination) {
                 widget.options.page = page;
             }
-            if (widget.options.dataSource != undefined) { 
-                if(widget.options.serverSidePagination) {
-                    index = widget._getIndex();
-                } else {
-                    resultsPerPage = 0;
-                    index = 0;
-                }
-                if(widget.firstRequest) {
-                    widget.options.dataSource.call(
-                        widget, 
-                        resultsPerPage, 
-                        index, 
-                        widget.options.sortOrder, 
-                        widget.options.sortOrderField
-                    );
-                } else {
-                    widget.buildResultSet(widget.records, widget.recordCount);
-                }
-                // Disable subsequent server requests from performing if pagination isn't suppose to run server side
-                if(!widget.options.serverSidePagination) { widget.firstRequest = false; }
+            // Set pagination information
+            if(widget.options.serverSidePagination) {
+                index = widget._getIndex();
+            } else {
+                resultsPerPage = 0;
+                index = 0;
             }
+            // If this is the first request for data source function
+            // Used for client side pagination after the data is built the first time
+            if(widget.firstRequest) {
+                // Call data source function
+                widget.options.dataSource.call(
+                    widget, 
+                    resultsPerPage, 
+                    index, 
+                    widget.options.sortOrder, 
+                    widget.options.sortOrderField
+                );
+            } // Only build the resilts (data currently exists).
+            else {
+                widget.buildResultSet(widget.records, widget.recordCount);
+            }
+            // Disable subsequent server requests from performing if pagination isn't suppose to run server side
+            if(!widget.options.serverSidePagination) { widget.firstRequest = false; }
         },
         /**
+         * Used to build the results set of data into the UI
+         * This includes the entry options and pagination links as well
          * 
          * @param {Array} records, an array of record objects
          * @param {Number} recordCount, total length of array
@@ -226,13 +255,13 @@
                 // Create row
                 var li = $('<li>');
                 $.each(widget.options.displayFields, function(fieldname, label) {
-                    // Column callback
-                    if (widget.options.fieldCallback != undefined && record[fieldname] !== null && record[fieldname] !== '') { widget.options.fieldCallback.call(widget, li, record[fieldname], fieldname, label); }
+                    // Field callback
+                    widget.options.fieldCallback.call(widget, li, record[fieldname], fieldname, label);
                 });
                 // Striping
-                ((index % 2 == 0) ? li.addClass('kd-odd') : li.addClass('kd-even'));
+                ((index % 2 === 0) ? li.addClass('kd-odd') : li.addClass('kd-even'));
                 // Row callback
-                if (widget.options.rowCallback != undefined) { widget.options.rowCallback.call(widget, li, record, index, widget.options.displayFields); }
+                widget.options.rowCallback.call(widget, li, record, index, widget.options.displayFields);
                 // Append to ul
                 widget.ul.append(li);
             }
@@ -311,7 +340,7 @@
          * @returns {undefined}
          */
         _complete: function() {
-            if (this.options.completeCallback != undefined) { this.options.completeCallback.call(this); }
+            this.options.completeCallback.call(this);
         },
         _getIndex: function() {
             return (this.options.page - 1) * this.options.resultsPerPage;
