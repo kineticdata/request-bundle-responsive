@@ -15,7 +15,6 @@
     // Get map of description templates
     Map<String, String> templateDescriptions = DescriptionHelper.getTemplateDescriptionMap(context, catalog);
     // Get popular requests
-    HelperContext systemContext = com.kd.kineticSurvey.impl.RemedyHandler.getDefaultHelperContext();
     List<String> globalTopTemplates = SubmissionStatisticsHelper.getMostCommonTemplateNames(systemContext, new String[] {customerRequest.getCatalogName()}, templateTypeFilterTopSubmissions, 5);
 %>
 <!DOCTYPE html>

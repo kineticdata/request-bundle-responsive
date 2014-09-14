@@ -1,11 +1,11 @@
-<%@page contentType="application/json; charset=UTF-8"%>
-<%@include file="../../framework/includes/packageInitialization.jspf"%>
 <%
+    // Set the page content type, ensuring that UTF-8 is used
+    response.setContentType("application/json; charset=UTF-8");
     if (context == null) {
         ResponseHelper.sendUnauthorizedResponse(response);
     } else {
         // Retrieve the main catalog object
-        Catalog catalog = Catalog.findByName(context, bundle.getProperty("catalogName"));
+        Catalog catalog = Catalog.findByName(context, customerRequest.getCatalogName());
         if(catalog == null) {
             throw new Exception("The catalog specified in your configuration is incorrect.");
         }

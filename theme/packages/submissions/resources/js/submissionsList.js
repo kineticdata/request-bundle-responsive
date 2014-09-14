@@ -247,7 +247,7 @@ function initialize(table, status, entryOptionSelected) {
                 dataType: 'json',
                 cache: false,
                 type: 'get',
-                url: BUNDLE.packagePath + 'interface/callbacks/submissions.json.jsp?qualification=' + status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
+                url: BUNDLE.config.submissionsUrl + '&callback=submissions&qualification=' + status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
                 beforeSend: function(jqXHR, settings) {
                     responseMessage.empty();
                     loader.show();

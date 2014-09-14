@@ -1,7 +1,7 @@
 /**
  * Define the common table options and callbacks
  */
-var tableParams = { 
+var tableParams = {
     // Define table specific properties
     'Open Request': {
         displayFields: {
@@ -294,7 +294,7 @@ function initialize(table, status, entryOptionSelected) {
                 dataType: 'json',
                 cache: false,
                 type: 'get',
-                url: BUNDLE.packagePath + 'interface/callbacks/submissions.json.jsp?qualification=' + status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
+                url: BUNDLE.config.submissionsUrl + '&callback=submissions&qualification=' + status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
                 beforeSend: function(jqXHR, settings) {
                     widget.element.hide();
                     responseMessage.empty();
