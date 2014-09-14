@@ -1,10 +1,10 @@
 /**
- * Kinetic Data console list widget
+ * Kinetic Data console table widget
  * 
  * For more information on jQuery widgets:
  * http://jqueryui.com/widget/
  * 
- * Builds a simple unordered ul li list using JSON data.
+ * Builds a table using JSON data.
  * The UI for the can be modifed using various callbacks.
  * 
  * Required libraries:
@@ -18,16 +18,16 @@
     // Create the widgets namespace
     BUNDLE.package.widgets = BUNDLE.package.widgets || {};
     // Create function that will return an instance of the widget
-    BUNDLE.package.widgets.ConsoleList = function(selector, options) {
-        return $(selector).consoleList(options);
+    BUNDLE.package.widgets.ConsoleTable = function(selector, options) {
+        return $(selector).consoleTable(options);
     };
     
     /**
      * Define the jQuery widget that will be made available under the
      * widgets namespace above.
      */
-    $.widget('custom.consoleList', {
-        // Default widget opitons
+    $.widget('custom.consoleTable', {
+        // Default opitons
         options: {
             escapeHtml: true, // Will escape any html in the data supplied
             entryOptionSelected: 5, // Determines how many results to show on load
@@ -38,18 +38,6 @@
             resultsPerPage: 0, // How many results to show per page
             entries: true, // Displays the entry options (select menus for determing how many results we want to show)
             serverSidePagination: true, // Determines if pagination will be handled client or server side
-            emptyPreviousResults: true, // Determines if the console widget will remove previous result data 
-            // while the is building new result data to display
-            paginationControlsTop: true, // Determines where the entry options should go (top or bottom of the UI)
-            displayOnPageLoad: true, // Determines if the results should be shown on page load or left hidden
-            /**
-             * This callback can be used to intialize UI events before the buildResultsSet is called.
-             * For example, this can be useful for changing UI state while the client waits for
-             * buildResultsSet to finish.
-             * 
-             * @returns {undefined}
-             */
-            initializeCallback: function() {},
             /**
              * This function is used to get/set the data for the console and add it to the console ui
              * using the widet's buildResultSet.
@@ -71,25 +59,24 @@
             /**
              * This callback is called while the widget iterates through each record
              * 
-             * @param {Object} li, list element object
+             * @param {Object} tr element object
              * @param {Object} record of key name pairs
              * @param {Number} record index
-             * @param {Object} displayFields option object
              * @returns {undefined}
              */
-            rowCallback: function(li, record, index, displayFields) {},
+            rowCallback: function(tr, record, index) {},
             /**
              * This callback is called while the widget iterates through each field inside the record
              * 
-             * @param {Object} li, list element object
+             * @param {Object} td element object
              * @param {String|Number|Object|Array} value
              * @param {String} fieldname
              * @param {String} label is the display fields label name used in side the UI
              * @returns {undefined}
              */
-            fieldCallback: function(li, value, fieldname, label) {},
+            fieldCallback: function(td, value, fieldname, label) {},
             /**
-             * This callback is called after the widget has finished rendering the list
+             * This callback is called after the widget has finished rendering the table
              */
             completeCallback: function() {}
         },
@@ -119,41 +106,30 @@
                 }
             });
             widget.refresh = $('<a>').addClass('refresh').attr('href', 'javascript:void(0)').text('Refresh');
-            widget.ul = $('<ul>').addClass('list-unstyled console');
+            widget.table = $('<table>').addClass('kd-table');
             widget.information = $('<div>').addClass('information');
             widget.pagination = $('<nav>').addClass('pagination');
             widget.header = $('<div>').addClass('header');
-            widget.consoleList = $('<div>').addClass('console-list');
-           // Append header elements
-            widget.header.append(widget.refresh);
-            if(widget.options.paginationControlsTop) {
-                widget.header.append(widget.pagination)
-            }
-            widget.header.append(widget.information);
-            // Append header and header elements
-            widget.consoleList.append(widget.header);
+            widget.consoleTable = $('<div>').addClass('console')
+                .append(widget.header.append(widget.refresh));
             if(widget.options.entries) {
-                var limitWrap = $('<div>').addClass('limit-wrap');
-                limitWrap.prepend($('<span>').append('Show'))
+                widget.entriesSelection = $('<div>').addClass('entries-selection')
+                    .prepend($('<span>').append('Show'))
                     .append(widget.select)
                     .append($('<span>').append('entries'));
-                widget.header.append(limitWrap);
+                widget.header.prepend(widget.entriesSelection);
+                    
             }
-            // Append ul and footer
-            widget.footer = $('<div>').addClass('footer');
-            if(!widget.options.paginationControlsTop) {
-                widget.footer.append(widget.pagination)
-            }
-            widget.consoleList.append(widget.ul)
-                .append(widget.footer);
+            widget.consoleTable.append(widget.table)
+                .append(
+                    $('<div>').addClass('footer')
+                        .append(widget.information)
+                        .append(widget.pagination)
+                );
             // Add html to selector
-            widget.element.html(widget.consoleList);
-            // Start create events
+            widget.element.html(widget.consoleTable);
             widget._createEvents();
-            // Make request for data
             widget._makeRequest(1, widget.select.val());
-            // Call initalize
-            this.options.initializeCallback.call(this);
         },
         /**
          * Creates all the available events required for using the widget
@@ -166,9 +142,9 @@
             // Set current object context to use inside jquery objects
             var widget = this;
             // Click event for pagination
-            widget.pagination.on('click', 'ul.links li a', function(event) {
-                // Prevent default action.
+            widget.pagination.on('click touchstart', 'ul.links li a', function(event) {
                 event.preventDefault();
+                event.stopImmediatePropagation();
                 // Get Page
                 page = $(this).data('page');
                 // Set current page number for other events to use
@@ -178,9 +154,9 @@
             });
 
             // Click event for refresh
-            widget.refresh.on('click', function(event) {
-                // Prevent default action.
+            widget.refresh.on('click touchstart', function(event) {
                 event.preventDefault();
+                event.stopImmediatePropagation();
                 // Make a server call again
                 widget.firstRequest = true;
                 // Execute the request and return results
@@ -191,6 +167,20 @@
             widget.select.on('change', function(event) {
                 // Prevent default action.
                 event.preventDefault();
+                // Execute the request and return results
+                widget._makeRequest(1, widget.select.val());
+            });
+
+            // Click event for sorting
+            widget.table.on('click touchstart', 'thead tr th[data-sorting="true"]', function(event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                var sortOrder;
+                (($(this).data('sort-order') === 'DESC') ? sortOrder = 'ASC' : sortOrder = 'DESC');
+                widget.options.sortOrder = sortOrder;
+                widget.options.sortOrderField = $(this).data('field');
+                // Make a server call again
+                widget.firstRequest = true;
                 // Execute the request and return results
                 widget._makeRequest(1, widget.select.val());
             });
@@ -218,7 +208,6 @@
             // If this is the first request for data source function
             // Used for client side pagination after the data is built the first time
             if(widget.firstRequest) {
-                // Call data source function
                 widget.options.dataSource.call(
                     widget, 
                     resultsPerPage, 
@@ -226,7 +215,8 @@
                     widget.options.sortOrder, 
                     widget.options.sortOrderField
                 );
-            } // Only build the resilts (data currently exists).
+            }
+            // Only build the resilts (data currently exists).
             else {
                 widget.buildResultSet(widget.records, widget.recordCount);
             }
@@ -234,7 +224,7 @@
             if(!widget.options.serverSidePagination) { widget.firstRequest = false; }
         },
         /**
-         * Used to build the results set of data into the UI
+         * Used to build the results set of data into the table UI
          * This includes the entry options and pagination links as well
          * 
          * @param {Array} records, an array of record objects
@@ -246,31 +236,68 @@
             var widget = this;
             widget.records = records;
             widget.recordCount = recordCount;
-            // Empty/clear previous results from list
-            if(widget.options.emptyPreviousResults) { widget.ul.empty(); }
-            // Empty information to set new information
+            // Empty
+            widget.table.empty();
             widget.information.empty();
-            // List that gets built
-            function buildList(index, record) {
+            // Build theader
+            var thead = $('<thead>');
+            var tr = $('<tr>');
+            // Build tbody
+            var tbody = $('<tbody>');
+            $.each(widget.options.displayFields, function(fieldname, metaData) {
+                var th = $('<th>');
+                // Set column label based on column label field or default column label to metaData field
+                var columnLabel = (metaData.columnLabel === undefined) ? metaData : metaData.columnLabel;
+                th.append(columnLabel)
+                    .attr('data-sorting', false) // Data not working for th
+                    .attr('data-field', fieldname)
+                    .attr('data-sort-order', widget.options.sortOrder);
+                // Check if sorting is undefined or specified to true
+                if(metaData.sortable === undefined || (metaData.sortable !== undefined && metaData.sortable)) {
+                    // Sorting
+                    th.attr('data-sorting', true); // Used for sorting event
+                    if(fieldname === widget.options.sortOrderField) {
+                        th.addClass('kd-header-sorting-selected')
+                            .append(
+                            $('<span>').addClass('kd-header-sorting-' + widget.options.sortOrder)
+                        );
+                    } else {
+                        th.append(
+                            $('<span>').addClass('kd-header-sorting')
+                        );
+                    }
+                }
+                tr.append(th);
+            });
+            thead.append(tr);
+            // Table that gets built
+            function buildTableBody(index, record) {
                 // Create row
-                var li = $('<li>');
-                $.each(widget.options.displayFields, function(fieldname, label) {
-                    // Field callback
-                    widget.options.fieldCallback.call(widget, li, record[fieldname], fieldname, label);
+                var tr = $('<tr>');
+                $.each(widget.options.displayFields, function(fieldname, metaData) {
+                    // Create Column
+                    var td = $('<td>');
+                    // Append record
+                    td.append(((record[fieldname] !== null) ? record[fieldname] : ""));
+                    // Set column label based on column label field or default column label to metaData field
+                    var columnLabel = (metaData.columnLabel === undefined) ? metaData : metaData.columnLabel;
+                    // Column callback
+                    widget.options.columnCallback.call(widget, td, record[fieldname], fieldname, columnLabel); 
+                    tr.append(td);
                 });
                 // Striping
-                ((index % 2 === 0) ? li.addClass('kd-odd') : li.addClass('kd-even'));
+                ((index % 2 === 0) ? tr.addClass('kd-odd') : tr.addClass('kd-even'));
                 // Row callback
-                widget.options.rowCallback.call(widget, li, record, index, widget.options.displayFields);
-                // Append to ul
-                widget.ul.append(li);
+                widget.options.rowCallback.call(widget, tr, record, index); 
+                // Append to tbody
+                tbody.append(tr);
             }
             // Build client or server side pagination
             if(widget.options.serverSidePagination) {
                 $.each(widget.records, function(index, record) {
                     // Check escape html option for values
                     record = widget._htmlEscape(record);
-                    buildList(index, record);
+                    buildTableBody(index, record);
                 });
             } else {
                 $.each(widget.records, function(index, record) {
@@ -282,10 +309,10 @@
                         widget.checkOnce = false;
                     }
                     if(index >= widget._getIndex() && index <= (widget._getIndex() + (widget.options.resultsPerPage  - 1))) {
-                        buildList(index, record);
+                        buildTableBody(index, record);
                     }
                 });
-            } 
+            }
             // Build pagination links
             widget.options.total = widget.recordCount;
             if(widget.options.pagination) {
@@ -296,14 +323,16 @@
                 widget.information.append('Showing&nbsp;')
                     .append(widget._getIndex() + 1)
                     .append('&nbsp;to&nbsp;')
-                    .append(widget._getIndex() + widget.ul.find('li').length)
+                    .append(widget._getIndex() + tbody.find('tr').length)
                     .append('&nbsp;of&nbsp;')
                     .append(widget.options.total)
                     .append('&nbsp;entries');
             }
-
-            // Show console
-            if(this.options.displayOnPageLoad) { this.element.show(); }
+            // Append table data
+            widget.table.append(thead)
+                .append(tbody);
+            // Show
+            this.element.show();
             // Run complete callback
             widget._complete();
         },
@@ -441,7 +470,7 @@
             // Set current object context to use inside jquery objects
             var widget = this;
             var paginationData = this._buildPaginatationData();
-            var paginationList = $('<ul>').addClass('list-unstyled links');
+            var paginationList = $('<ul>').addClass('list-unstyled unstyled links');
             $.each(paginationData.pages, function(index, value) {
                 if(index === 'pageRange') {
                     $.each(value, function(index, value) {
@@ -450,7 +479,7 @@
                                     $('<a>').attr('href', 'javascript(void)')
                                     .data('page', value.page)
                                     .text(value.label)
-                                )
+                                );
                         // Create Active class based selected page
                         if(value.page === widget.options.page) { li.addClass('active'); }
                         paginationList.append(li);
@@ -474,7 +503,7 @@
          * @returns {undefined}
          */
         _destroy: function() {
-            this.consoleList.remove();
+            this.consoleTable.remove();
         }
     });
 })(jQuery, _);
