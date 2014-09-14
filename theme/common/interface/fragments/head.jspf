@@ -19,9 +19,12 @@
     element before any package specific CSS, so it may be overriden with package
     specific styles.
 --%>
+<!-- Common Libraries -->
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/jquery/jquery-ui-1.10.3.custom.min.css" />
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/fontAwesome/css/font-awesome.min.css" />
+
+<!-- Common Stylesheets -->
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/common.css" />
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/ajaxLogin.css" />
 
@@ -64,24 +67,28 @@
     }
 </script>
 
+<!-- Common Libraries -->
 <!-- HTML5 modernizr and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
 <script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/modernizr.custom.js'></script>
 <script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/respond.min.js'></script>
 <![endif]-->
 <script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/placeholders.min.js'></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/moment/moment.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/jquery/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/jquery/jquery-ui-1.10.3.custom.min.js"></script>
 <script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/jquery/jquery.cookie.js'></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/jquery/jquery.md5.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/underscore/underscore-min.js"></script>
-<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/Bridges.js"></script>
-<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/ajaxLogin.js"></script>
-<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/common.js"></script>
 <script type="text/javascript">
 $(function() {
     // Remove KDCACHE cookie until servlet stops creating it.
     $.removeCookie('KDCACHE-CHECK' + '<%=customerSurvey.getPageInstanceID()%>');
 });
 </script>
+
+<!-- Common JavaScript -->
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/Bridges.js"></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/ajaxLogin.js"></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/common.js"></script>
