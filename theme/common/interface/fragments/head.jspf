@@ -22,7 +22,7 @@
 <!-- Common Libraries -->
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/jquery/jquery-ui-1.10.3.custom.min.css" />
-<link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/fontAwesome/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/font-awesome/css/font-awesome.min.css" />
 
 <!-- Common Stylesheets -->
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/common.css" />
