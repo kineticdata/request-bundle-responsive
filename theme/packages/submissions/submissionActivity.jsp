@@ -40,8 +40,6 @@
 
         <!-- Page Stylesheets -->
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/submissionActivity.css" type="text/css" />
-        <!-- Page Javascript -->
-        <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/moment.min.js"></script>
     </head>
     <body>
         <div class="view-port">
