@@ -1,15 +1,5 @@
 <div class="navigation-slide">  
-    <form class="user-search" method="get" action="<%= bundle.applicationPath()%>DisplayPage">
-        <input type="hidden" name="name" value="<%= bundle.getProperty("searchNameParam") %>" />
-        <p>
-            <label class="hide" for="search">Search everything</label>
-            <input id="search" class="form-control" type="search" name="q" value="<% if(request.getParameter("q") != null && !request.getParameter("q").equals("")) {%> <%= request.getParameter("q") %> <% }%>" placeholder="Search Catalog" />
-            <!-- span deals with button floating incorrectly next to input in ie 7 fail -->
-            <span>
-                <button class="btn btn-primary fa fa-search" type="submit"></button>
-            <span>
-        </p>
-    </form>
+    <%@include file="portalSearchForm.jspf"%>
     <ul>
         <% if(bundle.getProperty("profileUrl") != null ) { %>
             <li class="profile">
