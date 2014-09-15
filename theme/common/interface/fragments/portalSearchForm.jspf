@@ -1,0 +1,26 @@
+<%-- 
+    Java objects should never be defined on this fragment when it is included
+    multiple times on the same parent display jsp (IE: mobile and header search)
+    or this can lead to duplicate local variables.
+--%>
+<%
+    // Define search input property to empty string
+    // Used to display inside the search input field
+    bundle.setProperty("portalSearchValue", "");
+    // Determine if an existing search was made by checking for a value inside the query string parameter
+    if(StringUtils.isNotBlank(request.getParameter("q"))) {
+        // Trim and escape the query search value and update portal search input property with existing search value
+        bundle.setProperty("portalSearchValue", escape(request.getParameter("q").trim()));
+    }
+%>
+<form class="portal-search" method="get" action="<%= bundle.applicationPath()%>DisplayPage">
+    <input type="hidden" name="name" value="<%= bundle.getProperty("searchNameParam") %>" />
+    <p>
+        <label class="hide" for="search">Search Catalog</label>
+        
+        <input id="search" class="form-control" type="text" name="q" value="<%=bundle.getProperty("portalSearchValue")%>" autofocus="autofocus" placeholder="Search Catalog" />
+        <span>
+            <button class="btn btn-primary fa fa-search" type="submit"></button>
+        <span>
+    </p>
+</form>
