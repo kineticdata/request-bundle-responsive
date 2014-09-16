@@ -29,6 +29,23 @@
     $.widget('custom.consoleTable', {
         // Default opitons
         options: {
+            /**
+             * What fields are used for display
+             * 
+             * @example
+             * displayFields: {
+             *  'id': 'KSR',
+             *  'template.catalog.name': 'Template',
+             *  'status': {
+             *      columnLabel: 'Status',
+             *      sortable: false
+             *  },
+             *  'displayedStatus': 'Displayed Status',
+             *  'requestedBy': 'Requested By',
+             *  'createdAt': 'Created',
+             *  'updatedAt': 'Updated'
+             */
+            displayFields: {},
             escapeHtml: true, // Will escape any html in the data supplied
             entryOptionSelected: 5, // Determines how many results to show on load
             entryOptions: [5, 10, 50, 100], // Determines the available display options for results
@@ -74,7 +91,7 @@
              * @param {String} label is the display fields label name used in side the UI
              * @returns {undefined}
              */
-            fieldCallback: function(td, value, fieldname, label) {},
+            columnCallback: function(td, value, fieldname, label) {},
             /**
              * This callback is called after the widget has finished rendering the table
              */
@@ -277,12 +294,19 @@
                 $.each(widget.options.displayFields, function(fieldname, metaData) {
                     // Create Column
                     var td = $('<td>');
+                    // Append value
+                    var currentProperty = record;
+                    // Split nested property names
+                    // This gives access to nested data using the properties
+                    _.each(fieldname.split('.'), function(propertyName) {
+                        currentProperty = currentProperty[propertyName];
+                    });
                     // Append record
-                    td.append(((record[fieldname] !== null) ? record[fieldname] : ""));
+                    td.append(currentProperty || "");
                     // Set column label based on column label field or default column label to metaData field
                     var columnLabel = (metaData.columnLabel === undefined) ? metaData : metaData.columnLabel;
                     // Column callback
-                    widget.options.columnCallback.call(widget, td, record[fieldname], fieldname, columnLabel); 
+                    widget.options.columnCallback.call(widget, td, currentProperty, fieldname, columnLabel); 
                     tr.append(td);
                 });
                 // Striping
