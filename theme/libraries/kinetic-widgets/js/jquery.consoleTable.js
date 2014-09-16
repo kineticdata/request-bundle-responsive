@@ -13,12 +13,12 @@
 (function($, _) {
     // Create the bundle namespace
     BUNDLE = BUNDLE || {};
-    // Create the package namespace
-    BUNDLE.package = BUNDLE.package || {};
+    // Create the libraries namespace
+    BUNDLE.libraries = BUNDLE.libraries || {};
     // Create the widgets namespace
-    BUNDLE.package.widgets = BUNDLE.package.widgets || {};
+    BUNDLE.libraries.widgets = BUNDLE.libraries.widgets || {};
     // Create function that will return an instance of the widget
-    BUNDLE.package.widgets.ConsoleTable = function(selector, options) {
+    BUNDLE.libraries.widgets.ConsoleTable = function(selector, options) {
         return $(selector).consoleTable(options);
     };
     

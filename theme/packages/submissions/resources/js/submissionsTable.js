@@ -304,8 +304,8 @@
     submissions.initialize = function(params, status, entryOptionSelected) {
         var loader = $('div#loader');
         var responseMessage = $('div.results-message');
-        // Start list
-        $('div.results').consoleTable({
+        // Define console options
+        var consoleOptions = {
             displayFields: params.displayFields,
             paginationPageRange: 3,
             pagination: true,
@@ -356,7 +356,9 @@
                 this.table.trigger('footable_initialize');
                 params.completeCallback.call(this);
             }
-        });
+        };
+        // Start console
+        BUNDLE.libraries.widgets.ConsoleTable('div.results', consoleOptions);
     };
 
 })(jQuery, _);

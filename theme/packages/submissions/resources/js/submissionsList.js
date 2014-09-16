@@ -234,8 +234,8 @@
     submissions.initialize = function(params, status, entryOptionSelected) {
         var loader = $('div#loader');
         var responseMessage = $('div.results-message');
-        // Start list
-        $('div.results').consoleList({
+        // Define console options
+        var consoleOptions = {
             displayFields: params.displayFields,
             paginationPageRange: 5,
             pagination: true,
@@ -281,7 +281,9 @@
             rowCallback: function(li, record, index, displayFields) { params.rowCallback.call(this, li, record, index, displayFields); },
             fieldCallback: function(li, value, fieldname, label) { params.fieldCallback.call(this, li, value, fieldname, label); },
             completeCallback: function() { params.completeCallback.call(this); }
-        });
+        };
+        // Start console
+        BUNDLE.libraries.widgets.ConsoleList('div.results', consoleOptions);
         // Keeps the scroll from firing until ajax completed
         var killScroll = false;
         // Paginate more results when user is close to bottom of page on scroll
