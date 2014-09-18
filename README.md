@@ -1,4 +1,5 @@
 # Request Bundle Responsive Documentation
+A Kinetic Request Bundle with a responsive user interface for all devices.
 
 ## Overview
 This project represents an out of the box Bundle solution for Kinetic Request. It contains the Responsive Theme and a Kurl catalog. See the Readme in each directory for further installation instructions and details.
