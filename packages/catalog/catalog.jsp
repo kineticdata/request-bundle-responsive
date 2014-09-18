@@ -31,7 +31,6 @@
         <!-- Page Javascript -->
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/package.js"></script>
         <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/catalog.js"></script>
-        <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/jquery.ba-hashchange.min.js"></script>
     </head>
     <body>
         <div class="view-port">
