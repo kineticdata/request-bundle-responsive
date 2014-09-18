@@ -1,4 +1,4 @@
-(function($) {
+(function($, _) {
     /*----------------------------------------------------------------------------------------------
      * DOM MANIPULATION AND EVENT REGISTRATION
      *   This section is executed on page load to register events and otherwise manipulate the DOM.
@@ -79,6 +79,47 @@
                 $('<a>').addClass('close').attr({'data-dismiss':'alert'}).text('x')
         ).append(messageContent);
         return message.get(0).outerHTML;
+    };
+
+    /**
+     * Builds the uri for exporting data to csv
+     *
+     * @example
+     * // Define export data row
+     * var exportDataRow = {'column1':'value1','column2':'value2','column3':'value3'};
+     * // Add rows to export data
+     * var exportData = [exportDataRow, exportDataRow, exportDataRow];
+     * // Define column headers, the keys in the export data row above must match with the column header names
+     * var columnHeaders = ['column1','column2','column3'];
+     * // Call export function
+     * uri = common.exportCsv(exportData,columnHeaders, true);
+     * // Build anchor tag to csv export
+     * var anchor = $('<a>').attr({
+     *      'download': 'export.csv',
+     *      'href': url,
+     *      'target': '_blank'
+     *  }).text('download csv');
+     * @param {Array} exportData one dimensional array of objects to be exported.
+     * @param {Object} exportColumns one dimensional array of strings.
+     * Each string is the name of a property of the objects contained in the array that are to be exported.
+     * @param {Boolean} includeHeaders boolean indicating if the first row of the CSV should be the column names.
+     * @returns {String} uri with data to export
+     */
+    common.exportCsv = function(exportData, exportColumns, includeHeaders) {
+        includeHeaders = typeof includeHeaders !== 'undefined' ? includeHeaders : true;
+        var csvData = [];
+        if(exportData.length > 0 && exportColumns.length > 0) {
+            // Determine if include headers is true
+            if(includeHeaders) {
+                csvData = [_.chain(exportData[0]).pick(exportColumns).keys().value().join(', ')];
+            }
+            _(exportData).each(function(element, index, list){
+                csvData.push(_.chain(element).pick(exportColumns).values().value().join(', '));
+            });
+        }
+        var output = csvData.join('\n');
+        var uri = 'data:application/csv;charset=UTF-8,' + encodeURIComponent(output);
+        return uri;
     };
      
     /**
@@ -163,10 +204,10 @@
      */
     common.getInternetExplorerVersion = function() {
         var rv = -1; // Return value assumes failure.
-        if (navigator.appName == 'Microsoft Internet Explorer') {
+        if (navigator.appName === 'Microsoft Internet Explorer') {
             var ua = navigator.userAgent;
             var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
-            if (re.exec(ua) != null) {
+            if (re.exec(ua) !== null) {
                 rv = parseFloat( RegExp.$1 );
             }
         }
@@ -226,4 +267,4 @@
         $(displaySelector).html(gravatarHtml);
     };
     
-})(jQuery);
+})(jQuery, _);
