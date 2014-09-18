@@ -96,7 +96,7 @@
      * // Build anchor tag to csv export
      * var anchor = $('<a>').attr({
      *      'download': 'export.csv',
-     *      'href': url,
+     *      'href': uri,
      *      'target': '_blank'
      *  }).text('download csv');
      * @param {Array} exportData one dimensional array of objects to be exported.
