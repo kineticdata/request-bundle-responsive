@@ -1,3 +1,10 @@
+
+<%--
+    Include the Kinetic Request application reviewFunctions.  These are built in
+    parts of Kinetic Request, that facilitate the display of submission reviews
+    for render page tabs and render pages below.
+--%>
+<%@include file="../../../../../resources/partials/reviewFunctions.jsp" %>
 <%--
     This file should be included in any bundle or package pages that render a
     Kinetic SR form in review mode.  The file defines the HTML body content
@@ -12,14 +19,22 @@
 <!-- START Kinetic Form Review Content -->
 <div id="reviewContent">
     <!-- Kinetic SR Reviewed Form Page Content -->
-    <% if (!customerSurveyReview.getLoadAllPages()) { %>
-    <%= renderPageTabs(reviewPages, "frame") %>
-    <% } else { %>
-    <%= renderPages(reviewPages, "frame") %>
-    <% } %>
+    <%
+    // Determine if custom template page content has been set as a bundle property
+    if(StringUtils.isNotBlank(bundle.getProperty("templatePageContent"))) {%>
+        <%= bundle.getProperty("templatePageContent")%>
+    <%}
+    // Display default page content from customer survey review
+    else {%>
+        <% if (!customerRequest.getLoadAllPages()) { %>
+            <%= renderPageTabs(customerRequest.getReviewPages(), "frame") %>
+        <% } else { %>
+            <%= renderPages(customerRequest.getReviewPages(), "frame") %>
+        <% } %>
+    <%}%>
 
     <!-- Kinetic SR State Values -->
-    <input type="hidden" name="templateID" id= "templateID" value="<%=customerSurvey.getSurveyTemplateInstanceID()%>"/>
+    <input type="hidden" name="templateID" id= "templateID" value="<%=customerRequest.getTemplateId()%>"/>
     <input type="hidden" name="pageID" id="pageID" value=""/>
     <div class="clearfix"></div>
 </div>

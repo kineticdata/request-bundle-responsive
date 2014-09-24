@@ -15,7 +15,7 @@
 
 <%-- Initialize the customerRequest variable. --%>
 <%@include file="../CustomerRequest.jspf" %>
-<% CustomerRequest customerRequest = new CustomerRequest(customerSurvey); %>
+<% CustomerRequest customerRequest = new CustomerRequest(request, customerSurvey); %>
 
 <%-- Initialize the context variable. --%>
 <%

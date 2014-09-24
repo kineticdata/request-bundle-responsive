@@ -10,7 +10,7 @@
     Include the page style information and events for any of the pages that are
     being reviewed.
 --%>
-<% for (CustomerSurveyReview reviewPage : reviewPages) { %>
+<% for (CustomerSurveyReview reviewPage : customerRequest.getReviewPages()) { %>
     <!-- START Page Styles and Events for the "<%= reviewPage.getPageName() %>" page. -->
     <%= reviewPage.getStyleInfo() %>
     <!--   END Page Styles and Events for the "<%= reviewPage.getPageName() %>" page. -->
@@ -25,15 +25,15 @@
 <script type="text/javascript">
     // Initialize the array of Kinetic Form pages that should be initialized
     var pageIds = [];
-    <% if (customerSurveyReview.getLoadAllPages()) { %>
+    <% if (customerRequest.getLoadAllPages()) { %>
     // Add each of the review pages to the list of pages to be initialized
-    <% for (CustomerSurveyReview reviewPage : reviewPages) { %>pageIds.push("<%=reviewPage.getSanitizedPageId()%>");<% } %>
+    <% for (CustomerSurveyReview reviewPage : customerRequest.getReviewPages()) { %>pageIds.push("<%=reviewPage.getSanitizedPageId()%>");<% } %>
     <% } %>
     // Define the javascript object that is used to configure the behavior of
     // the KD.utils.Review initialization.
     var reviewObj = { 
         clientManager: clientManager,
-        loadAllPages: <%=customerSurveyReview.getLoadAllPages()%>,
+        loadAllPages: <%=customerRequest.getLoadAllPages()%>,
         pageIds: pageIds
     };
 

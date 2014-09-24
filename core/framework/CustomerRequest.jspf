@@ -1,3 +1,6 @@
+<%@page import="com.kd.kineticSurvey.beans.CustomerSurvey"%>
+<%@page import="com.kd.kineticSurvey.beans.CustomerSurveyReview"%>
+<%@page import="java.util.Vector"%>
 <%!
     /**
      * Wrappers are preinitialized Java objects that provide easy access to 
@@ -7,11 +10,77 @@
      *
      */
     public static class CustomerRequest {
-
-        private com.kd.kineticSurvey.beans.CustomerSurvey customerSurvey;
-
-        public CustomerRequest(com.kd.kineticSurvey.beans.CustomerSurvey customerSurvey) {
+        
+        /**
+         * @var CustomerSurvey
+         */
+        private CustomerSurvey customerSurvey;
+        
+        /**
+         * @var CustomerSurveyReview
+         */
+        private CustomerSurveyReview customerSurveyReview;
+        
+        /**
+         * @var Vector<CustomerSurveyReview>
+         */
+        private Vector<CustomerSurveyReview> customerSurveyReviewPages;
+        
+        /**
+         * Initializes the wrapper
+         */
+        public CustomerRequest(CustomerSurvey customerSurvey, CustomerSurveyReview customerSurveyReview, Vector<CustomerSurveyReview>customerSurveyReviewPages) {
             this.customerSurvey = customerSurvey;
+            this.customerSurveyReviewPages = customerSurveyReviewPages;
+            this.customerSurveyReview = customerSurveyReview;
+        }
+        
+        /**
+         * Initializes the wrapper
+         * 
+         * @param HttpServletRequest
+         * @return CustomerRequestReview
+         */
+        public CustomerRequest(HttpServletRequest request, CustomerSurvey customerSurvey) {
+            // Typcast the RequestPages bean to a CustomerSurveyReview list.
+            Vector<CustomerSurveyReview> customerSurveyReviewPages = (Vector)request.getAttribute("RequestPages");
+            // Ensure the reviewPages object is never null
+            if (customerSurveyReviewPages == null) {customerSurveyReviewPages = new java.util.Vector();}
+            // Declare a CustomerSurveyReview object
+            CustomerSurveyReview customerSurveyReview = null;
+            // If there are reviewable pages
+            if (customerSurveyReviewPages != null && customerSurveyReviewPages.size() != 0) {
+                // Use the first customerSurveyReview to represent the overall review
+                customerSurveyReview = customerSurveyReviewPages.get(0);
+                // Overwrite the default customer survey values (which are blank) with
+                // appropriate values from the CustomerSurveyReview object.
+                if (customerSurvey == null) {
+                    customerSurvey = new CustomerSurvey();
+                    request.setAttribute("customerSurvey", customerSurvey);
+                }
+                customerSurvey.setCustomerSurveyRequestID(customerSurveyReview.getCustomerSurveyRequestID());
+                customerSurvey.setCategory(customerSurveyReview.getCategory());
+                customerSurvey.setCompanyName(customerSurveyReview.getCompanyName());
+                customerSurvey.setCompanyID(customerSurveyReview.getCompanyID());
+                customerSurvey.setFirstName(customerSurveyReview.getFirstName());
+                customerSurvey.setLastName(customerSurveyReview.getLastName());
+                customerSurvey.setClientLocale(customerSurveyReview.getClientLocale());
+                customerSurvey.setSurveyTemplateInstanceID(customerSurveyReview.getSurveyTemplateInstanceID());
+                customerSurvey.setCustomerSurveyInstanceID(customerSurveyReview.getCustomerSurveyInstanceID());
+                customerSurvey.setSurveyTemplateName(customerSurveyReview.getSurveyTemplateName());
+                customerSurvey.setSuccessMessage(customerSurveyReview.getSuccessMessage());
+                customerSurvey.setErrorMessage(customerSurveyReview.getErrorMessage());
+                customerSurvey.setCustomerSessionInstanceID(customerSurveyReview.getCustomerSessionInstanceID());
+                customerSurvey.setCustomerSurveyInstanceID(customerSurveyReview.getCustomerSurveyInstanceID());
+                customerSurvey.setSurveyTemplateInstanceID(customerSurveyReview.getSurveyTemplateInstanceID());
+                customerSurvey.setCustomHeaderContent(customerSurveyReview.getCustomHeaderContent());
+                customerSurvey.setStylesheetFileName(customerSurveyReview.getStylesheetFileName());
+                customerSurvey.setJavascriptFileName(customerSurveyReview.getJavascriptFileName());
+                customerSurvey.setSubmitType("ReviewRequest");
+            }
+            this.customerSurvey = customerSurvey;
+            this.customerSurveyReviewPages = customerSurveyReviewPages;
+            this.customerSurveyReview = customerSurveyReview;
         }
 
         public String clearErrorMessage() {
@@ -145,6 +214,42 @@
          */
         public String getTemplateName() {
             return customerSurvey.getSurveyTemplateName();
+        }
+        
+        /**
+         * Returns the page question content of the survey
+         *
+         * @return String
+         */
+        public String getQuestions() {
+            return customerSurvey.getQuestions();
+        }
+        
+        /**
+         * @return boolean
+         */
+        public boolean isReviewRequest() {
+            // Assume failure
+            boolean result = false;
+            // Determine if there are review pages
+            if (this.customerSurveyReviewPages != null && this.customerSurveyReviewPages.size() != 0) {
+                result = true;
+            }
+            return result;
+        }
+
+        /**
+         * @return boolean
+         */
+        public boolean getLoadAllPages() {
+            return (this.customerSurveyReview == null) ? false : this.customerSurveyReview.getLoadAllPages();
+        }
+        
+        /**
+         * @return Vector<CustomerSurveyReview>
+         */
+        public Vector<CustomerSurveyReview> getReviewPages() {
+            return this.customerSurveyReviewPages;
         }
     }
 %>
