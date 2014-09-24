@@ -17,7 +17,7 @@
     // Set templateTranslationPath to package path for now
     String templateTranslationPath = packageTranslationPath;
     // Get survey instance id
-    String templateInstanceId = (String) customerSurvey.getSurveyTemplateInstanceID();
+    String templateInstanceId = customerRequest.getTemplateId();
     // Determine if context exists
     if(context != null) {
         // Get translation attribute from template
