@@ -18,12 +18,15 @@
     String templateTranslationPath = packageTranslationPath;
     // Get survey instance id
     String templateInstanceId = (String) customerSurvey.getSurveyTemplateInstanceID();
-    // Get translation attribute from template
-    TemplateAttribute[] attributeTranslationDirectory = TemplateAttribute.getAttributeValue(context, templateInstanceId, "Translation Directory");
-    // If it exists
-    if (attributeTranslationDirectory.length > 0) {
-        // Get value set to template locale property files
-        templateTranslationPath = templateTranslationPath + File.separator + attributeTranslationDirectory[0].getValue();
+    // Determine if context exists
+    if(context != null) {
+        // Get translation attribute from template
+        TemplateAttribute[] attributeTranslationDirectory = TemplateAttribute.getAttributeValue(context, templateInstanceId, "Translation Directory");
+        // If it exists
+        if (attributeTranslationDirectory.length > 0) {
+            // Get value set to template locale property files
+            templateTranslationPath = templateTranslationPath + File.separator + attributeTranslationDirectory[0].getValue();
+        }
     }
     // Set template resource bundle
     ResourceBundle templateResourceBundle = ThemeLocalizer.getResourceBundle("template", bundle.getProperty("preferredLocale"), templateTranslationPath);
@@ -31,8 +34,13 @@
     bundle.setProperty("i18nValues", ThemeLocalizer.getJavaScriptValues(templateSharedResourceBundle, bundle.getProperty("i18nValues")));
     // Set the i18nValues for template resource bundle
     bundle.setProperty("i18nValues", ThemeLocalizer.getJavaScriptValues(templateResourceBundle, bundle.getProperty("i18nValues")));
-    // Localize and define the template page content
-    String templatePageContent = ThemeLocalizer.localizeTemplatePageContent(customerSurvey, serviceItemsResourceBundle, templateSharedResourceBundle, templateResourceBundle);
+    // Define template page content
+    String templatePageContent = ThemeLocalizer.localizePageContent(
+        customerRequest,
+        serviceItemsResourceBundle, 
+        templateSharedResourceBundle,
+        templateResourceBundle
+    );
     // Set the template page content property, which is required by core for displaying the localization
     bundle.setProperty("templatePageContent", templatePageContent);
 %>

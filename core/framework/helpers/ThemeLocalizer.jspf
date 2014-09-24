@@ -1,3 +1,5 @@
+<%@page import="java.util.Vector"%>
+<%@page import="com.kd.kineticSurvey.beans.CustomerSurveyReview"%>
 <%@page import="java.io.File"%>
 <%@page import="com.kd.arsHelpers.SimpleEntry"%>
 <%@page import="com.kd.kineticSurvey.beans.CustomerSurvey"%>
@@ -154,33 +156,66 @@
         }
         
         /**
-         * Sets up the proper language for the entire template's dynamic page content
+         * Sets up the proper language for the entire template's dynamic page content for review or display
          * Includes buttons, question labels, template description with the <LOCALIZE_SERVICE_ITEM_DESCRIPTION> tag,
          * any defined <LOCALIZE_SI></LOCALIZE_SI> tags and any defined <LOCALIZE_TEMPLATE></LOCALIZE_TEMPLATE> tags.
          *
-         * @param CustomerSurvey
+         * @param CustomerRequest
          * @param ResourceBundle, the service item name and description resource bundle
          * @param ResourceBundle, the template shared resource bundle
          * @param ResourceBundle, the template specific resource bundle
          */
-        public static String localizeTemplatePageContent(
-            CustomerSurvey customerSurvey,
+        public static String localizePageContent(
+            CustomerRequest customerRequest,
             ResourceBundle serviceItemsResourceBundle,
             ResourceBundle templateSharedResourceBundle,
-            ResourceBundle templateResourceBundle) {
+            ResourceBundle templateResourceBundle
+        ) {
+            String pageContent = null;
+            // Determine if this is review request
+            if(customerRequest.isReviewRequest()) {
+                // Localize the review template page content
+                pageContent = ThemeLocalizer.localizeReviewPageContent(
+                    customerRequest, serviceItemsResourceBundle, templateSharedResourceBundle, 
+                    templateResourceBundle);
+            } else {
+                // Localize the display template page content
+                pageContent = ThemeLocalizer.localizeDisplayPageContent(
+                    customerRequest, serviceItemsResourceBundle, templateSharedResourceBundle, 
+                    templateResourceBundle);
+            }
+            return pageContent;
+        }
+        
+        /**
+         * Sets up the proper language for the entire template's display dynamic page content
+         * Includes buttons, question labels, template description with the <LOCALIZE_SERVICE_ITEM_DESCRIPTION> tag,
+         * any defined <LOCALIZE_SI></LOCALIZE_SI> tags and any defined <LOCALIZE_TEMPLATE></LOCALIZE_TEMPLATE> tags.
+         *
+         * @param CustomerRequest
+         * @param ResourceBundle, the service item name and description resource bundle
+         * @param ResourceBundle, the template shared resource bundle
+         * @param ResourceBundle, the template specific resource bundle
+         */
+        public static String localizeDisplayPageContent(
+            CustomerRequest customerRequest,
+            ResourceBundle serviceItemsResourceBundle,
+            ResourceBundle templateSharedResourceBundle,
+            ResourceBundle templateResourceBundle
+        ) {
             // Define and get the page content
-            String pageContent = customerSurvey.getQuestions();
+            String pageContent = customerRequest.getQuestions();
             // If page content null, set to empty string
             if(pageContent == null) {
                 pageContent = "";
             }
             // Convert template buttons to proper locale
             pageContent = ThemeLocalizer.localizeTemplateButtons(pageContent, templateSharedResourceBundle);
-             // Define page
+            // Define page
             Page page = null;
             try {
                 // Attempt to get the page
-                page = PageCache.getPageByInstanceId(customerSurvey.getSurveyTemplateInstanceID(), customerSurvey.getPageInstanceID()); 
+                page = PageCache.getPageByInstanceId(customerRequest.getTemplateId(), customerRequest.getPageId()); 
             } catch(Exception e) {
                 throw new RuntimeException("Unable to load page cache: " + e.getMessage());
             }
@@ -194,7 +229,71 @@
             // Convert dynamic template content to proper locale with the localize template tags
             pageContent = ThemeLocalizer.localizeTemplate(pageContent,templateSharedResourceBundle, templateResourceBundle);
             // Define template name
-            String templateName = customerSurvey.getSurveyTemplateName();
+            String templateName = customerRequest.getTemplateName();
+            // Convert template description to proper locale
+            pageContent = ThemeLocalizer.localizeTemplateDescription(pageContent, templateName, serviceItemsResourceBundle);
+            // Convert remaining localize si tags to proper locale
+            pageContent = ThemeLocalizer.localizeTemplateNameAndDescription(pageContent, serviceItemsResourceBundle);
+            return pageContent;
+        }
+        
+        /**
+         * Sets up the proper language for the entire template's review dynamic page content
+         * Includes buttons, question labels, template description with the <LOCALIZE_SERVICE_ITEM_DESCRIPTION> tag,
+         * any defined <LOCALIZE_SI></LOCALIZE_SI> tags and any defined <LOCALIZE_TEMPLATE></LOCALIZE_TEMPLATE> tags.
+         *
+         * @param CustomerRequest
+         * @param ResourceBundle, the service item name and description resource bundle
+         * @param ResourceBundle, the template shared resource bundle
+         * @param ResourceBundle, the template specific resource bundle
+         */
+        public static String localizeReviewPageContent(
+            CustomerRequest customerRequest,
+            ResourceBundle serviceItemsResourceBundle,
+            ResourceBundle templateSharedResourceBundle,
+            ResourceBundle templateResourceBundle
+        ) {
+            // Define page content
+            String pageContent = "";
+            // Determine if this is load all pages
+            if(!customerRequest.getLoadAllPages()) {
+                pageContent = ThemeLocalizer.renderPageTabs(customerRequest.getReviewPages(), "frame");
+            } else {
+                pageContent = ThemeLocalizer.renderPages(customerRequest.getReviewPages(), "frame");
+            }
+            // Convert template buttons to proper locale
+            pageContent = ThemeLocalizer.localizeTemplateButtons(pageContent, templateSharedResourceBundle);
+            // Define simple entry list
+            List<SimpleEntry> questionList = new ArrayList<SimpleEntry>();
+            // Loop review pages
+            for(CustomerSurveyReview customerSurveyReview : customerRequest.getReviewPages()) {
+                // Define page
+                Page page = null;
+                try {
+                    // Attempt to get the page
+                    page = PageCache.getPageByInstanceId(customerRequest.getTemplateId(), customerSurveyReview.getPageInstanceID());
+                } catch(Exception e) {
+                    throw new RuntimeException("Unable to load page cache: " + e.getMessage());
+                }
+                // Define page questions
+                SimpleEntry[] pageQuestions = page.getPageQuestions();
+                for(int i = 0; i < pageQuestions.length; i++) {
+                    // Add question to list
+                    questionList.add(pageQuestions[i]);
+                }
+            }
+            // Define questions
+            SimpleEntry[] questions = new SimpleEntry[questionList.size()];
+            // Build quesitons
+            for (int i = 0; i < questionList.size(); i++) {
+                questions[i] = questionList.get(i);
+            }
+            // Convert template question labels to proper locale
+            pageContent = ThemeLocalizer.localizeTemplateQuestionLabels(pageContent, questions, templateSharedResourceBundle, templateResourceBundle);
+            // Convert dynamic template content to proper locale with the localize template tags
+            pageContent = ThemeLocalizer.localizeTemplate(pageContent,templateSharedResourceBundle, templateResourceBundle);
+            // Define template name
+            String templateName = customerRequest.getTemplateName();
             // Convert template description to proper locale
             pageContent = ThemeLocalizer.localizeTemplateDescription(pageContent, templateName, serviceItemsResourceBundle);
             // Convert remaining localize si tags to proper locale
@@ -211,7 +310,11 @@
          * @param String, name of template
          * @param ResourceBundle, the template common resource bundle
          */
-        public static String localizeTemplateDescription(String pageContent, String templateName, ResourceBundle serviceItemsResourceBundle) {
+        public static String localizeTemplateDescription(
+                String pageContent,
+                String templateName,
+                ResourceBundle serviceItemsResourceBundle
+        ) {
             // Determine if tag exists
             if (pageContent.indexOf("<LOCALIZE_SERVICE_ITEM_DESCRIPTION>") >= 0) {
                 // Define translated value
@@ -228,7 +331,10 @@
          * @param String, dynamic page content
          * @param ResourceBundle, the template shared resource bundle
          */
-        public static String localizeTemplateButtons(String pageContent, ResourceBundle templateSharedResourceBundle) {
+        public static String localizeTemplateButtons(
+                String pageContent,
+                ResourceBundle templateSharedResourceBundle
+        ) {
             // Localize the templateButton like Submit and Previous
             {
                 // Define regex pattern
@@ -342,7 +448,8 @@
             String pageContent,
             SimpleEntry[] questions,
             ResourceBundle templateSharedResourceBundle,
-            ResourceBundle templateResourceBundle) {
+            ResourceBundle templateResourceBundle
+        ) {
             // Localize all question labels.
             for (SimpleEntry questionEntry : questions) {
                 Question question = new Question(questionEntry);
@@ -432,7 +539,8 @@
         public static String localizeTemplate(
             String pageContent,
             ResourceBundle templateSharedResourceBundle,
-            ResourceBundle templateResourceBundle) {
+            ResourceBundle templateResourceBundle
+        ) {
             // Define list of matched template values.
             // These matches include any page content with the open and closed localize tags
             List<String> matchedTemplateValues = new ArrayList<String>();
@@ -466,6 +574,110 @@
                 pageContent = pageContent.replaceAll(matchString, translatedValue);
             }
             return pageContent;
+        }
+        
+        // *****************************************************************
+        // @TODO, figure out what to do with this, needed for localizeReviewTemplatePageContent
+        // and has to be static when used inside static methods
+        // Originally comes from ../../../../../resources/partials/reviewFunctions.jsp
+        // *  Load the first page only and display page tabs
+        // *****************************************************************
+        public static String renderPageTabs(java.util.Vector requestPages, String renderClass) {
+            StringBuffer buf = new StringBuffer();
+            java.util.Iterator itr = null;
+            boolean firstPage;
+            // display a navigation list of page names if more than one page
+            if (requestPages.size() > 1) {
+                buf.append("<ul id='globalnav'>");
+
+                /* create the page tabs */
+                itr = requestPages.iterator();
+                firstPage = true;
+                String initClass = "selectedTab";
+                while (itr.hasNext()) {
+                    com.kd.kineticSurvey.beans.CustomerSurveyReview cs =
+                            (com.kd.kineticSurvey.beans.CustomerSurveyReview) itr.next();
+                    if (cs.getQuestions() != null) {
+                        /* select the first page tab */
+                        if (firstPage) {
+                            firstPage = false;
+                        } else {
+                            initClass = "";
+                        }
+                        buf.append("<li>");
+                        buf.append("<a class='");
+                        buf.append(initClass);
+                        buf.append("' href='javascript:void(0);' onclick='KD.utils.Review.showPage(this, \"pageHolder_");
+                        buf.append(cs.getSanitizedPageId());
+                        buf.append("\", \"");
+                        buf.append(cs.getPageInstanceID());
+                        buf.append("\");'>");
+                        buf.append(cs.getPageName());
+                        buf.append("</a>");
+                        buf.append("</li>");
+                    }
+                }
+
+                buf.append("</ul>");
+            }
+
+            buf.append("<div id='PAGE_ReviewPages' class='");
+            buf.append(renderClass);
+            buf.append("'>");
+            itr = requestPages.iterator();
+            firstPage = true;
+            String displayStyle = "block";
+            while (itr.hasNext()) {
+                com.kd.kineticSurvey.beans.CustomerSurveyReview cs =
+                        (com.kd.kineticSurvey.beans.CustomerSurveyReview) itr.next();
+                if (cs.getQuestions() != null) {
+                    buf.append("<div style='display:");
+                    buf.append(displayStyle);
+                    buf.append(";' id='pageHolder_");
+                    buf.append(cs.getSanitizedPageId());
+                    buf.append("' class='reviewPageDiv'>");
+                    if (firstPage) {
+                        buf.append("<script type='text/javascript'>");
+                        buf.append("    KD.utils.Review.currentDisplayedPageID = 'pageHolder_");
+                        buf.append(cs.getSanitizedPageId());
+                        buf.append("';");
+                        buf.append("</script>");
+                        firstPage = false;
+                        displayStyle = "none";
+                        buf.append(cs.getQuestions());
+                    } else {
+                        buf.append("<img src='./resources/catalogIcons/ajax-loader.gif' alt='Loading...'/>");
+                    }
+                    buf.append("</div>");
+                }
+            }
+            buf.append("</div>");
+            return buf.toString();
+        }
+
+        // *****************************************************************
+        // *  Load and Display all pages together
+        // *****************************************************************
+        public static String renderPages(java.util.Vector requestPages, String renderClass) {
+            StringBuffer buf = new StringBuffer();
+            buf.append("<div id='ReviewPages' class='");
+            buf.append(renderClass);
+            buf.append("'>");
+
+            java.util.Iterator itr = requestPages.iterator();
+            while (itr.hasNext()) {
+                com.kd.kineticSurvey.beans.CustomerSurveyReview cs =
+                        (com.kd.kineticSurvey.beans.CustomerSurveyReview) itr.next();
+                if (cs.getQuestions() != null) {
+                    buf.append("<div id='page_");
+                    buf.append(cs.getSanitizedPageId());
+                    buf.append("' class='reviewPageDiv'>");
+                    buf.append(cs.getQuestions());
+                    buf.append("</div>");
+                }
+            }
+            buf.append("</div>");
+            return buf.toString();
         }
     }
 %>
