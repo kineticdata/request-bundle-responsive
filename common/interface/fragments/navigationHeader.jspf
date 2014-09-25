@@ -4,7 +4,7 @@
     <a class="drop-down-menus" href="javascript:void(0)" data-target="div.main-menus">
         <i class="fa fa-th"></i>
     </a>
-    <div class="main-menus" aria-hidden="true" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+    <div class="main-menus" aria-hidden="true">
         <ul class="list-unstyled clearfix">
             <li class="catalog">
                 <a href="<%= bundle.getProperty("catalogUrl")%>">
@@ -96,6 +96,16 @@ $(function() {
             $(objContext).find('div.carrot').remove();
         }
     });
+    // Define mouse enter for hover event
+    function mouseEnter() {
+        BUNDLE.common.preventWindowScroll('div.main-menus');
+    }
+    // Define mouse leave for hover event
+    function mouseLeave() {
+        BUNDLE.common.enableWindowScroll();
+    }
+    // Hover event for main menus to control window scrolling
+    BUNDLE.common.hover('header.main', 'div.main-menus', mouseEnter, mouseLeave);
     // Click event for more
     $('header.main').on('click', 'div.main-menus a.more', function(event) {
         event.preventDefault();
@@ -113,6 +123,7 @@ $(function() {
            $(this).find('a.more').show();
        }
     });
+    // Use to control when to hide the opened menus
     function one(target) {
         // Turn off any previous one events to prevent stacking
         $(document).off('click touchstart touch');

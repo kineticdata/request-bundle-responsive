@@ -73,6 +73,17 @@ $(function() {
             $(objContext).find('div.carrot').remove();
         }
     });
+    // Define mouse enter for hover event
+    function mouseEnter() {
+        BUNDLE.common.preventWindowScroll();
+    }
+    // Define mouse leave for hover event
+    function mouseLeave() {
+        BUNDLE.common.enableWindowScroll();
+    }
+    // Hover event for main menus to control window scrolling
+    BUNDLE.common.hover('header.main', 'div.user-card', mouseEnter, mouseLeave);
+    // Use to control when to hide the opened menus
     function one(target) {
         // Turn off any previous one events to prevent stacking
         $(document).off('click touchstart touch');
