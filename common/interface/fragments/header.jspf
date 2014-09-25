@@ -13,30 +13,7 @@
         </a>
         <button type="button" class="fa fa-bars" data-target="div.navigation-slide">
         </button>
-        <div class="collapse">
-            <%@include file="portalSearchForm.jspf"%>
-            <ul>
-                <li class="catalog">
-                    <a href="<%= bundle.getProperty("catalogUrl")%>">
-                        <i class="fa fa-home"></i>
-                        Home
-                    </a> 
-                </li>
-                <li class="approvals">
-                    <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals">
-                        <i class="fa fa-check"></i>
-                        Approvals
-                    </a>
-                </li>
-                <li class="requests">
-                    <a href="<%= bundle.getProperty("submissionsUrl")%>&type=requests">
-                        <i class="fa fa-exchange"></i>
-                        Requests
-                    </a>
-                </li>
-                <%@include file="contentUser.jspf"%>
-            </ul>
-        </div>
+        <%@include file="navigationHeader.jspf"%>
     </div>
 </header>
 <div class="fixed-header-spacer"></div>

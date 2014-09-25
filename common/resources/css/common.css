@@ -407,7 +407,6 @@ header.main {
   -moz-box-shadow: 0 2px 4px 0 rgba(50, 50, 50, 0.45);
   z-index: 1030;
   background-color: #0C2231;
-  
 }
 header.main div.container a.logo {
   float: right;
@@ -451,6 +450,7 @@ header.main div.container button.fa-bars.disabled,
 header.main div.container button.fa-bars[disabled] {
   background-color: #102e41;
 }
+/* Navigtion styles for ul anchor list in the main header */
 header.main div.container div.collapse > ul {
   float: right;
   margin: 0;
@@ -688,9 +688,6 @@ footer.footer a:hover {
     h3 {
         font-size: 18px;
     }
-}
-@media (min-width: 768px) {
-    li.popular-requests { display: none; }
 }
 @media (max-width: 480px) {}
 @media (min-width: 768px) and (max-width: 991px) {}

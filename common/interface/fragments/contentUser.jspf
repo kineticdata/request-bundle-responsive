@@ -9,9 +9,9 @@ if(context != null) {
         fullName = samplePerson.getFullName();
     }
 %>
-<li class="profile" data-target="div.user-card">
+<a class="profile" href="javascript:void(0)" data-target="div.user-card">
     <i class="gravatar-icon"></i>
-</li>
+</a>
 <div class="user-card" aria-hidden="true">
     <div class="wrap">
         <a class="user" href="<%= bundle.getProperty("profileUrl")%>">
@@ -45,9 +45,12 @@ if(context != null) {
 $(function() {
     BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'i.gravatar-icon');
     BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'div.user-card a.user');
-    $('li.profile').on('click touchstart touch', function(event) {
-        event.stopImmediatePropagation();
-        event.preventDefault(); /* Needed for Ipad, stopImmediatePropagation doesn't work */
+    $('header.main').on('click touchstart touch', 'a.profile', function(event) {
+        event.preventDefault();
+        // Close other menus
+        if($('header.main div.main-menus').attr('aria-hidden') === 'false') {
+            $('header.main a.drop-down-menus').trigger('click');
+        }
         // Turn off any previous one events to prevent stacking
         $(window).off('resize');
         var target = $(this).data('target');
@@ -73,24 +76,32 @@ $(function() {
     function one(target) {
         // Turn off any previous one events to prevent stacking
         $(document).off('click touchstart touch');
-        // Create one reset display event on content slide
-        $(document).one('click touchstart touch', function(event) {
-            event.stopImmediatePropagation();
-            if($(event.target).parents('div.user-card').first().get(0) != $(target).get(0)
-                && $(event.target).first().get(0) != $(target).get(0)) {
-                $(target).attr('aria-hidden', true);
-                $(target).hide();
-                $(this).find('div.carrot').remove();
-            } else {
-                // Recursion
-                one(target);
-            }
-        });
+        // Delay the creation of the one event below because any previous click events registering
+        // function one cascade to fire the event below after it's created.
+        setTimeout(function() {
+            // Create one reset display event on content slide
+            $(document).one('click touchstart touch', function(event) {
+                event.stopImmediatePropagation();
+                if($(event.target).parents('div.user-card').first().get(0) != $(target).get(0)
+                    && $(event.target).first().get(0) != $(target).get(0)) {
+                    $(target).attr('aria-hidden', true);
+                    $(target).hide();
+                    $(this).find('div.carrot').remove();
+                } else {
+                    // Recursion
+                    one(target);
+                }
+            });
+        }, 1);
     }
 });
 </script>
 <style type="text/css">
-    header.main div.container div.collapse > ul > li > i.gravatar-icon img {
+    header.main div.container div.collapse > a.profile {
+        line-height: 50px;
+        float: right;
+    }
+    header.main div.container div.collapse > a.profile > i.gravatar-icon img {
         display: inline-block;
         outline: none;
         vertical-align: middle;
@@ -172,7 +183,7 @@ $(function() {
     div.user-card div.actions div.sign-out a:hover {
         text-decoration: none;
     }
-    div.carrot {
+    header.main div.container div.collapse > a.profile div.carrot {
         border-color: transparent;
         border-bottom-color: #fff;
         border-style: dashed dashed solid;

@@ -1,0 +1,225 @@
+<div class="collapse">
+    <%@include file="portalSearchForm.jspf"%>
+    <%@include file="contentUser.jspf"%>
+    <a class="drop-down-menus" href="javascript:void(0)" data-target="div.main-menus">
+        <i class="fa fa-th"></i>
+    </a>
+    <div class="main-menus" aria-hidden="true" onmouseover="document.body.style.overflow='hidden';" onmouseout="document.body.style.overflow='auto';">
+        <ul class="list-unstyled clearfix">
+            <li class="catalog">
+                <a href="<%= bundle.getProperty("catalogUrl")%>">
+                    <i class="fa fa-home"></i>
+                    <div>Home</div>
+                </a> 
+            </li>
+            <li class="popular-requests">
+                <a href="<%= bundle.getProperty("popularRequestsUrl")%>">
+                    <i class="fa fa-star-o"></i>
+                    <div>Popular Requests</div>
+                </a>
+            </li>
+            <li class="approvals">
+                <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals">
+                    <i class="fa fa-check"></i>
+                    <div>Approvals</div>
+                </a>
+            </li>
+            <li class="requests">
+                <a href="<%= bundle.getProperty("submissionsUrl")%>&type=requests">
+                    <i class="fa fa-pencil-square-o"></i>
+                    <div>Requests</div>
+                </a>
+            </li>
+        </ul>
+        <%if(bundle.getProperty("kapps") == null) {%>
+            <a class="more">
+                More
+            </a>
+            <ul class="list-unstyled kapps clearfix">
+                <li class="osc">
+                    <a href="#">
+                        <i class="fa fa-cogs"></i>
+                        <div>OSC</div>
+                    </a> 
+                </li>
+                <li class="favorites">
+                    <a href="#">
+                        <i class="fa fa-bookmark-o"></i>
+                        <div>Favorites</div>
+                    </a>
+                </li>
+                <li class="fulfilment">
+                    <a href="#">
+                        <i class="fa fa-exchange"></i>
+                        <div>Fulfilment</div>
+                    </a>
+                </li>
+                <li class="cmdb">
+                    <a href="#">
+                        <i class="fa fa-database"></i>
+                        <div>CMDB</div>
+                    </a>
+                </li>
+            </ul>
+        <%}%>
+    </div>
+</div>
+<script type="text/javascript">
+$(function() {
+    // Click event for showing menu
+    $('header.main').on('click touchstart touch', 'a.drop-down-menus', function(event) {
+        event.preventDefault();
+        // Close other menus
+        if($('header.main div.user-card').attr('aria-hidden') === 'false') {
+            $('header.main a.profile').trigger('click');
+        }
+        // Turn off any previous one events to prevent stacking
+        $(window).off('resize');
+        var target = $(this).data('target');
+        var objContext = this;
+        if($(target).attr('aria-hidden') === 'true') {
+            $(target).attr('aria-hidden', false);
+            $(target).show();
+            $(objContext).append($('<div>').addClass('carrot'));
+            // Scroll to top of menus
+            $('div.main-menus').scrollTop(0);
+            // Create one reset display event for resize
+            $(window).one('resize', function() {
+                $(target).attr('aria-hidden', true);
+                $(target).hide();
+                $(objContext).find('div.carrot').remove();
+            });
+            one.call(objContext, target);
+        } else {
+            $(target).attr('aria-hidden', true);
+            $(target).hide();
+            $(objContext).find('div.carrot').remove();
+        }
+    });
+    // Click event for more
+    $('header.main').on('click', 'div.main-menus a.more', function(event) {
+        event.preventDefault();
+        // Scroll to bottom of main menus to expose remaining items
+        $('div.main-menus').scrollTop($('div.main-menus').height());
+    });
+    // Scroll event for main menus
+    $('header.main div.main-menus').on('scroll', function() {
+       // Determine if scroll top is greater than 0
+       if($(this).scrollTop() > 0) {
+           // Hide more
+           $(this).find('a.more').hide();
+       } else {
+           // show more
+           $(this).find('a.more').show();
+       }
+    });
+    function one(target) {
+        // Turn off any previous one events to prevent stacking
+        $(document).off('click touchstart touch');
+        // Delay the creation of the one event below because any previous click events registering
+        // function one cascade to fire the event below after it's created.
+        setTimeout(function() {
+            // Create one reset display event on content slide
+            $(document).one('click touchstart touch', function(event) {
+                event.stopImmediatePropagation();
+                if($(event.target).parents('div.main-menus').first().get(0) != $(target).get(0)
+                    && $(event.target).first().get(0) != $(target).get(0)) {
+                    $(target).attr('aria-hidden', true);
+                    $(target).hide();
+                    $(this).find('div.carrot').remove();
+                } else {
+                    // Recursion
+                    one(target);
+                }
+            });
+        }, 1);
+    } 
+});
+</script>
+<style type="text/css">
+    header.main div.container div.collapse > a.drop-down-menus {
+        float: right;
+        height: 0;
+        line-height: 60px;
+        margin: 0 20px 0 0;
+    }
+    header.main div.container div.collapse > a.drop-down-menus > i.fa-th {
+        color: white;
+        font-size: 20px;
+    }
+    header.main div.container div.collapse > a.drop-down-menus:hover > i.fa-th {
+        color: #F95026;
+        cursor: pointer;
+    }
+    header.main div.container div.collapse > a.drop-down-menus div.carrot {
+        border-color: transparent;
+        border-bottom-color: #fff;
+        border-style: dashed dashed solid;
+        border-width: 0 8px 8px;
+        position: absolute;
+        right: 46px;
+        top: 45px;
+        z-index: 1;
+        height: 0;
+        width: 0;
+    }
+    div.main-menus {
+        display: none;
+        position: absolute;
+        z-index: 2040;
+        background-color: white;
+        top: 53px;
+        right: 0;
+        border-color: rgba(0,0,0,.2);
+        box-shadow: 0 2px 10px rgba(0,0,0,.2);
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+        -webkit-user-select: text;
+        max-height: 230px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    div.main-menus ul {
+        background: #fff;
+        margin: 0;
+        min-height: 100px;
+        padding: 20px 20px 0 20px;
+        padding-right: 21px;
+        text-align: left;
+        white-space: normal;
+        width: 225px;
+    }
+    div.main-menus ul li {
+        width: 86px;
+        height: 86px;
+        text-align: center;
+        float: left;
+    }
+    div.main-menus ul li a {
+        color: #404040;
+    }
+    div.main-menus ul li a:hover {
+        text-decoration: none;
+        color: #F95026;
+    }
+    div.main-menus ul li i {
+        font-size: 32px;
+    }
+    div.main-menus a.more {
+        color: #737373;
+        text-decoration: none;
+        display: block;
+        line-height: 40px;
+        text-align: center;
+        background: #f5f5f5;
+        cursor: pointer;
+        height: 40px;
+        overflow: hidden;
+    }
+    div.main-menus a.more:hover {
+        color: black;
+    }
+    div.main-menus ul.kapps {
+        padding: 0 20px;
+    }
+</style>
