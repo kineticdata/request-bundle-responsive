@@ -108,11 +108,11 @@ $(function() {
 });
 </script>
 <style type="text/css">
-    header.main div.container div.collapse > a.profile {
+    header.main div.container div.collapse a.profile {
         line-height: 50px;
         float: right;
     }
-    header.main div.container div.collapse > a.profile > i.gravatar-icon img {
+    header.main div.container div.collapse a.profile img {
         display: inline-block;
         outline: none;
         vertical-align: middle;
@@ -194,7 +194,7 @@ $(function() {
     div.user-card div.actions div.sign-out a:hover {
         text-decoration: none;
     }
-    header.main div.container div.collapse > a.profile div.carrot {
+    header.main div.container div.collapse a.profile div.carrot {
         border-color: transparent;
         border-bottom-color: #fff;
         border-style: dashed dashed solid;

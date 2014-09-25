@@ -148,21 +148,21 @@ $(function() {
 });
 </script>
 <style type="text/css">
-    header.main div.container div.collapse > a.drop-down-menus {
+    header.main div.container div.collapse a.drop-down-menus {
         float: right;
         height: 0;
         line-height: 60px;
         margin: 0 20px 0 0;
     }
-    header.main div.container div.collapse > a.drop-down-menus > i.fa-th {
+    header.main div.container div.collapse a.drop-down-menus i.fa-th {
         color: white;
         font-size: 20px;
     }
-    header.main div.container div.collapse > a.drop-down-menus:hover > i.fa-th {
+    header.main div.container div.collapse a.drop-down-menus:hover i.fa-th {
         color: #F95026;
         cursor: pointer;
     }
-    header.main div.container div.collapse > a.drop-down-menus div.carrot {
+    header.main div.container div.collapse a.drop-down-menus div.carrot {
         border-color: transparent;
         border-bottom-color: #fff;
         border-style: dashed dashed solid;
