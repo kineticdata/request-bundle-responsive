@@ -263,8 +263,8 @@
     common.gravatar = function(email, displaySelector) {
         var lowercaseEmail = email.toLocaleLowerCase();
         var md5 = $.md5(lowercaseEmail);
-        var gravatarHtml = '<img src="https://secure.gravatar.com/avatar/' + md5 + '" />';
-        $(displaySelector).html(gravatarHtml);
+        var gravatarHtml = $('<img>').attr({'src':'https://secure.gravatar.com/avatar/' + md5 + '/'});
+        $(displaySelector).append(gravatarHtml);
     };
 
     /**
