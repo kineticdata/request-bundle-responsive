@@ -266,5 +266,64 @@
         var gravatarHtml = '<img src="https://secure.gravatar.com/avatar/' + md5 + '" />';
         $(displaySelector).html(gravatarHtml);
     };
+
+    /**
+     * Used to prevent window scrolling without css
+     * Using CSS can cause the window to adjust when the bar vanishes or reappears causing bad 
+     * UI experience in some browsers.
+     * If you want to scroll the element you're over and prevent the window to scroll,
+     * you can pass a jQuery selector of the elemnt you want to allow to scroll
+     * 
+     * @param {String} excludingSelector, the DOM elment you want to 
+     * @returns {undefined}
+     */
+    common.preventWindowScroll = function(excludingSelector) {
+        if(excludingSelector) {
+            $(excludingSelector).on('DOMMouseScroll mousewheel', function(ev) {
+                var $this = $(this),
+                    scrollTop = this.scrollTop,
+                    scrollHeight = this.scrollHeight,
+                    height = $this.height(),
+                    delta = (ev.type == 'DOMMouseScroll' ?
+                        ev.originalEvent.detail * -40 :
+                        ev.originalEvent.wheelDelta),
+                    up = delta > 0;
+
+                var prevent = function() {
+                    ev.stopPropagation();
+                    ev.preventDefault();
+                    ev.returnValue = false;
+                    return false;
+                }
+
+                if (!up && -delta > scrollHeight - height - scrollTop) {
+                    // Scrolling down, but this will take us past the bottom.
+                    $this.scrollTop(scrollHeight);
+
+                    return prevent();
+                } else if (up && delta > scrollTop) {
+                    // Scrolling up, but this will take us past the top.
+                    $this.scrollTop(0);
+                    return prevent();
+                }
+            });
+        } else {
+           $('html').on('DOMMouseScroll mousewheel', function(event) {
+                // Prevent window scroll
+                event.preventDefault();
+            }); 
+        }
+    };
+    
+    /**
+     * Disables any events bound to DOMMouseScroll or mousewheel on the html.
+     * This is often used in conjunction with common.preventWindowScroll above for pop up
+     * menus.
+     * 
+     * @returns {undefined}
+     */
+    common.enableWindowScroll = function() {
+        $('html').off('DOMMouseScroll mousewheel');
+    };
     
 })(jQuery, _);
