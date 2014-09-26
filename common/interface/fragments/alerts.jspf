@@ -1,0 +1,203 @@
+<a class="alerts" href="javascript:void(0)" data-target="div.alerts" data-description="Notifications">
+    <i class="fa fa-bell-o"></i>
+</a>
+<div class="alerts" aria-hidden="true">
+    <ul class="list-unstyled clearfix">
+        <li >
+            <a href="#">
+                <div class="header border-bottom clearfix">
+                    <h5>
+                        Central Command Down!  Click for more information.
+                    </h5>
+                    <span>2 days ago</span>
+                </div>
+                <div class="content">
+                    Croissant cheesecake bonbon biscuit jelly danish unerdwear.com liquorice. 
+                    Sweet dessert cotton candy carrot cake macaroon icing croissant jelly beans. 
+                </div>
+            </a> 
+        </li>
+        <li >
+            <a href="#">
+                <div class="header border-bottom clearfix">
+                    <h5>
+                        Employee on boarding is now available through e-services.
+                    </h5>
+                    <span>8 days ago</span>
+                </div>
+                <div class="content">
+                    Halvah gummi bears danish bear claw apple pie chupa chups danish. 
+                    Chocolate bar chocolate dragée soufflé. Cotton candy jelly-o apple pie pie gummies.
+                </div>
+            </a>
+        </li>
+        <li >
+            <a href="#">
+                <div class="header border-bottom clearfix">
+                    <h5>
+                       Notifications through email.
+                    </h5>
+                    <span>2 months ago</span>
+                </div>
+                <div class="content">
+                    Topping jelly beans pie danish cake carrot cake caramels caramels. 
+                    Ice cream cupcake dessert icing liquorice. Gummies tart pastry.
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+$(function() {
+    // Define qtip options for menus
+    var qtipOptions = {
+        content: {
+            attr: 'data-description'
+        },
+        style: {
+            classes: 'qtip-tipsy qtip-shadow',
+            tip: {
+                corner: true
+            }
+        },
+        position: {
+            my: 'top center',
+            at: 'bottom middle'
+        }
+    };
+    // Setup parameters for menus
+    var parentSelector = 'header.main';
+    var triggerSelector = 'a.alerts';
+    var menuSelector = 'div.alerts';
+    // Start qTip
+    var tooltips = $(triggerSelector).qtip(qtipOptions);
+    // Get the first api element
+    var api = tooltips.qtip('api');
+    // Initialize menus
+    BUNDLE.common.enableHeadMenus({
+        'parentSelector': parentSelector,
+        'triggerSelector': triggerSelector,
+        'menuSelector': menuSelector,
+        initializeCallback: function() {
+            // Click event for more
+            $(parentSelector).on('click', menuSelector + ' a.more', function(event) {
+                event.preventDefault();
+                // Scroll to bottom of main menus to expose remaining items
+                $(menuSelector).scrollTop($(menuSelector).height());
+            });
+            // Scroll event for main menus
+            $(parentSelector + ' ' + menuSelector).on('scroll', function() {
+               // Determine if scroll top is greater than 0
+               if($(this).scrollTop() > 0) {
+                   // Hide more
+                   $(this).find('a.more').hide();
+               } else {
+                   // show more
+                   $(this).find('a.more').show();
+               }
+            });
+        },
+        triggerOpenCallback: function() {
+            // Hide qtip
+            api.hide();
+            // Disable qtip
+            api.disable();
+            // Close profile menus
+            if($('header.main div.user-card').attr('aria-hidden') === 'false') {
+                $('header.main a.profile').trigger('click');
+            }
+            // Close main menus
+            if($('header.main div.main-menus').attr('aria-hidden') === 'false') {
+                $('header.main a.main-menus').trigger('click');
+            }
+        },
+        triggerCloseCallback: function() {
+            // Enable qTip
+            api.enable();
+            
+        }
+    });
+});
+</script>
+<style type="text/css">
+    header.main div.container div.collapse a.alerts {
+        float: right;
+        margin: 0 20px 0 0;
+        padding: 8px 0 0 0;
+        line-height: 42px;
+    }
+    header.main div.container div.collapse a.alerts i.fa-bell-o {
+        color: white;
+        font-size: 20px;
+    }
+    header.main div.container div.collapse a.alerts:hover i.fa-th {
+        color: #F95026;
+        cursor: pointer;
+    }
+    header.main div.container div.collapse a.alerts div.carrot {
+        border-color: transparent;
+        border-bottom-color: #fff;
+        border-style: dashed dashed solid;
+        border-width: 0 8px 8px;
+        position: absolute;
+        right: 46px;
+        top: 45px;
+        z-index: 200000;
+        height: 0;
+        width: 0;
+    }
+    header.main div.container div.collapse div.alerts {
+        display: none;
+        position: absolute;
+        z-index: 200000;
+        background-color: white;
+        top: 53px;
+        right: 0;
+        border-color: rgba(0,0,0,.2);
+        box-shadow: 0 2px 10px rgba(0,0,0,.2);
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+        -webkit-user-select: text;
+        max-height: 230px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    header.main div.container div.collapse div.alerts ul {
+        background: #fff;
+        white-space: normal;
+        width: 420px;
+        margin: 0;
+    }
+    header.main div.container div.collapse div.alerts ul a {
+        text-decoration: none;
+        display: block;
+    }
+    header.main div.container div.collapse div.alerts ul li {
+        padding: 5px;
+    }
+    header.main div.container div.collapse div.alerts ul li:hover {
+        background-color: #f5f5f5;
+    }
+    header.main div.container div.collapse div.alerts ul li:hover div span {
+        color: black;
+    }
+    header.main div.alerts ul li div.header {
+        margin: 0 0 5px 0;
+        font-size: 14px;
+    }
+    header.main div.alerts ul li div h5 {
+        margin-top: 0;
+        color: black;
+    }
+    header.main div.alerts ul li div span {
+        font-weight: bold;
+        font-style: italic;
+        font-size: 11px;
+        color: #A9A9A9;
+    }
+    header.main div.alerts ul li div.content {
+        margin: 5px 0;
+        font-size: 12px;
+        color: black;
+    }
+</style>
