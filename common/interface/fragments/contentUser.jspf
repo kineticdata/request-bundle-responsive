@@ -56,9 +56,13 @@ $(function() {
         'triggerSelector': triggerSelector,
         'menuSelector': menuSelector,
         triggerOpenCallback: function() {
-            // Close other menus
+            // Close main menus
             if($('header.main div.main-menus').attr('aria-hidden') === 'false') {
-                $('header.main a.drop-down-menus').trigger('click');
+                $('header.main a.main-menus').trigger('click');
+            }
+            // Close alerts menus
+            if($('header.main div.alerts').attr('aria-hidden') === 'false') {
+                $('header.main a.alerts').trigger('click');
             }
         }
     });

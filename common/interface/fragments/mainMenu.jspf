@@ -1,4 +1,4 @@
-<a class="drop-down-menus" href="javascript:void(0)" data-target="div.main-menus" data-description="Navigate">
+<a class="main-menus" href="javascript:void(0)" data-target="div.main-menus" data-description="Navigate">
     <i class="fa fa-th"></i>
 </a>
 <div class="main-menus" aria-hidden="true">
@@ -80,7 +80,7 @@ $(function() {
     };
     // Setup parameters for menus
     var parentSelector = 'header.main';
-    var triggerSelector = 'a.drop-down-menus';
+    var triggerSelector = 'a.main-menus';
     var menuSelector = 'div.main-menus';
     // Start qTip
     var tooltips = $(triggerSelector).qtip(qtipOptions);
@@ -115,9 +115,13 @@ $(function() {
             api.hide();
             // Disable qtip
             api.disable();
-            // Close other menus
+            // Close profile menus
             if($('header.main div.user-card').attr('aria-hidden') === 'false') {
                 $('header.main a.profile').trigger('click');
+            }
+            // Close alerts menus
+            if($('header.main div.alerts').attr('aria-hidden') === 'false') {
+                $('header.main a.alerts').trigger('click');
             }
         },
         triggerCloseCallback: function() {
@@ -129,27 +133,27 @@ $(function() {
 });
 </script>
 <style type="text/css">
-    header.main div.container div.collapse a.drop-down-menus {
+    header.main div.container div.collapse a.main-menus {
         float: right;
         margin: 0 20px 0 0;
         padding: 8px 0 0 0;
         line-height: 42px;
     }
-    header.main div.container div.collapse a.drop-down-menus i.fa-th {
+    header.main div.container div.collapse a.main-menus i.fa-th {
         color: white;
         font-size: 20px;
     }
-    header.main div.container div.collapse a.drop-down-menus:hover i.fa-th {
+    header.main div.container div.collapse a.main-menus:hover i.fa-th {
         color: #F95026;
         cursor: pointer;
     }
-    header.main div.container div.collapse a.drop-down-menus div.carrot {
+    header.main div.container div.collapse a.main-menus div.carrot {
         border-color: transparent;
         border-bottom-color: #fff;
         border-style: dashed dashed solid;
         border-width: 0 8px 8px;
         position: absolute;
-        right: 46px;
+        right: 86px;
         top: 45px;
         z-index: 200000;
         height: 0;
