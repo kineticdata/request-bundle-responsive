@@ -66,85 +66,43 @@
 </div>
 <script type="text/javascript">
 $(function() {
-    // Click event for showing menu
-    $('header.main').on('click touchstart touch', 'a.drop-down-menus', function(event) {
-        event.preventDefault();
+    // Setup parameters for menus
+    var parentSelector = 'header.main';
+    var triggerSelector = 'a.drop-down-menus';
+    var menuSelector = 'div.main-menus';
+    var initializeCallback = function() {
+        // Click event for more
+        $(parentSelector).on('click', menuSelector + ' a.more', function(event) {
+            event.preventDefault();
+            // Scroll to bottom of main menus to expose remaining items
+            $(menuSelector).scrollTop($(menuSelector).height());
+        });
+        // Scroll event for main menus
+        $(parentSelector + ' ' + menuSelector).on('scroll', function() {
+           // Determine if scroll top is greater than 0
+           if($(this).scrollTop() > 0) {
+               // Hide more
+               $(this).find('a.more').hide();
+           } else {
+               // show more
+               $(this).find('a.more').show();
+           }
+        });
+    };
+    var triggerCallback = function() {
         // Close other menus
         if($('header.main div.user-card').attr('aria-hidden') === 'false') {
             $('header.main a.profile').trigger('click');
         }
-        // Turn off any previous one events to prevent stacking
-        $(window).off('resize');
-        var target = $(this).data('target');
-        var objContext = this;
-        if($(target).attr('aria-hidden') === 'true') {
-            $(target).attr('aria-hidden', false);
-            $(target).show();
-            $(objContext).append($('<div>').addClass('carrot'));
-            // Scroll to top of menus
-            $('div.main-menus').scrollTop(0);
-            // Create one reset display event for resize
-            $(window).one('resize', function() {
-                $(target).attr('aria-hidden', true);
-                $(target).hide();
-                $(objContext).find('div.carrot').remove();
-            });
-            one.call(objContext, target);
-        } else {
-            $(target).attr('aria-hidden', true);
-            $(target).hide();
-            $(objContext).find('div.carrot').remove();
-        }
-    });
-    // Define mouse enter for hover event
-    function mouseEnter() {
-        BUNDLE.common.preventWindowScroll('div.main-menus');
-    }
-    // Define mouse leave for hover event
-    function mouseLeave() {
-        BUNDLE.common.enableWindowScroll();
-    }
-    // Hover event for main menus to control window scrolling
-    BUNDLE.common.hover('header.main', 'div.main-menus', mouseEnter, mouseLeave);
-    // Click event for more
-    $('header.main').on('click', 'div.main-menus a.more', function(event) {
-        event.preventDefault();
-        // Scroll to bottom of main menus to expose remaining items
-        $('div.main-menus').scrollTop($('div.main-menus').height());
-    });
-    // Scroll event for main menus
-    $('header.main div.main-menus').on('scroll', function() {
-       // Determine if scroll top is greater than 0
-       if($(this).scrollTop() > 0) {
-           // Hide more
-           $(this).find('a.more').hide();
-       } else {
-           // show more
-           $(this).find('a.more').show();
-       }
-    });
-    // Use to control when to hide the opened menus
-    function one(target) {
-        // Turn off any previous one events to prevent stacking
-        $(document).off('click touchstart touch');
-        // Delay the creation of the one event below because any previous click events registering
-        // function one cascade to fire the event below after it's created.
-        setTimeout(function() {
-            // Create one reset display event on content slide
-            $(document).one('click touchstart touch', function(event) {
-                event.stopImmediatePropagation();
-                if($(event.target).parents('div.main-menus').first().get(0) != $(target).get(0)
-                    && $(event.target).first().get(0) != $(target).get(0)) {
-                    $(target).attr('aria-hidden', true);
-                    $(target).hide();
-                    $(this).find('div.carrot').remove();
-                } else {
-                    // Recursion
-                    one(target);
-                }
-            });
-        }, 1);
-    } 
+    };
+    // Initialize menus
+    BUNDLE.common.enableHeadMenus(
+        parentSelector,
+        triggerSelector,
+        menuSelector,
+        initializeCallback,
+        triggerCallback
+    );
 });
 </script>
 <style type="text/css">

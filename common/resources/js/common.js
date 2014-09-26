@@ -326,4 +326,78 @@
         $('html').off('DOMMouseScroll mousewheel');
     };
     
+    /**
+     * Enables hide/show functionality on a menu item
+     * 
+     * @param {String|Object} parentSelector the DOM element that wraps the trigger and menu
+     * @param {String|Object} triggerSelector the DOM element that triggers the menus
+     * @param {String|Object} menuSelector the menus
+     * @param {Function} initializeCallback fires when the initialized
+     * @param {Function} triggerCallback fires when the menus is triggered
+     * @returns {undefined}
+     */
+    common.enableHeadMenus = function(parentSelector, triggerSelector, menuSelector, initializeCallback, triggerCallback) {
+        // Click event for showing menu
+        $(parentSelector).on('click touchstart touch', triggerSelector, function(event) {
+            event.preventDefault();
+            triggerCallback.call(this);
+            // Turn off any previous one events to prevent stacking
+            $(window).off('resize');
+            var target = $(this).data('target');
+            var objContext = this;
+            if($(target).attr('aria-hidden') === 'true') {
+                $(target).attr('aria-hidden', false);
+                $(target).fadeIn(100);
+                $(objContext).append($('<div>').addClass('carrot hide').fadeIn(100));
+                // Scroll to top of menus
+                $(menuSelector).scrollTop(0);
+                // Create one reset display event for resize
+                $(window).one('resize', function() {
+                    $(target).attr('aria-hidden', true);
+                    $(target).hide();
+                    $(objContext).find('div.carrot').remove();
+                });
+                one.call(objContext, target);
+            } else {
+                $(target).attr('aria-hidden', true);
+                $(target).hide();
+                $(objContext).find('div.carrot').remove();
+            }
+        });
+        // Define mouse enter for hover event
+        function mouseEnter() {
+            common.preventWindowScroll(menuSelector);
+        }
+        // Define mouse leave for hover event
+        function mouseLeave() {
+            common.enableWindowScroll();
+        }
+        // Hover event for main menus to control window scrolling
+        common.hover(parentSelector, menuSelector, mouseEnter, mouseLeave);
+        // Use to control when to hide the opened menus
+        function one(target) {
+            // Turn off any previous one events to prevent stacking
+            $(document).off('click touchstart touch');
+            // Delay the creation of the one event below because any previous click events registering
+            // function one cascade to fire the event below after it's created.
+            setTimeout(function() {
+                // Create one reset display event on content slide
+                $(document).one('click touchstart touch', function(event) {
+                    event.stopImmediatePropagation();
+                    if($(event.target).parents(menuSelector).first().get(0) != $(target).get(0)
+                        && $(event.target).first().get(0) != $(target).get(0)) {
+                        $(target).attr('aria-hidden', true);
+                        $(target).hide();
+                        $(this).find('div.carrot').remove();
+                    } else {
+                        // Recursion
+                        one(target);
+                    }
+                });
+            }, 1);
+        }
+        // Kick off initialize callback
+        initializeCallback.call(this);
+    };
+    
 })(jQuery, _);

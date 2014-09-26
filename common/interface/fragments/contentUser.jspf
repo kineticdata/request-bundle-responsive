@@ -43,68 +43,28 @@ if(context != null) {
 
 <script type="text/javascript">
 $(function() {
+    // Add gravatar image to ui
     BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'i.gravatar-icon');
     BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'div.user-card a.user');
-    $('header.main').on('click touchstart touch', 'a.profile', function(event) {
-        event.preventDefault();
+    // Setup parameters for menus
+    var parentSelector = 'header.main';
+    var triggerSelector = 'a.profile';
+    var menuSelector = 'div.user-card';
+    var initializeCallback = function() {};
+    var triggerCallback = function() {
         // Close other menus
         if($('header.main div.main-menus').attr('aria-hidden') === 'false') {
             $('header.main a.drop-down-menus').trigger('click');
         }
-        // Turn off any previous one events to prevent stacking
-        $(window).off('resize');
-        var target = $(this).data('target');
-        var objContext = this;
-        if($(target).attr('aria-hidden') === 'true') {
-            $(target).attr('aria-hidden', false);
-            $(target).show();
-            $(objContext).append($('<div>').addClass('carrot'));
-
-            // Create one reset display event for resize
-            $(window).one('resize', function() {
-                $(target).attr('aria-hidden', true);
-                $(target).hide();
-                $(objContext).find('div.carrot').remove();
-            });
-            one.call(objContext, target)
-        } else {
-            $(target).attr('aria-hidden', true);
-            $(target).hide();
-            $(objContext).find('div.carrot').remove();
-        }
-    });
-    // Define mouse enter for hover event
-    function mouseEnter() {
-        BUNDLE.common.preventWindowScroll();
-    }
-    // Define mouse leave for hover event
-    function mouseLeave() {
-        BUNDLE.common.enableWindowScroll();
-    }
-    // Hover event for main menus to control window scrolling
-    BUNDLE.common.hover('header.main', 'div.user-card', mouseEnter, mouseLeave);
-    // Use to control when to hide the opened menus
-    function one(target) {
-        // Turn off any previous one events to prevent stacking
-        $(document).off('click touchstart touch');
-        // Delay the creation of the one event below because any previous click events registering
-        // function one cascade to fire the event below after it's created.
-        setTimeout(function() {
-            // Create one reset display event on content slide
-            $(document).one('click touchstart touch', function(event) {
-                event.stopImmediatePropagation();
-                if($(event.target).parents('div.user-card').first().get(0) != $(target).get(0)
-                    && $(event.target).first().get(0) != $(target).get(0)) {
-                    $(target).attr('aria-hidden', true);
-                    $(target).hide();
-                    $(this).find('div.carrot').remove();
-                } else {
-                    // Recursion
-                    one(target);
-                }
-            });
-        }, 1);
-    }
+    };
+    // Initialize menus
+    BUNDLE.common.enableHeadMenus(
+        parentSelector,
+        triggerSelector,
+        menuSelector,
+        initializeCallback,
+        triggerCallback
+    );
 });
 </script>
 <style type="text/css">
