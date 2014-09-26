@@ -50,21 +50,18 @@ $(function() {
     var parentSelector = 'header.main';
     var triggerSelector = 'a.profile';
     var menuSelector = 'div.user-card';
-    var initializeCallback = function() {};
-    var triggerCallback = function() {
-        // Close other menus
-        if($('header.main div.main-menus').attr('aria-hidden') === 'false') {
-            $('header.main a.drop-down-menus').trigger('click');
-        }
-    };
     // Initialize menus
-    BUNDLE.common.enableHeadMenus(
-        parentSelector,
-        triggerSelector,
-        menuSelector,
-        initializeCallback,
-        triggerCallback
-    );
+    BUNDLE.common.enableHeadMenus({
+        'parentSelector': parentSelector,
+        'triggerSelector': triggerSelector,
+        'menuSelector': menuSelector,
+        triggerOpenCallback: function() {
+            // Close other menus
+            if($('header.main div.main-menus').attr('aria-hidden') === 'false') {
+                $('header.main a.drop-down-menus').trigger('click');
+            }
+        }
+    });
 });
 </script>
 <style type="text/css">

@@ -1,0 +1,217 @@
+<a class="drop-down-menus" href="javascript:void(0)" data-target="div.main-menus" data-description="Navigate">
+    <i class="fa fa-th"></i>
+</a>
+<div class="main-menus" aria-hidden="true">
+    <ul class="list-unstyled clearfix">
+        <li class="catalog">
+            <a href="<%= bundle.getProperty("catalogUrl")%>">
+                <i class="fa fa-home"></i>
+                <div>Home</div>
+            </a> 
+        </li>
+        <li class="popular-requests">
+            <a href="<%= bundle.getProperty("popularRequestsUrl")%>">
+                <i class="fa fa-star-o"></i>
+                <div>Popular Requests</div>
+            </a>
+        </li>
+        <li class="approvals">
+            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals">
+                <i class="fa fa-check"></i>
+                <div>Approvals</div>
+            </a>
+        </li>
+        <li class="requests">
+            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=requests">
+                <i class="fa fa-pencil-square-o"></i>
+                <div>Requests</div>
+            </a>
+        </li>
+    </ul>
+    <%if(bundle.getProperty("kapps") == null) {%>
+        <a class="more">
+            More
+        </a>
+        <ul class="list-unstyled kapps clearfix">
+            <li class="osc">
+                <a href="#">
+                    <i class="fa fa-cogs"></i>
+                    <div>OSC</div>
+                </a> 
+            </li>
+            <li class="favorites">
+                <a href="#">
+                    <i class="fa fa-bookmark-o"></i>
+                    <div>Favorites</div>
+                </a>
+            </li>
+            <li class="fulfilment">
+                <a href="#">
+                    <i class="fa fa-exchange"></i>
+                    <div>Fulfilment</div>
+                </a>
+            </li>
+            <li class="cmdb">
+                <a href="#">
+                    <i class="fa fa-database"></i>
+                    <div>CMDB</div>
+                </a>
+            </li>
+        </ul>
+    <%}%>
+</div>
+<script type="text/javascript">
+$(function() {
+    // Define qtip options for menus
+    var qtipOptions = {
+        content: {
+            attr: 'data-description'
+        },
+        style: {
+            classes: 'qtip-tipsy qtip-shadow',
+            tip: {
+                corner: true
+            }
+        },
+        position: {
+            my: 'top center',
+            at: 'bottom middle'
+        }
+    };
+    // Setup parameters for menus
+    var parentSelector = 'header.main';
+    var triggerSelector = 'a.drop-down-menus';
+    var menuSelector = 'div.main-menus';
+    // Start qTip
+    var tooltips = $(triggerSelector).qtip(qtipOptions);
+    // Get the first api element
+    var api = tooltips.qtip('api');
+    // Initialize menus
+    BUNDLE.common.enableHeadMenus({
+        'parentSelector': parentSelector,
+        'triggerSelector': triggerSelector,
+        'menuSelector': menuSelector,
+        initializeCallback: function() {
+            // Click event for more
+            $(parentSelector).on('click', menuSelector + ' a.more', function(event) {
+                event.preventDefault();
+                // Scroll to bottom of main menus to expose remaining items
+                $(menuSelector).scrollTop($(menuSelector).height());
+            });
+            // Scroll event for main menus
+            $(parentSelector + ' ' + menuSelector).on('scroll', function() {
+               // Determine if scroll top is greater than 0
+               if($(this).scrollTop() > 0) {
+                   // Hide more
+                   $(this).find('a.more').hide();
+               } else {
+                   // show more
+                   $(this).find('a.more').show();
+               }
+            });
+        },
+        triggerOpenCallback: function() {
+            // Hide qtip
+            api.hide();
+            // Disable qtip
+            api.disable();
+            // Close other menus
+            if($('header.main div.user-card').attr('aria-hidden') === 'false') {
+                $('header.main a.profile').trigger('click');
+            }
+        },
+        triggerCloseCallback: function() {
+            // Enable qTip
+            api.enable();
+            
+        }
+    });
+});
+</script>
+<style type="text/css">
+    header.main div.container div.collapse a.drop-down-menus {
+        float: right;
+        margin: 0 20px 0 0;
+        padding: 8px 0 0 0;
+        line-height: 42px;
+    }
+    header.main div.container div.collapse a.drop-down-menus i.fa-th {
+        color: white;
+        font-size: 20px;
+    }
+    header.main div.container div.collapse a.drop-down-menus:hover i.fa-th {
+        color: #F95026;
+        cursor: pointer;
+    }
+    header.main div.container div.collapse a.drop-down-menus div.carrot {
+        border-color: transparent;
+        border-bottom-color: #fff;
+        border-style: dashed dashed solid;
+        border-width: 0 8px 8px;
+        position: absolute;
+        right: 46px;
+        top: 45px;
+        z-index: 200000;
+        height: 0;
+        width: 0;
+    }
+    div.main-menus {
+        display: none;
+        position: absolute;
+        z-index: 200000;
+        background-color: white;
+        top: 53px;
+        right: 0;
+        border-color: rgba(0,0,0,.2);
+        box-shadow: 0 2px 10px rgba(0,0,0,.2);
+        -webkit-border-radius: 2px;
+        border-radius: 2px;
+        -webkit-user-select: text;
+        max-height: 230px;
+        overflow: hidden;
+        overflow-y: auto;
+    }
+    div.main-menus ul {
+        background: #fff;
+        margin: 0;
+        min-height: 100px;
+        padding: 20px 20px 0 20px;
+        padding-right: 21px;
+        text-align: left;
+        white-space: normal;
+        width: 225px;
+    }
+    div.main-menus ul li {
+        width: 86px;
+        height: 86px;
+        text-align: center;
+        float: left;
+    }
+    div.main-menus ul li a {
+        color: #404040;
+    }
+    div.main-menus ul li a:hover {
+        text-decoration: none;
+        color: #F95026;
+    }
+    div.main-menus ul li i {
+        font-size: 32px;
+    }
+    div.main-menus a.more {
+        color: #737373;
+        text-decoration: none;
+        display: block;
+        line-height: 40px;
+        text-align: center;
+        background: #f5f5f5;
+        cursor: pointer;
+        height: 40px;
+        overflow: hidden;
+    }
+    div.main-menus a.more:hover {
+        color: black;
+    }
+    div.main-menus ul.kapps {
+        padding: 0 20px;
+    }
+</style>
