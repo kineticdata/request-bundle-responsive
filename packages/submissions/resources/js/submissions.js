@@ -41,7 +41,7 @@
         // Get console specific properties
         var params = submissions.consoleParams[urlParameters.status];
         // How many entries to show on page load
-        var entryOptionSelected = 5;
+        var entryOptionSelected = 10;
         // Start table
         submissions.initialize(params, urlParameters.status, entryOptionSelected);
     });
