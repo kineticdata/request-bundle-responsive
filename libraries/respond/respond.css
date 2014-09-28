@@ -1,0 +1,13 @@
+/* These properties are meant to override 
+the body.hide class after respond finishes processing in foot.jspf. 
+Adding this include by JavaScript to the head, ensures it is loaded by respond js last. */
+@media screen and (max-width: 480px){
+    body.hide{
+        display: block;
+    }
+}
+@media screen and (min-width: 480px){
+    body.hide{
+        display: block;
+    }
+}
