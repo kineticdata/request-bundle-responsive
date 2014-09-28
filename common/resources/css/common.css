@@ -444,6 +444,7 @@ header.main div.container a.logo img {
 }
 header.main div.container a.logo div.company {
     line-height: 18px;
+    margin: 0 5px 0 0;
 }
 header.main div.container button.fa-bars {
   margin: 5px 0;
