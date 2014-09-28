@@ -15,29 +15,16 @@
     </div>
 </footer>
 <%-- 
-    The respond.css include below has properties that are meant to override 
-    the body.hide class after respond finishes processing. Adding this include by 
-    JavaScript to the head, ensures it is loaded by respond js last.
+    The respond.css include below has properties that are meant to override the body.hide
+    class (added by JavaScript to body in header.jspf) after respond finishes processing. 
+    Adding this include by JavaScript to the head, ensures it is loaded by respond js last.
 --%>
 <script type='text/javascript'>
     var respondCssInclude = '<!--[if lt IE 9]>' +
         '<link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/respond/respond.css" />' +
         '<![endif]-->';
 </script>
-<%--
-    Add the hide class to the body in IE8. This is done so 
-    respond.js can finish rendering the responsive media queries. 
---%>
 <!--[if lt IE 9]>
-<script type='text/javascript'>
-    // Hide the body so respond can process
-    document.body.className += ' hide';
-    // Show content after 500 mills
-    // Meant as a fallback if respond didn't process respond.css
-    setTimeout(function() {
-        $('body').show();
-    }, 500);
-</script>
 <%-- Add respond.css to head --%>
 <script type='text/javascript'>
     $('head').append(respondCssInclude);

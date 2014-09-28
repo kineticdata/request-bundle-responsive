@@ -1,3 +1,20 @@
+<%--
+    Add the hide class to the body in IE8. This is done so 
+    respond.js can finish rendering the responsive media queries in footer.jspf.
+    This hide needs to happen as soon as the body is generated to work correctly.
+    That is way this is included in the header fragment.
+--%>
+<!--[if lt IE 9]>
+<script type='text/javascript'>
+    // Hide the body so respond can process
+    document.body.className += ' hide';
+    // Show content after 2 seconds
+    // Meant as a fallback if respond didn't process respond.css
+    setTimeout(function() {
+        $('body').show();
+    }, 2000);
+</script>
+<![endif]-->
 <header class="main">
     <div class="container">
         <!-- Small device head -->
