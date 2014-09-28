@@ -183,8 +183,9 @@
     };
     
     /**
-     * Live jQuery hover function used to display specific behavior when a user hovers over dhildren selector.
-     * The parent slector of the children are quired for the even to be live.
+     * Live jQuery hover function.
+     * The parent selector should contain the child DOM element (childSelector).
+     * The parent selector allows the hover event to be live.
      * 
      * @param {String} parentSelector
      * @param {String} childSelector
@@ -205,21 +206,6 @@
                }
            }
        }, childSelector);
-    };
-    
-    /*
-     * 
-     * @param {Object} obj
-     * IE ONLY - used with the styles "preRequiredLabel
-     * Example: *.preRequiredLabel { zoom: expression(BUNDLE.common.setIE7PreRequired(this)); }
-     * @returns {undefined}
-     */
-    common.setIE7PreRequired = function(object) {
-        if($(object).hasClass('preRequiredLabel')) {
-            if(object.innerHTML.indexOf("*") === -1) {
-                $(object).append("*");
-            }
-        }
     };
     
     /**
@@ -276,6 +262,7 @@
                 }
             });
         } else {
+           // Prevent all scrolling
            $('html').on('DOMMouseScroll mousewheel', function(event) {
                 // Prevent window scroll
                 event.preventDefault();
@@ -300,8 +287,12 @@
      * @param {Object} opitions
      * @param {String|Object} opitions.parentSelector the DOM element that wraps the trigger and menu
      * @param {String|Object} opitions.triggerSelector the DOM element that triggers the menus
-     * @param {String|Object} opitions.menuSelector the menus
-     * @param {Function} opitions.initializeCallback fires when the initialized
+     * @example
+     *      <a class="main-menu-trigger">Navigate</a>
+     * @param {String|Object} opitions.menuSelector the menus DOM element
+     * @example
+     *      <nav class="main-menu">Anchor elements...</nav>
+     * @param {Function} opitions.initializeCallback fires when enable head mensu is called
      * @param {Function} opitions.triggerOpenCallback fires when the menus is triggered
      * @param {Function} opitions.triggerCloseCallback fires when the menus is closed
      * @returns {undefined}

@@ -112,8 +112,6 @@ form#pageQuestionsForm div.preRequiredLabel:after,
 div#reviewContent div.preRequiredLabel:after { color: red !important; content: "* "; }
 form#pageQuestionsForm div.preRequiredLabel div.preRequiredLabel_checkbox:after,
 div#reviewContent div.preRequiredLabel div.preRequiredLabel_checkbox:after { content: ""; }
-form#pageQuestionsForm *.preRequiredLabel,
-div#reviewContent *.preRequiredLabel { zoom: expression(setIE7PreRequired(this)); }
 
 /* Buttons */
 div[label="Bottom of Page"] {
