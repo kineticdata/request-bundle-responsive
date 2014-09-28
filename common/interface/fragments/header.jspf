@@ -1,19 +1,23 @@
 <header class="main">
     <div class="container">
-        <a class="logo" href="<%= bundle.getProperty("catalogUrl")%>">
-            <!-- <img alt="<%= bundle.getProperty("companyName") %>" src="<%= bundle.bundlePath()%>common/resources/images/logo.png" /> -->
-            <div class="company">
-                <div>
-                    <%= bundle.getProperty("companyName") %>
-                </div>
-                <div style="font-size: 11px;">
-                    Service Catalog
-                </div>
+        <!-- Small device head -->
+        <div class="hidden-md hidden-lg">
+            <button type="button" class="fa fa-bars" data-target="div.navigation-slide">
+            </button>
+            <%@include file="logo.jspf"%>
+        </div>
+        <!-- Desktop head -->
+        <div class="row">
+            <div class="col-sm-8 hidden-xs hidden-sm">
+                <%@include file="logo.jspf"%>
+                <%@include file="portalSearchForm.jspf"%>
             </div>
-        </a>
-        <button type="button" class="fa fa-bars" data-target="div.navigation-slide">
-        </button>
-        <%@include file="navigationHeader.jspf"%>
+            <nav class="col-sm-4 hidden-xs hidden-sm">
+                <%@include file="contentUser.jspf"%>
+                <%@include file="alerts.jspf"%>
+                <%@include file="mainMenu.jspf"%>
+            </nav>
+        </div>
     </div>
 </header>
 <div class="fixed-header-spacer"></div>

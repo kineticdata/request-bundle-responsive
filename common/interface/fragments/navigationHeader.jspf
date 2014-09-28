@@ -1,6 +1,0 @@
-<div class="collapse clearfix">
-    <%@include file="portalSearchForm.jspf"%>
-    <%@include file="contentUser.jspf"%>
-    <%@include file="alerts.jspf"%>
-    <%@include file="mainMenu.jspf"%>
-</div>

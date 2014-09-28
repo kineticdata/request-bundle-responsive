@@ -69,11 +69,11 @@ $(function() {
 });
 </script>
 <style type="text/css">
-    header.main div.container div.collapse a.profile {
+    header.main a.profile {
         line-height: 50px;
         float: right;
     }
-    header.main div.container div.collapse a.profile img {
+    header.main a.profile img {
         display: inline-block;
         outline: none;
         vertical-align: middle;
@@ -84,28 +84,29 @@ $(function() {
         height: 24px;
         width: 24px;
     }
-    div.user-card {
+    header.main div.user-card {
+        white-space: nowrap;
         display: none;
         position: absolute;
         z-index: 2040;
         background-color: white;
         top: 53px;
-        right: 0;
+        right: 20px;
         border-color: rgba(0,0,0,.2);
         box-shadow: 0 2px 10px rgba(0,0,0,.2);
         -webkit-border-radius: 2px;
         border-radius: 2px;
         -webkit-user-select: text;
     }
-    div.user-card div.wrap {
+    header.main div.user-card div.wrap {
         margin: 20px;
     }
-    div.user-card div.wrap a.user {
+    header.main div.user-card div.wrap a.user {
         display: inline-block;
         vertical-align: top;
         margin-right: 20px;
     }   
-    div.user-card div.wrap a.user img {
+    header.main div.user-card div.wrap a.user img {
         display: inline-block;
         outline: none;
         vertical-align: middle;
@@ -116,20 +117,20 @@ $(function() {
         height: 96px;
         width: 96px;
     }
-    div.user-card div.wrap div.information {
+    header.main div.user-card div.wrap div.information {
         display: inline-block;
         vertical-align: top;
     }
-    div.user-card div.wrap div.information div.name {
+    header.main div.user-card div.wrap div.information div.name {
         font-weight: bold;
     }
-    div.user-card div.wrap div.information div.email {
+    header.main div.user-card div.wrap div.information div.email {
         color: #666;
     }
-    div.user-card div.wrap div.information div.profile {
+    header.main div.user-card div.wrap div.information div.profile {
         margin: 28px 0 0 0;
     }
-    div.user-card div.actions {
+    header.main div.user-card div.actions {
         background: #f5f5f5;
         border-top: 1px solid #ccc;
         border-color: rgba(0,0,0,.2);
@@ -137,11 +138,11 @@ $(function() {
         width: 100%;
         display: table;
     }
-    div.user-card div.actions div.sign-out {
+    header.main div.user-card div.actions div.sign-out {
         display: table-cell;
         text-align: right;
     }
-    div.user-card div.actions div.sign-out a {
+    header.main div.user-card div.actions div.sign-out a {
         margin: 0 20px;
         background: #f8f8f8;
         border: 1px solid #c6c6c6;
@@ -152,16 +153,16 @@ $(function() {
         border-radius: 2px;
         color: #666;
     }
-    div.user-card div.actions div.sign-out a:hover {
+    header.main div.user-card div.actions div.sign-out a:hover {
         text-decoration: none;
     }
-    header.main div.container div.collapse a.profile div.carrot {
+    header.main a.profile div.carrot {
         border-color: transparent;
         border-bottom-color: #fff;
         border-style: dashed dashed solid;
         border-width: 0 8px 8px;
         position: absolute;
-        right: 0;
+        right: 20px;
         top: 45px;
         z-index: 1;
         height: 0;

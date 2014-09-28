@@ -137,27 +137,27 @@ $(function() {
 });
 </script>
 <style type="text/css">
-    header.main div.container div.collapse a.main-menus {
+    header.main a.main-menus {
         float: right;
         margin: 0 20px 0 0;
         padding: 8px 0 0 0;
         line-height: 42px;
     }
-    header.main div.container div.collapse a.main-menus i.fa-th {
+    header.main a.main-menus i.fa-th {
         color: white;
         font-size: 20px;
     }
-    header.main div.container div.collapse a.main-menus:hover i.fa-th {
+    header.main a.main-menus:hover i.fa-th {
         color: #F95026;
         cursor: pointer;
     }
-    header.main div.container div.collapse a.main-menus div.carrot {
+    header.main a.main-menus div.carrot {
         border-color: transparent;
         border-bottom-color: #fff;
         border-style: dashed dashed solid;
         border-width: 0 8px 8px;
         position: absolute;
-        right: 86px;
+        right: 101px;
         top: 45px;
         z-index: 200000;
         height: 0;

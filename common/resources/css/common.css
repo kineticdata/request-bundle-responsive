@@ -426,13 +426,12 @@ header.main {
   background-color: #0C2231;
 }
 header.main div.container a.logo {
-  float: right;
-  padding: 7px 5px 0 0;
+  float: left;
+  padding: 7px 0 0 0;
   font-size: 20px;
   font-weight: 200;
   color: #999999;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  line-height: 48px;
   min-width: 90px;
 }
 header.main div.container a.logo:hover {
@@ -468,39 +467,39 @@ header.main div.container button.fa-bars[disabled] {
   background-color: #102e41;
 }
 /* Navigtion styles for ul anchor list in the main header */
-header.main div.container div.collapse > ul {
+header.main div.container nav > ul {
   float: right;
   margin: 0;
   list-style: none;
   padding: 0;
 }
-header.main div.container div.collapse > ul > li {
+header.main div.container nav > ul > li {
   float: left;
   line-height: 50px;
 }
-header.main div.container div.collapse > ul > li > div.arrow-left {
+header.main div.container nav > ul > li > div.arrow-left {
   display: none;
 }
-header.main div.container div.collapse > ul > li > a {
+header.main div.container nav > ul > li > a {
   color: white;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   padding: 20px 10px 15px;
 }
-header.main div.container div.collapse > ul > li > a > i {
+header.main div.container nav > ul > li > a > i {
   margin: 0 5px 0 0;
   font-size: 16px;
 }
-header.main div.container div.collapse > ul > li > a:focus,
-header.main div.container div.collapse > ul > li > a:hover,
-header.main div.container div.collapse > ul > li.active > a {
+header.main div.container nav > ul > li > a:focus,
+header.main div.container nav > ul > li > a:hover,
+header.main div.container nav > ul > li.active > a {
   background-color: transparent;
   color: #F95026;
   text-decoration: none;
 }
 /* Content slide search */
-div.collapse form.portal-search { padding: 0; margin: 11px 0 0 0; float: left; }
-div.collapse form.portal-search input[type="text"] {
-    width: 260px;
+header.main form.portal-search { padding: 0; margin: 11px 0 0 0; float: left; }
+header.main form.portal-search input[type="text"] {
+    width: 420px;
     float: left;
     min-height: 24px;
     border-top-right-radius: 0;
@@ -509,7 +508,7 @@ div.collapse form.portal-search input[type="text"] {
     margin: 0;
     -webkit-appearance: none;
 }
-div.collapse form.portal-search button[type="submit"].fa-search {
+header.main form.portal-search button[type="submit"].fa-search {
     width: 40px;
     height: 28px;
     cursor: pointer;
@@ -687,8 +686,8 @@ footer.footer a:hover {
 }
 /* Media Queries */
 @media (min-width: 1200px) {
-    div.collapse form.portal-search input[type="text"] {
-        width: 340px;
+    header.main form.portal-search input[type="text"] {
+        width: 480px;
     }
 }
 @media (min-width: 768px) and (max-width: 979px) {}
@@ -719,7 +718,7 @@ footer.footer a:hover {
   div.navigation-slide {
     display: none !important;
   }
-  header.main div.container div.collapse {
+  header.main div.container nav {
     height: auto !important;
     overflow: visible !important;
     position: relative;
@@ -731,11 +730,6 @@ footer.footer a:hover {
     -o-transition: height 0.35s ease;
     transition: height 0.35s ease;
   }
-  header.main div.container button.fa-bars { display: none; }
-  header.main div.container a.logo {
-    display: block;
-    float: left;
-  }
 }
 @media (max-width: 991px) {
   body {
@@ -743,6 +737,10 @@ footer.footer a:hover {
   }
   div.content-slide {
     padding-bottom: 50px;
+  }
+  header.main div.container a.logo {
+    display: block;
+    float: right;
   }
 }
 @media (max-width: 767px) {}
