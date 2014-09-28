@@ -109,6 +109,10 @@ $(function() {
                    $(this).find('a.more').show();
                }
             });
+            // Add custom chrome webkit scroll css for anything other than mac
+            if(BUNDLE.client.isMac !== undefined && !BUNDLE.client.isMac) {
+                $(parentSelector + ' ' + menuSelector).addClass('scroll');
+            }
         },
         triggerOpenCallback: function() {
             // Hide qtip
