@@ -58,7 +58,7 @@
     BUNDLE.config.user = '<%= (context == null) ? "" : context.getUserName()%>';
     
     // Define localization object
-    var Localization = { <%= bundle.getProperty("i18nValues") != null ? bundle.getProperty("i18nValues") : "" %> };
+    var Localization = { <%= (bundle.getProperty("i18nValues") != null) ? bundle.getProperty("i18nValues") : "" %> };
     // Create .localize() string function.  This allows any JavaScript string to be
     // localized by adding ".localize()" to the end.  Examples: "hello".localize().
     String.prototype.localize = function() {
@@ -83,14 +83,15 @@
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/jquery.qtip/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/underscore/underscore-min.js"></script>
+
+<!-- Common JavaScript -->
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/client.js"></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/Bridges.js"></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/ajaxLogin.js"></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/common.js"></script>
 <script type="text/javascript">
 $(function() {
     // Remove KDCACHE cookie until servlet stops creating it.
     $.removeCookie('KDCACHE-CHECK' + '<%=customerSurvey.getPageInstanceID()%>');
 });
 </script>
-
-<!-- Common JavaScript -->
-<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/Bridges.js"></script>
-<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/ajaxLogin.js"></script>
-<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/common.js"></script>
