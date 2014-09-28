@@ -6,6 +6,7 @@ CATALOG_NAME_URL = "#{DISPLAY_NAME_FOR_URL}_Catalog"
 STANDARD_AUTHENTICATION_FORM = "Catalog"
 
 # Used to drive the standard look and feel
+APPLICATION_CONTEXT = "/kinetic"
 THEMES_BASE = "/themes/responsive"
 DISPLAY_PAGE = "#{THEMES_BASE}/packages/base/display.jsp"
 CONFIRMATION_PAGE = "#{THEMES_BASE}/packages/base/confirmation.jsp"

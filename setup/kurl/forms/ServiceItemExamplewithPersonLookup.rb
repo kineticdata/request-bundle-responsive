@@ -150,7 +150,7 @@ service_item "Service Item Example with Person Lookup" do
       :size => "40",
       :rows => "1",
       :style_class => " fleft "
-    text "Search Buttons", "<div class=\"fleft\" id=\"searchButtons\">\n  <input type=\"button\" value=\"Search\" id=\"b_searchReqFor\" class=\"templateButton\" > \n  <input type=\"button\" value=\"Clear\" id=\"b_clearReqFor\" class=\"templateButton\" > \n  <img id=\"ajax_searchReqFor\" src=\"themes/flyout/common/resources/images/spinner.gif\" alt=\"searching...\" style=\"display:none;\" />\n</div>\n<div class=\"clearfix\"></div>",
+    text "Search Buttons", "<div class=\"fleft\" id=\"searchButtons\">\n  <input type=\"button\" value=\"Search\" id=\"b_searchReqFor\" class=\"templateButton\" > \n  <input type=\"button\" value=\"Clear\" id=\"b_clearReqFor\" class=\"templateButton\" > \n  <img id=\"ajax_searchReqFor\" src=\"#{APPLICATION_CONTEXT}#{THEMES_BASE}/common/resources/images/spinner.gif\" alt=\"searching...\" style=\"display:none;\" />\n</div>\n<div class=\"clearfix\"></div>",
       :removed,
       :style_class => " fleft " do
       event "People Search",
@@ -283,7 +283,7 @@ service_item "Service Item Example with Person Lookup" do
       :size => "40",
       :rows => "1",
       :style_class => " fleft "
-    text "Contact Search Buttons", "<div id=\"searchButtons\" class= \"fleft\">\n  <input type=\"button\" value=\"Search\" id=\"b_searchContact\" class=\"templateButton\" > \n  <input type=\"button\" value=\"Clear\" id=\"b_clearContact\" class=\"templateButton\" > \n<img id=\"ajax_searchContact\" src=\"themes/flyout/common/resources/images/spinner.gif\" alt=\"searching...\" style=\"display:none;\" />\n</div>\n<div class=\"clearfix\"></div>\n\n",
+    text "Contact Search Buttons", "<div id=\"searchButtons\" class= \"fleft\">\n  <input type=\"button\" value=\"Search\" id=\"b_searchContact\" class=\"templateButton\" > \n  <input type=\"button\" value=\"Clear\" id=\"b_clearContact\" class=\"templateButton\" > \n<img id=\"ajax_searchContact\" src=\"#{APPLICATION_CONTEXT}#{THEMES_BASE}/common/resources/images/spinner.gif\" alt=\"searching...\" style=\"display:none;\" />\n</div>\n<div class=\"clearfix\"></div>\n\n",
       :removed,
       :style_class => " fleft " do
       event "Contact Lookup",
