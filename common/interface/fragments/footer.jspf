@@ -14,3 +14,7 @@
         </span>
     </div>
 </footer>
+<!-- Respond.js support of media queries for IE8. NOTE: must be included after all css is included -->
+<!--[if lt IE 9]>
+<script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/respond.min.js'></script>
+<![endif]-->

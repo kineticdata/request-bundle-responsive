@@ -69,10 +69,9 @@
 </script>
 
 <!-- Common JavaScript Libraries -->
-<!-- HTML5 modernizr and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- HTML5 modernizr for IE8 -->
 <!--[if lt IE 9]>
 <script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/modernizr.custom.js'></script>
-<script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/respond.min.js'></script>
 <![endif]-->
 <script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/placeholders.min.js'></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/moment/moment.js"></script>
