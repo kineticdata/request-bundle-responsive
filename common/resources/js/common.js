@@ -45,16 +45,16 @@
                 firstToggleClick = true;
                 BUNDLE.common.resetDisplay(contentSlide, $(this).data('target'), previousScrollTop);     
             }
-        });
-        
-        // This should remove address bar in cell phones
-        if (navigator.userAgent.indexOf('iPhone') !== -1 || navigator.userAgent.indexOf('Android') !== -1) {
+        });    
+        // Removes address bar in android and iphone devices
+        if (BUNDLE.client.isIphone !== undefined && BUNDLE.client.isIphone ||
+            BUNDLE.client.isAndroid !== undefined && BUNDLE.client.isAndroid) {
             addEventListener('load', function() {
                 setTimeout(BUNDLE.common.hideUrlBar, 0);
             }, false);
         }
     });
-    
+
     /*----------------------------------------------------------------------------------------------
      * COMMON INIALIZATION
      *   This code is executed when the Javascript file is loaded
@@ -407,5 +407,32 @@
         // Kick off initialize callback
         if(options.initializeCallback !== undefined) { options.initializeCallback.call(this); }
     };
+
+    /**
+     * Sends the client back one page
+     * 
+     * @returns {undefined}
+     */
+    common.goBack = function() {
+        window.history.back();
+    };
     
+    /**
+     * Can be used to set a callback function which is called before the browser window
+     * state is going to change (IE, back, redirect, reload, forward and etc).
+     * 
+     * @param {Function} callback
+     * @returns {undefined}
+     */
+    common.beforeWindowUnload = function(callback) {
+        // Define default callback if callback undefinied
+        callback = callback || function() {
+            return "You have attempted to leave this page. " +
+                "If you have made any changes to the fields without clicking the Save button, " + 
+                "your changes will be lost.  Are you sure you want to exit this page?";
+        };
+        // Set callback
+        window.onbeforeunload = callback;
+    };
+
 })(jQuery, _);
