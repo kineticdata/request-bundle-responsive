@@ -1,58 +1,58 @@
-<a class="main-menus" href="javascript:void(0)" data-target="div.main-menus" data-description="Navigate">
+<a class="main-menus color-white color-hover-secondary" href="javascript:void(0)" data-target="div.main-menus" data-description="Navigate">
     <i class="fa fa-th"></i>
 </a>
-<div class="main-menus" aria-hidden="true">
+<div class="main-menus background-white" aria-hidden="true">
     <ul class="list-unstyled clearfix">
         <li class="catalog">
-            <a href="<%= bundle.getProperty("catalogUrl")%>">
+            <a href="<%= bundle.getProperty("catalogUrl")%>" class="color-gray-darkest color-hover-secondary">
                 <i class="fa fa-home"></i>
                 <div>Home</div>
             </a> 
         </li>
         <li class="popular-requests">
-            <a href="<%= bundle.getProperty("popularRequestsUrl")%>">
+            <a href="<%= bundle.getProperty("popularRequestsUrl")%>" class="color-gray-darkest color-hover-secondary">
                 <i class="fa fa-star-o"></i>
                 <div>Popular Requests</div>
             </a>
         </li>
         <li class="approvals">
-            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals">
+            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals" class="color-gray-darkest color-hover-secondary">
                 <i class="fa fa-check"></i>
                 <div>Approvals</div>
             </a>
         </li>
         <li class="requests">
-            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=requests">
+            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=requests" class="color-gray-darkest color-hover-secondary">
                 <i class="fa fa-pencil-square-o"></i>
                 <div>Requests</div>
             </a>
         </li>
     </ul>
     <%if(bundle.getProperty("kapps") == null) {%>
-        <a class="more">
+        <a class="more background-gradient-gray">
             More
         </a>
         <ul class="list-unstyled kapps clearfix">
             <li class="osc">
-                <a href="#">
+                <a href="#" class="color-gray-darkest color-hover-secondary">
                     <i class="fa fa-cogs"></i>
                     <div>OSC</div>
                 </a> 
             </li>
             <li class="favorites">
-                <a href="#">
+                <a href="#" class="color-gray-darkest color-hover-secondary">
                     <i class="fa fa-bookmark-o"></i>
                     <div>Favorites</div>
                 </a>
             </li>
             <li class="fulfilment">
-                <a href="#">
+                <a href="#" class="color-gray-darkest color-hover-secondary">
                     <i class="fa fa-exchange"></i>
                     <div>Fulfilment</div>
                 </a>
             </li>
             <li class="cmdb">
-                <a href="#">
+                <a href="#" class="color-gray-darkest color-hover-secondary">
                     <i class="fa fa-database"></i>
                     <div>CMDB</div>
                 </a>
@@ -144,11 +144,9 @@ $(function() {
         line-height: 42px;
     }
     header.main a.main-menus i.fa-th {
-        color: white;
         font-size: 20px;
     }
     header.main a.main-menus:hover i.fa-th {
-        color: #F95026;
         cursor: pointer;
     }
     header.main a.main-menus div.carrot {
@@ -167,7 +165,6 @@ $(function() {
         display: none;
         position: absolute;
         z-index: 200000;
-        background-color: white;
         top: 53px;
         right: 0;
         border-color: rgba(0,0,0,.2);
@@ -180,7 +177,6 @@ $(function() {
         overflow-y: auto;
     }
     div.main-menus ul {
-        background: #fff;
         margin: 0;
         min-height: 100px;
         padding: 20px 20px 0 20px;
@@ -195,9 +191,6 @@ $(function() {
         text-align: center;
         float: left;
     }
-    div.main-menus ul li a {
-        color: #404040;
-    }
     div.main-menus ul li a:hover {
         text-decoration: none;
         color: #F95026;
@@ -206,18 +199,13 @@ $(function() {
         font-size: 32px;
     }
     div.main-menus a.more {
-        color: #737373;
         text-decoration: none;
         display: block;
         line-height: 40px;
         text-align: center;
-        background: #f5f5f5;
         cursor: pointer;
         height: 40px;
         overflow: hidden;
-    }
-    div.main-menus a.more:hover {
-        color: black;
     }
     div.main-menus ul.kapps {
         padding: 0 20px;

@@ -1,14 +1,14 @@
 <!-- Footer -->
-<footer class="footer">
+<footer class="footer background-primary-darkest">
     <span style="display:none">&nbsp;</span>
     <div class="container" style="text-align: center;">
         <span class="left">
-            <a href="<%= bundle.getProperty("aboutUrl")%>">
+            <a href="<%= bundle.getProperty("aboutUrl")%>" class="color-gray-light color-hover-white">
                 About
             </a>
         </span>
         <span class="right">
-            <a href="<%= bundle.getProperty("feedbackUrl")%>">
+            <a href="<%= bundle.getProperty("feedbackUrl")%>" class="color-gray-light color-hover-white">
                 Site Feedback
             </a>
         </span>

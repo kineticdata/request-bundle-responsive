@@ -1,4 +1,4 @@
-<a class="logo" href="<%= bundle.getProperty("catalogUrl")%>">
+<a class="logo color-gray-light color-hover-white" href="<%= bundle.getProperty("catalogUrl")%>">
     <!-- <img alt="<%= bundle.getProperty("companyName") %>" src="<%= bundle.bundlePath()%>common/resources/images/logo.png" /> -->
     <div class="company">
         <div>
