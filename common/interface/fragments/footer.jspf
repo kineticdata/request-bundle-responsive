@@ -2,12 +2,12 @@
 <footer class="footer background-primary-darkest">
     <span style="display:none">&nbsp;</span>
     <div class="container" style="text-align: center;">
-        <span class="left">
+        <span class="pull-left">
             <a href="<%= bundle.getProperty("aboutUrl")%>" class="color-gray-light color-hover-white">
                 About
             </a>
         </span>
-        <span class="right">
+        <span class="pull-right">
             <a href="<%= bundle.getProperty("feedbackUrl")%>" class="color-gray-light color-hover-white">
                 Site Feedback
             </a>
