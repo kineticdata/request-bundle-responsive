@@ -156,7 +156,7 @@
         }
         
         /**
-         * Sets up the proper language for the entire template's dynamic page content for review or display
+         * Sets up the proper language for the entire template's dynamic page content for review or display.
          * Includes buttons, question labels, template description with the <LOCALIZE_SERVICE_ITEM_DESCRIPTION> tag,
          * any defined <LOCALIZE_SI></LOCALIZE_SI> tags and any defined <LOCALIZE_TEMPLATE></LOCALIZE_TEMPLATE> tags.
          *
@@ -172,9 +172,9 @@
             ResourceBundle templateResourceBundle
         ) {
             String pageContent = null;
-            // Determine if this is review request
-            if(customerRequest.isReviewRequest()) {
-                // Localize the review template page content
+            // Determine if this is review request or review page
+            if(customerRequest.isReviewRequest() || customerRequest.isReviewPage()) {
+                // Localize template review page content
                 pageContent = ThemeLocalizer.localizeReviewPageContent(
                     customerRequest, serviceItemsResourceBundle, templateSharedResourceBundle, 
                     templateResourceBundle);
@@ -188,7 +188,36 @@
         }
         
         /**
-         * Sets up the proper language for the entire template's display dynamic page content
+         * Sets up the proper language for the template's dynamic page content.
+         * Includes buttons, question labels, template description with the <LOCALIZE_SERVICE_ITEM_DESCRIPTION> tag,
+         * any defined <LOCALIZE_SI></LOCALIZE_SI> tags and any defined <LOCALIZE_TEMPLATE></LOCALIZE_TEMPLATE> tags.
+         *
+         * @param CustomerRequest
+         * @param ResourceBundle, the service item name and description resource bundle
+         * @param ResourceBundle, the template shared resource bundle
+         * @param ResourceBundle, the template specific resource bundle
+         */
+        public static String localizePageContent(
+            String templateName,
+            String pageContent,
+            SimpleEntry[] questions,
+            ResourceBundle serviceItemsResourceBundle,
+            ResourceBundle templateSharedResourceBundle,
+            ResourceBundle templateResourceBundle
+        ) {
+            // Convert template question labels to proper locale
+            pageContent = ThemeLocalizer.localizeTemplateQuestionLabels(pageContent, questions, templateSharedResourceBundle, templateResourceBundle);
+            // Convert dynamic template content to proper locale with the localize template tags
+            pageContent = ThemeLocalizer.localizeTemplate(pageContent,templateSharedResourceBundle, templateResourceBundle);
+            // Convert template description to proper locale
+            pageContent = ThemeLocalizer.localizeTemplateDescription(pageContent, templateName, serviceItemsResourceBundle);
+            // Convert remaining localize si tags to proper locale
+            pageContent = ThemeLocalizer.localizeTemplateNameAndDescription(pageContent, serviceItemsResourceBundle);
+            return pageContent;
+        }
+        
+        /**
+         * Sets up the proper language for the entire template's display dynamic page content.
          * Includes buttons, question labels, template description with the <LOCALIZE_SERVICE_ITEM_DESCRIPTION> tag,
          * any defined <LOCALIZE_SI></LOCALIZE_SI> tags and any defined <LOCALIZE_TEMPLATE></LOCALIZE_TEMPLATE> tags.
          *
@@ -209,39 +238,28 @@
             if(pageContent == null) {
                 pageContent = "";
             }
-            // Convert template buttons to proper locale
-            pageContent = ThemeLocalizer.localizeTemplateButtons(pageContent, templateSharedResourceBundle);
-            // Define page
-            Page page = null;
-            try {
-                // Attempt to get the page
-                page = PageCache.getPageByInstanceId(customerRequest.getTemplateId(), customerRequest.getPageId()); 
-            } catch(Exception e) {
-                throw new RuntimeException("Unable to load page cache: " + e.getMessage());
-            }
-            // Determine if not null
-            if(page != null) {
-                // Define and get the questions
-                SimpleEntry[] questions = page.getPageQuestions();
-                // Convert template question labels to proper locale
-                pageContent = ThemeLocalizer.localizeTemplateQuestionLabels(pageContent, questions, templateSharedResourceBundle, templateResourceBundle);
-            }
-            // Convert dynamic template content to proper locale with the localize template tags
-            pageContent = ThemeLocalizer.localizeTemplate(pageContent,templateSharedResourceBundle, templateResourceBundle);
-            // Define template name
-            String templateName = customerRequest.getTemplateName();
-            // Convert template description to proper locale
-            pageContent = ThemeLocalizer.localizeTemplateDescription(pageContent, templateName, serviceItemsResourceBundle);
-            // Convert remaining localize si tags to proper locale
-            pageContent = ThemeLocalizer.localizeTemplateNameAndDescription(pageContent, serviceItemsResourceBundle);
+            // Get page questions
+            SimpleEntry[] questions = ThemeLocalizer.getPageQuestions(customerRequest.getTemplateId(), customerRequest.getPageId());
+            // Translate
+            pageContent = ThemeLocalizer.localizePageContent(
+                customerRequest.getTemplateName(),
+                pageContent,
+                questions,
+                serviceItemsResourceBundle,
+                templateSharedResourceBundle,
+                templateResourceBundle
+            );
             return pageContent;
         }
         
         /**
-         * Sets up the proper language for the entire template's review dynamic page content
+         * Sets up the proper language for the template's review dynamic page content.
          * Includes buttons, question labels, template description with the <LOCALIZE_SERVICE_ITEM_DESCRIPTION> tag,
          * any defined <LOCALIZE_SI></LOCALIZE_SI> tags and any defined <LOCALIZE_TEMPLATE></LOCALIZE_TEMPLATE> tags.
          *
+         * NOTE: This will either setup the translation for all the review pages, 
+         * the review page with tabs, or a specfic review page depending on the customer request.
+         * 
          * @param CustomerRequest
          * @param ResourceBundle, the service item name and description resource bundle
          * @param ResourceBundle, the template shared resource bundle
@@ -255,50 +273,98 @@
         ) {
             // Define page content
             String pageContent = "";
-            // Determine if this is load all pages
-            if(!customerRequest.getLoadAllPages()) {
-                pageContent = ThemeLocalizer.renderPageTabs(customerRequest.getReviewPages(), "frame");
-            } else {
+            // Define questions
+            SimpleEntry[] questions = new SimpleEntry[0];
+            // Determine if all pages are suppose to be loaded
+            if(customerRequest.getLoadAllPages()) {
+                // Get the content as all the pages
                 pageContent = ThemeLocalizer.renderPages(customerRequest.getReviewPages(), "frame");
+                // Get All the review page's questions
+                questions = ThemeLocalizer.getAllReviewPageQuestions(
+                    customerRequest.getReviewPages(),
+                    customerRequest.getTemplateId()
+                );
             }
-            // Convert template buttons to proper locale
-            pageContent = ThemeLocalizer.localizeTemplateButtons(pageContent, templateSharedResourceBundle);
+            // Translate for one page
+            else {
+                // If this is a specific review page (usually a page tab)
+                if(customerRequest.isReviewPage()) {
+                    // Set the page content for the specific page
+                    pageContent = customerRequest.getReviewPage().getQuestions();
+                }
+                // Default rendering of first page and tabs
+                else {
+                    // Set the page's content with tabs
+                    pageContent = ThemeLocalizer.renderPageTabs(customerRequest.getReviewPages(), "frame");
+                }
+                // Get the page's questions
+                questions = ThemeLocalizer.getPageQuestions(customerRequest.getTemplateId(), customerRequest.getPageId());    
+            }
+            // Translate
+            pageContent = ThemeLocalizer.localizePageContent(
+                customerRequest.getTemplateName(),
+                pageContent,
+                questions,
+                serviceItemsResourceBundle,
+                templateSharedResourceBundle,
+                templateResourceBundle
+            );
+            return pageContent;
+        }
+        
+        /**
+         * Gets the page questions
+         *
+         * @param templateId
+         * @param pageId
+         */
+        public static SimpleEntry[] getPageQuestions(String templateId, String pageId) {
+            // Define questions
+            SimpleEntry[] questions = new SimpleEntry[0];
+            // Define page
+            Page page = null;
+            try {
+                // Attempt to get the page
+                page = PageCache.getPageByInstanceId(templateId, pageId);
+            } catch(Exception e) {
+                throw new RuntimeException("Unable to load page cache: " + e.getMessage());
+            }
+            // Define and get questions
+            if(page != null) { questions = page.getPageQuestions(); }
+            return questions;
+        }
+        
+        /**
+         * Build a SimpleEntry[] of every review page's questions
+         *
+         * @param Vector<CustomerSurveyReview> reviewPages
+         * @param templateId
+         */
+        public static SimpleEntry[] getAllReviewPageQuestions(
+                Vector<CustomerSurveyReview> reviewPages,
+                String templateId
+            ) {
+            // Define questions
+            SimpleEntry[] questions = new SimpleEntry[0];
             // Define simple entry list
             List<SimpleEntry> questionList = new ArrayList<SimpleEntry>();
             // Loop review pages
-            for(CustomerSurveyReview customerSurveyReview : customerRequest.getReviewPages()) {
-                // Define page
-                Page page = null;
-                try {
-                    // Attempt to get the page
-                    page = PageCache.getPageByInstanceId(customerRequest.getTemplateId(), customerSurveyReview.getPageInstanceID());
-                } catch(Exception e) {
-                    throw new RuntimeException("Unable to load page cache: " + e.getMessage());
-                }
-                // Define page questions
-                SimpleEntry[] pageQuestions = page.getPageQuestions();
+            for(CustomerSurveyReview customerSurveyReview : reviewPages) {
+                // Get each review page's questions
+                SimpleEntry[] pageQuestions = ThemeLocalizer.getPageQuestions(templateId, customerSurveyReview.getPageInstanceID());
+                // Loop through the page's questions
                 for(int i = 0; i < pageQuestions.length; i++) {
-                    // Add question to list
+                    // Add questions for the page to the question list
                     questionList.add(pageQuestions[i]);
                 }
             }
-            // Define questions
-            SimpleEntry[] questions = new SimpleEntry[questionList.size()];
-            // Build quesitons
+            // Define questions based on the complete size of the question list
+            questions = new SimpleEntry[questionList.size()];
+            // Set question list questions to questions
             for (int i = 0; i < questionList.size(); i++) {
                 questions[i] = questionList.get(i);
             }
-            // Convert template question labels to proper locale
-            pageContent = ThemeLocalizer.localizeTemplateQuestionLabels(pageContent, questions, templateSharedResourceBundle, templateResourceBundle);
-            // Convert dynamic template content to proper locale with the localize template tags
-            pageContent = ThemeLocalizer.localizeTemplate(pageContent,templateSharedResourceBundle, templateResourceBundle);
-            // Define template name
-            String templateName = customerRequest.getTemplateName();
-            // Convert template description to proper locale
-            pageContent = ThemeLocalizer.localizeTemplateDescription(pageContent, templateName, serviceItemsResourceBundle);
-            // Convert remaining localize si tags to proper locale
-            pageContent = ThemeLocalizer.localizeTemplateNameAndDescription(pageContent, serviceItemsResourceBundle);
-            return pageContent;
+            return questions;
         }
         
         /**

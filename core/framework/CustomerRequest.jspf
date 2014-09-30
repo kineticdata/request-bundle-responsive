@@ -48,16 +48,22 @@
             if (customerSurveyReviewPages == null) {customerSurveyReviewPages = new java.util.Vector();}
             // Declare a CustomerSurveyReview object
             CustomerSurveyReview customerSurveyReview = null;
-            // If there are reviewable pages
+            // Determine if this review includes all the pages
             if (customerSurveyReviewPages != null && customerSurveyReviewPages.size() != 0) {
                 // Use the first customerSurveyReview to represent the overall review
                 customerSurveyReview = customerSurveyReviewPages.get(0);
-                // Overwrite the default customer survey values (which are blank) with
-                // appropriate values from the CustomerSurveyReview object.
-                if (customerSurvey == null) {
-                    customerSurvey = new CustomerSurvey();
-                    request.setAttribute("customerSurvey", customerSurvey);
-                }
+            } else {
+                // This review request is only for one page
+                customerSurveyReview = (CustomerSurveyReview)request.getAttribute("ReviewPage");
+            }
+            // Setup customer survey
+            if (customerSurvey == null) {
+                customerSurvey = new CustomerSurvey();
+                request.setAttribute("customerSurvey", customerSurvey);
+            }
+            // Overwrite the default customer survey values (which are blank) with
+            // appropriate values from the CustomerSurveyReview object.
+            if (customerSurveyReview != null) {
                 customerSurvey.setCustomerSurveyRequestID(customerSurveyReview.getCustomerSurveyRequestID());
                 customerSurvey.setCategory(customerSurveyReview.getCategory());
                 customerSurvey.setCompanyName(customerSurveyReview.getCompanyName());
@@ -66,6 +72,7 @@
                 customerSurvey.setLastName(customerSurveyReview.getLastName());
                 customerSurvey.setClientLocale(customerSurveyReview.getClientLocale());
                 customerSurvey.setSurveyTemplateInstanceID(customerSurveyReview.getSurveyTemplateInstanceID());
+                customerSurvey.setPageInstanceID(customerSurveyReview.getPageInstanceID());
                 customerSurvey.setCustomerSurveyInstanceID(customerSurveyReview.getCustomerSurveyInstanceID());
                 customerSurvey.setSurveyTemplateName(customerSurveyReview.getSurveyTemplateName());
                 customerSurvey.setSuccessMessage(customerSurveyReview.getSuccessMessage());
@@ -236,6 +243,23 @@
                 result = true;
             }
             return result;
+        }
+        
+        /**
+         * @return boolean
+         */
+        public boolean isReviewPage() {
+            // Determine if is a review
+            return (this.customerSurveyReview != null &&
+                    (this.customerSurveyReviewPages == null ||
+                    this.customerSurveyReviewPages.size() == 0)) ? true : false;
+        }
+        
+        /**
+         * @return CustomerSurveyReview
+         */
+        public CustomerSurveyReview getReviewPage() {
+            return this.customerSurveyReview;
         }
 
         /**
