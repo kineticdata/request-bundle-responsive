@@ -20,9 +20,6 @@
         <title>
             <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;About
         </title>
-        <!-- Common Flyout navigation -->
-        <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/flyout.js"></script>
-
         <!-- Page Stylesheets -->
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/about.css" type="text/css" />
         <%-- Include the application head content. --%>

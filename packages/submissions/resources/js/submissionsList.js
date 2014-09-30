@@ -84,7 +84,7 @@
 
         /* Start right column */
         var rightColumn = $('<div>').addClass('col-sm-8');
-        var wrap = $('<div>').addClass('left clearfix');
+        var wrap = $('<div>').addClass('pull-left clearfix');
 
         // Template name
         var contentWrap = $('<div>').addClass('content-wrap')
@@ -118,7 +118,7 @@
         );
 
         /* Start inner right column */
-        var innerRightColumn = $('<div>').addClass('right');
+        var innerRightColumn = $('<div>').addClass('pull-right');
         // Set instance id used viewing activity (deals with approvals and children requests)
         var instanceId = record['Originating Id'];
         // Complete button
