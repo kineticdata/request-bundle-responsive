@@ -3,9 +3,9 @@
 </a>
 <div class="alerts background-white" aria-hidden="true">
     <ul class="list-unstyled clearfix">
-        <li >
+        <li class="background-hover-gray-lightest border-bottom border-primary">
             <a href="#" class="color-gray-dark color-hover-gray-darkest">
-                <div class="header border-bottom border-primary clearfix">
+                <div class="header clearfix">
                     <h5>
                         Central Command Down!  Click for more information.
                     </h5>
@@ -17,9 +17,9 @@
                 </div>
             </a> 
         </li>
-        <li >
+        <li class="background-hover-gray-lightest border-bottom border-primary">
             <a href="#" class="color-gray-dark color-hover-gray-darkest">
-                <div class="header border-bottom border-primary clearfix">
+                <div class="header clearfix">
                     <h5>
                         Employee on boarding is now available through e-services.
                     </h5>
@@ -31,9 +31,9 @@
                 </div>
             </a>
         </li>
-        <li >
+        <li class="background-hover-gray-lightest">
             <a href="#" class="color-gray-dark color-hover-gray-darkest">
-                <div class="header border-bottom border-primary clearfix">
+                <div class="header clearfix">
                     <h5>
                        Notifications through email.
                     </h5>
@@ -170,9 +170,6 @@ $(function() {
         white-space: normal;
         width: 420px;
         margin: 0;
-        -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.25);
-        -moz-box-shadow: 0 1px 3px rgba(0,0,0,.25);
-        box-shadow: 0 1px 3px rgba(0,0,0,.25);
     }
     header.main div.alerts ul a {
         text-decoration: none;

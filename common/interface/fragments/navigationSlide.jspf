@@ -1,41 +1,41 @@
-<div class="navigation-slide">  
+<div class="navigation-slide background-primary-darkest">  
     <%@include file="portalSearchForm.jspf"%>
     <ul>
         <% if(bundle.getProperty("profileUrl") != null ) { %>
             <li class="profile">
-                <a href="<%= bundle.getProperty("profileUrl")%>">
+                <a href="<%= bundle.getProperty("profileUrl")%>" class="color-white color-hover-secondary">
                     <i class="gravatar-icon"></i>
                     Me
                 </a>
             </li>
         <% } %>
         <li class="catalog">
-            <a href="<%= bundle.getProperty("catalogUrl")%>">
+            <a href="<%= bundle.getProperty("catalogUrl")%>" class="color-white color-hover-secondary">
                 <i class="fa fa-home"></i>
                 Home
             </a> 
         </li>
         <li class="popular-requests">
-            <a href="<%= bundle.getProperty("popularRequestsUrl")%>">
+            <a href="<%= bundle.getProperty("popularRequestsUrl")%>" class="color-white color-hover-secondary">
                 <i class="fa fa-star-o"></i>
                 Popular Requests
             </a> 
         </li>
         <li class="approvals">
-            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals">
+            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals" class="color-white color-hover-secondary">
                 <i class="fa fa-check"></i>
                 Approvals
             </a>
         </li>
         <li class="requests">
-            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=requests">
+            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=requests" class="color-white color-hover-secondary">
                 <i class="fa fa-exchange"></i>
                 Requests
             </a>
         </li>
         <% if (logoutEnabled && context != null) {%>
             <li>
-                <a href="<%= bundle.getProperty("logoutUrl")%>">
+                <a href="<%= bundle.getProperty("logoutUrl")%>" class="color-white color-hover-secondary">
                     <i class="fa fa-sign-out"></i>
                     Sign Out
                 </a>

@@ -3,12 +3,12 @@
     <span style="display:none">&nbsp;</span>
     <div class="container" style="text-align: center;">
         <span class="pull-left">
-            <a href="<%= bundle.getProperty("aboutUrl")%>" class="color-gray-light color-hover-white">
+            <a href="<%= bundle.getProperty("aboutUrl")%>" class="color-white color-hover-white">
                 About
             </a>
         </span>
         <span class="pull-right">
-            <a href="<%= bundle.getProperty("feedbackUrl")%>" class="color-gray-light color-hover-white">
+            <a href="<%= bundle.getProperty("feedbackUrl")%>" class="color-white color-hover-white">
                 Site Feedback
             </a>
         </span>

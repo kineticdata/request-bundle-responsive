@@ -10,6 +10,8 @@
   font-style: normal;
 }
 /****** COLORS **********/
+a { color: #007AC3; }
+a:hover, a:focus, a:active { color: #004790; }
 
 /* backgrounds */
 .background-white { background: #FFFFFF; }
@@ -28,6 +30,23 @@
 .background-gray { background: #8F8F8F; }
 .background-gray-dark { background: #5C5C5C; }
 .background-gray-darkest { background: #292929; }
+/* hovers */
+.background-hover-white:hover { background: #FFFFFF; }
+.background-hover-black:hover { background: #000000; }
+.background-hover-primary:hover { background: #007AC3; }
+.background-hover-primary-lightest:hover { background: #7FF9FF; }
+.background-hover-primary-light:hover { background: #33ADF6; }
+.background-hover-primary-dark:hover { background: #004790; }
+.background-hover-primary-darkest:hover { background: #000044; }
+.background-hover-secondary:hover { background: #E16B1E; }
+.background-hover-secondary-compliment:hover { background: #F89F55; }
+.background-hover-tertiary:hover { background: #A0B13A; }
+.background-hover-tertiary-compliment:hover { background: #546500; }
+.background-hover-gray-lightest:hover { background: #f5f5f5; }
+.background-hover-gray-light:hover { background: #C2C2C2; }
+.background-hover-gray:hover { background: #8F8F8F; }
+.background-hover-gray-dark:hover { background: #5C5C5C; }
+.background-hover-gray-darkest:hover { background: #292929; }
 
 /* font */
 .color-white { color: #ffffff; }
@@ -198,7 +217,32 @@
   background: #c2c2c2;
 }
 .btn-default {
-    background: transparent;
+  color: #292929;
+  font-weight: bold;
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  background: #c2c2c2; /* Old browsers */
+    /* Note: This gradient may render differently in browsers that don't support the unprefixed gradient syntax */
+    /* IE10 Consumer Preview */ 
+    background-image: -ms-linear-gradient(top left, #F5F5F5 0%, #C2C2C2 100%);
+    /* Mozilla Firefox */ 
+    background-image: -moz-linear-gradient(top left, #F5F5F5 0%, #C2C2C2 100%);
+    /* Opera */ 
+    background-image: -o-linear-gradient(top left, #F5F5F5 0%, #C2C2C2 100%);
+    /* Webkit (Safari/Chrome 10) */ 
+    background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #F5F5F5), color-stop(1, #C2C2C2));
+    /* Webkit (Chrome 11+) */ 
+    background-image: -webkit-linear-gradient(top left, #F5F5F5 0%, #C2C2C2 100%);
+    /* W3C Markup, IE10 Release Preview */ 
+    background-image: linear-gradient(to bottom right, #F5F5F5 0%, #C2C2C2 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#c2c2c2',GradientType=0 ); /* IE6-8 */
+  border: none;
+}
+.btn-default:hover, .btn-default:focus, 
+.btn-default:active, .btn-default.active, 
+.btn-default.disabled, .btn-default[disabled] {
+  background: #c2c2c2; /* Old browsers */
+  border: none !important;
 }
 .btn-primary {
   color: white;
@@ -228,6 +272,7 @@
 .btn-primary:active, .btn-primary.active, 
 .btn-primary.disabled, .btn-primary[disabled] {
   background: #007ac3; /* Old browsers */
+  border: none !important;
 }
 .btn-secondary, .templateButton {
   color: white;
@@ -257,6 +302,7 @@
 .btn-secondary:active, .btn-secondary.active, 
 .btn-secondary.disabled, .btn-secondary[disabled] {
   background: #E16B1E; /* Old browsers */
+  border: none !important;
 }
 .templateButton:hover, .templateButton:focus, 
 .templateButton:active, .templateButton.active, 
@@ -264,6 +310,7 @@
   background: #E16B1E; /* Old browsers */
   color: white;
   text-decoration: none;
+  border: none !important;
 }
 .btn-tertiary {
   color: white;
@@ -296,12 +343,12 @@
 }
 select, textarea,
 input, .uneditable-input {
-  border-color: #8F8F8F;
+  border: 1px solid #c2c2c2;
 }
 textarea:focus, 
 input:focus, 
 .uneditable-input:focus {
-  border-color: #007AC3;
+  border: 1px solid #007AC3;
 }
 .well {
   background-color: #f5f5f5;
@@ -309,7 +356,14 @@ input:focus,
 .dropdown-menu li a .description {
     color: #8F8F8F;
 }
+.dropdown-menu {
+  background-color: white;
+}
+div.navigation-slide ul > li > div.arrow-left {
+  border-right: white;
+}
 /* End Colors */
+
 html {
   overflow-y: scroll;
 }
@@ -346,9 +400,8 @@ input[type="search"],
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  border: 1px solid;
 }
-textarea:focus, 
+/*textarea:focus, 
 input[type="text"]:focus, 
 input[type="password"]:focus, 
 input[type="datetime"]:focus, 
@@ -365,7 +418,7 @@ input[type="tel"]:focus,
 input[type="color"]:focus, 
 .uneditable-input:focus {
   border: 1px solid;
-}
+}*/
 [class^="icon-"],
 [class*=" icon-"] {
   /* background-image: url("../img/icons/glyphicons-halflings.png"); */
@@ -390,11 +443,25 @@ input[type="color"]:focus,
 .hide {
   display: none;
 }
+.uppercase {
+    text-transform: uppercase;
+}
 ul.unstyled {
     list-style: none;
     margin: 0;
     padding: 0;
 }
+
+.dropdown-menu {
+    border: none;
+}
+.dropdown-menu{
+    border-color: rgba(0,0,0,.2);
+    box-shadow: 0 2px 10px rgba(0,0,0,.2);
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+}
+
 /* Font awesome */
 .fa-share {
     margin: 0 5px 0 0;
@@ -409,11 +476,6 @@ header.subhead h2 {
   font-weight: 400;
   margin-top: 20px;
   font-size: 24px;
-}
-header.subhead h1,
-header.subhead h2,
-header.subhead p {
-  color: #555;
 }
 header.jumbotron {
   padding: 10px 0px 0px 0px;
@@ -499,7 +561,13 @@ hr.soften {
   border: 0;
 }
 /* Buttons */
+.btn {
+    padding: 4px 12px;
+}
 
+.btn-sm, .btn-xs {
+    padding: 2px 10px;
+}
 .templateButton {
     text-decoration: none;
     line-height: 20px;
@@ -510,9 +578,7 @@ hr.soften {
     margin-bottom: 0;
     font-size: 12px;
     font-weight: bold;
-    line-height: 20px;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-    border: 1px solid;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
@@ -549,12 +615,10 @@ header.main div.container a.logo {
   padding: 7px 0 0 0;
   font-size: 20px;
   font-weight: 200;
-  color: #999999;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   min-width: 90px;
 }
 header.main div.container a.logo:hover {
-  color: #FFFFFF;
   text-decoration: none;
 }
 header.main div.container a.logo img {
@@ -569,22 +633,11 @@ header.main div.container button.fa-bars {
   margin: 5px 0;
   float: left;
   font-size: 32px;
-  color: white;
   padding: 4px 10px;
   -webkit-transition: height 0.35s ease;
   -moz-transition: height 0.35s ease;
   -o-transition: height 0.35s ease;
   transition: height 0.35s ease;
-  background-color: #102e41;
-  border: 1px solid #1a3c51;
-}
-header.main div.container button.fa-bars:hover, 
-header.main div.container button.fa-bars:focus, 
-header.main div.container button.fa-bars:active, 
-header.main div.container button.fa-bars.active, 
-header.main div.container button.fa-bars.disabled, 
-header.main div.container button.fa-bars[disabled] {
-  background-color: #102e41;
 }
 /* Navigtion styles for ul anchor list in the main header */
 header.main div.container nav > ul {
@@ -601,7 +654,6 @@ header.main div.container nav > ul > li > div.arrow-left {
   display: none;
 }
 header.main div.container nav > ul > li > a {
-  color: white;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   padding: 20px 10px 15px;
 }
@@ -613,7 +665,6 @@ header.main div.container nav > ul > li > a:focus,
 header.main div.container nav > ul > li > a:hover,
 header.main div.container nav > ul > li.active > a {
   background-color: transparent;
-  color: #F95026;
   text-decoration: none;
 }
 /* Content slide search */
@@ -633,7 +684,6 @@ header.main form.portal-search button[type="submit"].fa-search {
     height: 28px;
     cursor: pointer;
     font-weight: bold;
-    color: white;
     font-size: 16px;
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
@@ -646,7 +696,6 @@ header.sub {
   top: 50px;
   left: 0;
   right: 0;
-  background-color: #f5f5f5;
   -webkit-box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);
   z-index: 100;
@@ -667,21 +716,18 @@ header.sub div.container > ul > li > a {
   font-weight: bold;
   padding: 8px 0;
   margin: 0 15px;
-  color: #737373;
 }
 header.sub div.container > ul > li > a:focus,
 header.sub div.container > ul > li > a:hover,
 header.sub div.container > ul > li.active > a {
-  color: #262626;
   text-decoration: none;
-  border-bottom: 2px solid #6bc9ed;
+  border-bottom: 2px solid;
   -webkit-transition: border-color .218s;
   transition: border-color .218s;
 }
 /* Navigation slide */
 div.navigation-slide {
   display: none;
-  background: #102e41;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -692,7 +738,6 @@ div.navigation-slide {
 div.navigation-slide ul {
   padding: 60px 0 0 20px;
   margin: 0;
-  background-color: #102e41;
 }
 div.navigation-slide ul:after,
 div.navigation-slide ul li:after {
@@ -711,7 +756,6 @@ div.navigation-slide ul > li {
 div.navigation-slide ul > li > a {
   float: left;
   font-weight: bold;
-  color: #FFFFFF;
   padding: 15px;
   margin: 5px 0 5px;
   display: block;
@@ -720,11 +764,9 @@ div.navigation-slide ul > li > a {
   text-decoration: none;
 }
 div.navigation-slide ul > li.active > a {
-  background-color: #1a3c51;
   border: 1px solid;
   border-radius: 5px;
   text-decoration: none;
-  color: #F95026;
 }
 div.navigation-slide ul > li > div.arrow-left {
   width: 0;
@@ -748,8 +790,6 @@ div.navigation-slide form.portal-search {
     box-shadow: 0 2px 4px 0 rgba(50, 50, 50, 0.45);
     -moz-box-shadow: 0 2px 4px 0 rgba(50, 50, 50, 0.45);
     z-index: 1030;
-    background-color: #0C2231;
-    border-color: #252525;
 }
 div.navigation-slide form.portal-search input[type="text"] {
     width: 180px;
@@ -766,7 +806,6 @@ div.navigation-slide form.portal-search button[type="submit"].fa-search {
     height: 28px;
     cursor: pointer;
     font-weight: bold;
-    color: white;
     font-size: 16px;
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;

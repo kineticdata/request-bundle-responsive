@@ -29,7 +29,7 @@
         </li>
     </ul>
     <%if(bundle.getProperty("kapps") == null) {%>
-        <a class="more background-gradient-gray">
+        <a class="more background-gray-lightest color-gray-dark color-hover-gray-darkest border-top border-gray-light">
             More
         </a>
         <ul class="list-unstyled kapps clearfix">
@@ -193,7 +193,6 @@ $(function() {
     }
     div.main-menus ul li a:hover {
         text-decoration: none;
-        color: #F95026;
     }
     div.main-menus ul li i {
         font-size: 32px;
