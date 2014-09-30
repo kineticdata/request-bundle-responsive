@@ -71,14 +71,14 @@
 <!-- Common JavaScript Libraries -->
 <!-- HTML5 modernizr for IE8 -->
 <!--[if lt IE 9]>
-<script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/modernizr.custom.js'></script>
+<script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/modernizr/modernizr.custom.js'></script>
 <![endif]-->
-<script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/placeholders.min.js'></script>
+<script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/placeholders/placeholders.min.js'></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/moment/moment.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/jquery/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/jquery/jquery-ui-1.10.3.custom.min.js"></script>
-<script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/jquery/jquery.cookie.js'></script>
-<script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/jquery/jquery.md5.js"></script>
+<script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/jquery.cookie/jquery.cookie.js'></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/jquery.md5/jquery.md5.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/jquery.qtip/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/underscore/underscore-min.js"></script>
