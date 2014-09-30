@@ -19,50 +19,50 @@
      */
     submissions.defaultRowCallback = function(li, record, index, displayFields) {
         // Li styles
-        li.addClass('border rounded');
+        li.addClass('border border-gray-light rounded');
 
         /* Start left column */
         // Left column Originating Request Id
-        var leftColumn = $('<div>').addClass('col-sm-4 border-right')
+        var leftColumn = $('<div>').addClass('col-sm-4 border-right border-gray-light')
             .append(
-                $('<div>').addClass('request-id-label')
+                $('<div>').addClass('request-id-label  color-gray')
                     .append(displayFields['Request Id'] + '&nbsp;')
             ).append(
-                $('<div>').addClass('request-id-value')
+                $('<div>').addClass('request-id-value color-black')
                     .append(record['Originating Request Id'])
             );
 
         if(record['Requested For'] !== null) {
             leftColumn.append(
-                $('<div>').addClass('requested-for-label')
+                $('<div>').addClass('requested-for-label color-gray')
                     .append(displayFields['Requested For'] + '&nbsp;')
             ).append(
-                $('<div>').addClass('requested-for-value')
+                $('<div>').addClass('requested-for-value color-black')
                     .append(record['Requested For'])
             );
         }
 
         // Draft date
         if(record['Customer Survey Status'] === 'In Progress') {
-            var submissionDateLabel = $('<div>').addClass('submitted-label')
+            var submissionDateLabel = $('<div>').addClass('submitted-label color-gray')
                 .append(displayFields['Modified']);
-            var submissionDateValue = $('<div>').addClass('submitted-value')
+            var submissionDateValue = $('<div>').addClass('submitted-value color-black')
                 .append(((record['Modified'] !== null) ? moment(record['Modified'], 'MM/DD/YYYY H:mm:ss').format('MMMM DD, YYYY') : ""));
         // Closed date including completed approvals
         } else if(record['Request Status'] === 'Closed') {
-            var submissionDateLabel = $('<div>').addClass('submitted-label')
+            var submissionDateLabel = $('<div>').addClass('submitted-label color-gray')
                 .append(displayFields['Closed']);
-            var submissionDateValue = $('<div>').addClass('submitted-value')
+            var submissionDateValue = $('<div>').addClass('submitted-value color-black')
                 .append(((record['Closed'] !== null) ? moment(record['Closed'], 'MM/DD/YYYY H:mm:ss').format('MMMM DD, YYYY') : ""));
         // Pending approval date
         } else if(record['Display Status'] === 'Awaiting Approval') {
-            var submissionDateLabel = $('<div>').addClass('submitted-label')
+            var submissionDateLabel = $('<div>').addClass('submitted-label color-gray')
                 .append(displayFields['Sent']);
             var submissionDateValue = $('<div>').addClass('submitted-value')
                 .append(((record['Sent'] !== null) ? moment(record['Sent'], 'MM/DD/YYYY H:mm:ss').format('MMMM DD, YYYY') : ""));
         // Submitted date
         } else {
-            var submissionDateLabel = $('<div>').addClass('submitted-label')
+            var submissionDateLabel = $('<div>').addClass('submitted-label color-gray')
                 .append(displayFields['Submitted']);
             var submissionDateValue = $('<div>').addClass('submitted-value')
                 .append(((record['Submitted'] !== null) ? moment(record['Submitted'], 'MM/DD/YYYY H:mm:ss').format('MMMM DD, YYYY') : ""));
@@ -112,7 +112,7 @@
         // Validation status/display status and content wrap
         rightColumn.append(
             wrap.append(
-                $('<div>').addClass('display-status')
+                $('<div>').addClass('display-status color-secondary')
                 .append(record['Display Status'])
             ).append(contentWrap)
         );

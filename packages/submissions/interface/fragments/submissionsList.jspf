@@ -43,7 +43,7 @@
                 <div class="pointer-events">
                     <%-- SUBMISSION TABLE LINKS --%>
                     <% if (context != null) { %>
-                        <header class="sub">
+                        <header class="sub background-gray-lightest">
                             <div class="container">
                                 <ul class="unstyled">
                                     <% if(submissionType.equals("requests")) {%>
@@ -52,7 +52,7 @@
                                                 <%-- Count the number of submissions that match the current query --%>
                                                 <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                                                 <li class="">
-                                                    <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=requests&status=<%=groupName%>">
+                                                    <a class="color-gray-dark" data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=requests&status=<%=groupName%>">
                                                         <%=count%>&nbsp;
                                                         <% if (count != 1) { %>
                                                             <%=groupName%>s
@@ -69,7 +69,7 @@
                                                 <%-- Count the number of submissions that match the current query --%>
                                                 <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                                                 <li class="">
-                                                    <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals&status=<%=groupName%>">
+                                                    <a class="color-gray-dark" data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals&status=<%=groupName%>">
                                                         <%=count%>&nbsp;
                                                         <% if (count != 1) { %>
                                                             <%=groupName%>s
