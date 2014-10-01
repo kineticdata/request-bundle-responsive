@@ -161,9 +161,9 @@
          * any defined <LOCALIZE_SI></LOCALIZE_SI> tags and any defined <LOCALIZE_TEMPLATE></LOCALIZE_TEMPLATE> tags.
          *
          * @param CustomerRequest
-         * @param ResourceBundle, the service item name and description resource bundle
-         * @param ResourceBundle, the template shared resource bundle
-         * @param ResourceBundle, the template specific resource bundle
+         * @param ResourceBundle, the service item name and description resource bundle.
+         * @param ResourceBundle, the template shared resource bundle.
+         * @param ResourceBundle, the template specific resource bundle.
          */
         public static String localizePageContent(
             CustomerRequest customerRequest,
@@ -173,7 +173,7 @@
         ) {
             String pageContent = null;
             // Determine if this is review request or review page
-            if(customerRequest.isReviewRequest() || customerRequest.isReviewPage()) {
+            if(customerRequest.isReviewRequest()) {
                 // Localize template review page content
                 pageContent = ThemeLocalizer.localizeReviewPageContent(
                     customerRequest, serviceItemsResourceBundle, templateSharedResourceBundle, 
@@ -192,10 +192,12 @@
          * Includes buttons, question labels, template description with the <LOCALIZE_SERVICE_ITEM_DESCRIPTION> tag,
          * any defined <LOCALIZE_SI></LOCALIZE_SI> tags and any defined <LOCALIZE_TEMPLATE></LOCALIZE_TEMPLATE> tags.
          *
-         * @param CustomerRequest
-         * @param ResourceBundle, the service item name and description resource bundle
-         * @param ResourceBundle, the template shared resource bundle
-         * @param ResourceBundle, the template specific resource bundle
+         * @param templateName is the name of the current template being requested.
+         * @param pageContent is the page content of the current template being requested.
+         * @param questions is a list of questions from the current template being requested.
+         * @param ResourceBundle, the service item name and description resource bundle.
+         * @param ResourceBundle, the template shared resource bundle.
+         * @param ResourceBundle, the template specific resource bundle.
          */
         public static String localizePageContent(
             String templateName,
