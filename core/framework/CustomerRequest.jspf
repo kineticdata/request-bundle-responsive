@@ -29,7 +29,12 @@
         /**
          * Initializes the wrapper
          */
-        public CustomerRequest(CustomerSurvey customerSurvey, CustomerSurveyReview customerSurveyReview, Vector<CustomerSurveyReview>customerSurveyReviewPages) {
+        public CustomerRequest(
+                CustomerSurvey customerSurvey,
+                CustomerSurveyReview customerSurveyReview,
+                Vector<CustomerSurveyReview>customerSurveyReviewPages
+        ) {
+            // Set properties
             this.customerSurvey = customerSurvey;
             this.customerSurveyReviewPages = customerSurveyReviewPages;
             this.customerSurveyReview = customerSurveyReview;
@@ -39,7 +44,6 @@
          * Initializes the wrapper
          * 
          * @param HttpServletRequest
-         * @return CustomerRequestReview
          */
         public CustomerRequest(HttpServletRequest request, CustomerSurvey customerSurvey) {
             // Typcast the RequestPages bean to a CustomerSurveyReview list.
@@ -48,16 +52,26 @@
             if (customerSurveyReviewPages == null) {customerSurveyReviewPages = new java.util.Vector();}
             // Declare a CustomerSurveyReview object
             CustomerSurveyReview customerSurveyReview = null;
-            // If there are reviewable pages
+            // Determine if this review contains pages
+            // which is either a load all pages review request or a
+            // review request without a page specified
             if (customerSurveyReviewPages != null && customerSurveyReviewPages.size() != 0) {
-                // Use the first customerSurveyReview to represent the overall review
+                // Use the first customerSurveyReview page
                 customerSurveyReview = customerSurveyReviewPages.get(0);
+            } else {
+                // Use the customerSurveyReview page from request.  This attribute is set
+                // when a client specified which review page to return.
+                customerSurveyReview = (CustomerSurveyReview)request.getAttribute("ReviewPage");
+            }
+            // Setup customer survey
+            if (customerSurvey == null) {
+                customerSurvey = new CustomerSurvey();
+                request.setAttribute("customerSurvey", customerSurvey);
+            }
+            // Determine if there is a customer survey review object
+            if (customerSurveyReview != null) {
                 // Overwrite the default customer survey values (which are blank) with
                 // appropriate values from the CustomerSurveyReview object.
-                if (customerSurvey == null) {
-                    customerSurvey = new CustomerSurvey();
-                    request.setAttribute("customerSurvey", customerSurvey);
-                }
                 customerSurvey.setCustomerSurveyRequestID(customerSurveyReview.getCustomerSurveyRequestID());
                 customerSurvey.setCategory(customerSurveyReview.getCategory());
                 customerSurvey.setCompanyName(customerSurveyReview.getCompanyName());
@@ -66,6 +80,7 @@
                 customerSurvey.setLastName(customerSurveyReview.getLastName());
                 customerSurvey.setClientLocale(customerSurveyReview.getClientLocale());
                 customerSurvey.setSurveyTemplateInstanceID(customerSurveyReview.getSurveyTemplateInstanceID());
+                customerSurvey.setPageInstanceID(customerSurveyReview.getPageInstanceID());
                 customerSurvey.setCustomerSurveyInstanceID(customerSurveyReview.getCustomerSurveyInstanceID());
                 customerSurvey.setSurveyTemplateName(customerSurveyReview.getSurveyTemplateName());
                 customerSurvey.setSuccessMessage(customerSurveyReview.getSuccessMessage());
@@ -78,6 +93,7 @@
                 customerSurvey.setJavascriptFileName(customerSurveyReview.getJavascriptFileName());
                 customerSurvey.setSubmitType("ReviewRequest");
             }
+            // Set the properties
             this.customerSurvey = customerSurvey;
             this.customerSurveyReviewPages = customerSurveyReviewPages;
             this.customerSurveyReview = customerSurveyReview;
@@ -226,19 +242,48 @@
         }
         
         /**
+         * Determines if this is a review request, which is based on if it has a 
+         * customer survey review, or customer survey review pages.
+         * 
          * @return boolean
          */
         public boolean isReviewRequest() {
-            // Assume failure
-            boolean result = false;
-            // Determine if there are review pages
-            if (this.customerSurveyReviewPages != null && this.customerSurveyReviewPages.size() != 0) {
-                result = true;
-            }
-            return result;
+            // Determine if is a review
+            return (this.customerSurveyReview != null ||
+                    this.customerSurveyReviewPages != null ||
+                    this.customerSurveyReviewPages.size() != 0) ? true : false;
+        }
+        
+        /**
+         * Determines if this is a review request where the client
+         * specified a review page.
+         * 
+         * @return boolean
+         */
+        public boolean isReviewPage() {
+            // Determine if there are not any review pages and
+            // only a review page exists.
+            return (this.customerSurveyReview != null &&
+                    (this.customerSurveyReviewPages == null ||
+                    this.customerSurveyReviewPages.size() == 0)) ? true : false;
+        }
+        
+        /**
+         * Returns the current customer request review page.
+         * This is usually the first page or the page specified
+         * by the client before the request. For example, the pageInstanceID
+         * can be specified by the client in the query string parameters.
+         * pageInstanceID=SomeId
+         * 
+         * @return CustomerSurveyReview
+         */
+        public CustomerSurveyReview getReviewPage() {
+            return this.customerSurveyReview;
         }
 
         /**
+         * Determines if the review request is suppose to display all pages.
+         * 
          * @return boolean
          */
         public boolean getLoadAllPages() {
@@ -246,6 +291,8 @@
         }
         
         /**
+         * Returns a list of all the customer survey review pages
+         * 
          * @return Vector<CustomerSurveyReview>
          */
         public Vector<CustomerSurveyReview> getReviewPages() {

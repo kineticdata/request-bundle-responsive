@@ -11,6 +11,9 @@ body.loadAllPages_false div#reviewContent:after {
 body.loadAllPages_false div#reviewContent:after {
     clear: both;
 }
+body.loadAllPages_true {
+    margin: 0;
+}
 
 /* Save and exit and cancel buttons */
 div[label="Bottom of Page"] {

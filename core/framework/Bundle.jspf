@@ -47,16 +47,21 @@
             int endOfRootPath = requestUri.indexOf("/"+BUNDLE_DIR);
             int startOfBundleName = requestUri.indexOf("/"+BUNDLE_DIR+"/")+("/"+BUNDLE_DIR+"/").length();
             int endOfBundleName = requestUri.indexOf("/", startOfBundleName);
-            String packagesPath = requestUri.substring(0, endOfBundleName) + "/packages/";
-            int startOfPackageName = requestUri.indexOf(packagesPath)+packagesPath.length();
-            int endOfPackageName = requestUri.indexOf("/", startOfPackageName);
             // Set the paths
             this.applicationPath = requestUri.substring(0, endOfRootPath)+"/";
             this.bundlePath = requestUri.substring(0, endOfBundleName)+"/";
-            this.packagePath = requestUri.substring(0, endOfPackageName)+"/";
-            // Set the Relative paths
             this.relativeBundlePath = this.bundlePath.substring(this.applicationPath.length());
-            this.relativePackagePath = this.packagePath.substring(this.applicationPath.length());
+            
+            // Set the package path if it exists
+            String packagesPath = requestUri.substring(0, endOfBundleName) + "/packages/";
+            int startOfPackagesPath = requestUri.indexOf(packagesPath);
+            if (startOfPackagesPath != -1) {
+                int startOfPackageName = startOfPackagesPath+packagesPath.length();
+                int endOfPackageName = requestUri.indexOf("/", startOfPackageName);
+                // Set the package paths
+                this.packagePath = requestUri.substring(0, endOfPackageName)+"/";
+                this.relativePackagePath = this.packagePath.substring(this.applicationPath.length());
+            }
         }
 
         /***********************************************************************
