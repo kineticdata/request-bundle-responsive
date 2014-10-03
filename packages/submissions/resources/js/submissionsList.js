@@ -19,18 +19,19 @@
      */
     submissions.defaultRowCallback = function(li, record, index, displayFields) {
         // Li styles
-        li.addClass('border border-gray-light rounded');
-
+        li.addClass('border border-gray-light rounded')
+          .append(
+                $('<h4>').addClass('color-gray-darkest originating-name border-bottom border-gray-light')
+                .text(record['Originating Name'])
+                .append(
+                    $('<span>').addClass('request-id pull-right')
+                        .append(record['Originating Request Id'])
+                    )
+                );
         /* Start left column */
         // Left column Originating Request Id
         var leftColumn = $('<div>').addClass('col-sm-4 border-right border-gray-light')
-            .append(
-                $('<div>').addClass('request-id-label  color-gray')
-                    .append(displayFields['Request Id'] + '&nbsp;')
-            ).append(
-                $('<div>').addClass('request-id-value color-black')
-                    .append(record['Originating Request Id'])
-            );
+            
 
         if(record['Requested For'] !== null) {
             leftColumn.append(
@@ -67,7 +68,6 @@
             var submissionDateValue = $('<div>').addClass('submitted-value')
                 .append(((record['Submitted'] !== null) ? moment(record['Submitted'], 'MM/DD/YYYY H:mm:ss').format('MMMM DD, YYYY') : ""));
         }
-
         var viewRequestLink = $('<div>').addClass('view-request-details')
             .append(
                 $('<a>')
@@ -77,8 +77,8 @@
             );
 
         // Cannot open auto created requests
-        ((record['Service Item Type'] !== BUNDLE.config.autoCreatedRequestType && record['Customer Survey Status'] !== 'In Progress') ? leftColumn.prepend(viewRequestLink) : submissionDateValue.css({'margin':'0 0 20px 0'}));
-        leftColumn.prepend(submissionDateValue).prepend(submissionDateLabel);
+        ((record['Service Item Type'] !== BUNDLE.config.autoCreatedRequestType && record['Customer Survey Status'] !== 'In Progress') ? leftColumn.append(viewRequestLink) : submissionDateValue.css({'margin':'0 0 20px 0'}));
+        leftColumn.prepend(submissionDateLabel, submissionDateValue);
         li.append(leftColumn);
         /* End left column */
 
@@ -87,12 +87,8 @@
         var wrap = $('<div>').addClass('pull-left clearfix');
 
         // Template name
-        var contentWrap = $('<div>').addClass('content-wrap')
-            .append(
-                $('<div>').addClass('originating-name')
-                    .append(record['Originating Name'])
-            );
-
+        var contentWrap = $('<div>').addClass('content-wrap');
+        
         // Service item image
         if(record['Service Item Image'] !== null) {
             var imagePath;
@@ -105,6 +101,7 @@
                 .append(
                     $('<img>').attr('width', '40')
                         .attr('src', imagePath)
+                        .attr('alt', record['Originating Name'])
                 )
             contentWrap.prepend(image);
         }
@@ -112,7 +109,7 @@
         // Validation status/display status and content wrap
         rightColumn.append(
             wrap.append(
-                $('<div>').addClass('display-status color-secondary')
+                $('<div>').addClass('display-status color-tertiary-compliment')
                 .append(record['Display Status'])
             ).append(contentWrap)
         );
@@ -263,7 +260,7 @@
                         loader.hide();
                         if(data.count > 0) {
                             widget.buildResultSet(data.data, data.count);
-                            $('h3').hide();
+                            //$('h3').hide();
                             widget.consoleList.show();
                             // Allow scroll to fire again
                             killScroll = false;

@@ -47,12 +47,12 @@
                             </header>
                             <ul class="templates unstyled">
                                 <% for(String templateName : globalTopTemplates) { %>
-                                    <li class="border-top clearfix">
+                                    <li class="border-top border-gray-light clearfix">
                                         <% Template popularRequest = catalog.getTemplateByName(templateName); %>
                                         <div class="content-wrap"> 
                                             <% if (popularRequest.hasTemplateAttribute("ServiceItemImage")) { %>
                                                 <div class="image">
-                                                    <img width="40" src="<%= bundle.getProperty("serviceItemImagePath") + popularRequest.getTemplateAttributeValue("ServiceItemImage")%>" />
+                                                    <img width="40" src="<%= bundle.getProperty("serviceItemImagePath") + popularRequest.getTemplateAttributeValue("ServiceItemImage")%>" alt="<%= popularRequest.getName()%>" />
                                                 </div>
                                                 <div class="col-sm-6 description-small">
                                             <% } else {%>

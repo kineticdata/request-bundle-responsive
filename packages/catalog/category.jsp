@@ -48,27 +48,26 @@
                     <%@include file="interface/fragments/flyout.jspf"%>
                     <% if(currentCategory != null) {%>
                         <header class="container">
-                            <div class="breadcrumbs clearfix">
+                            <ul class="breadcrumb clearfix">
                                 <% 
                                     List<Category> parentCategories = CategoryHelper.getCategoryTrail(catalog, currentCategory);
                                     Iterator<Category> iterator = parentCategories.iterator();
                                 %>
-                                <ul class="unstyled">
                                     <% 
                                         while(iterator.hasNext()) {
                                         Category category = iterator.next();
+                                        String activeClass = "";
+                                        if(!iterator.hasNext()) {
+                                            activeClass = "active"
+                                        }
                                     %>
                                         <li>
-                                            <a href="<%= bundle.getProperty("categoryUrl") %>&category=<%= URLEncoder.encode(category.getFullName(), "UTF-8")%>">    
+                                            <a href="<%= bundle.getProperty("categoryUrl") %>&category=<%= URLEncoder.encode(category.getFullName(), "UTF-8")%>" alt="<%= category.getName() %>" class="<% active %>">    
                                                 <%= category.getName() %>
-                                                <% if(iterator.hasNext()) {%>
-                                                    &nbsp;/&nbsp;
-                                                <%}%>
                                             </a>
                                         </li>
                                     <% } %>
-                                </ul>
-                            </div>
+                            </ul>
                             <% if(currentCategory.getImageTag().length() > 0) {%>
                                 <div class="category-image">
                                     <%= currentCategory.getImageTag()%>

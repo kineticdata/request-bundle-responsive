@@ -49,7 +49,7 @@
                             </header>
                             <ul class="templates unstyled">
                                 <% for(String templateName : globalTopTemplates) { %>
-                                    <li class="border-top clearfix">
+                                    <li class="border-top border-gray-light clearfix">
                                         <% Template popularRequest = catalog.getTemplateByName(templateName); %>
                                         <div class="content-wrap"> 
                                             <% if (popularRequest.hasTemplateAttribute("ServiceItemImage")) { %>
@@ -165,7 +165,7 @@
                                         <div class="template-details-data hide">
                                             <% if (template.hasTemplateAttribute("ServiceItemImage")) { %>
                                                 <div class="image">
-                                                    <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(template.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" />
+                                                    <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(template.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" alt="<%= template.getName()%>" />
                                                 </div>
                                             <% }%>
                                             <p>

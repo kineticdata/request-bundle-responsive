@@ -23,6 +23,7 @@ div.console-list div.header:after { clear: both; }
 
 /* List */
 div.console-list ul.console li { margin: 0 0 10px 0; }
+div.console-list ul.console li h4 { margin: 0px; padding: 5px 10px; }
 /* Clearfix, for floats */
 div.console-list ul.console li { *zoom: 1; }
 div.console-list ul.console li:before,
@@ -44,11 +45,10 @@ div.console-list ul.console li a.templateButton { margin: 10px 0; width: 160px; 
 div.console-list ul.console li div.submitted-label,
 div.console-list ul.console li div.request-id-label,
 div.console-list ul.console li div.requested-for-label { font-style: italic; }
-div.console-list ul.console li div.request-id-label,
-div.console-list ul.console li div.requested-for-label { float: left; }
+div.console-list ul.console li div.request-id-label { float: left; }
 
 /* Values */
-div.console-list ul.console li div.submitted-value { font-weight: bold; line-height: 10px; font-size: 13px; }
+div.console-list ul.console li div.submitted-value { font-weight: bold; font-size: 13px; }
 div.console-list ul.console li div.request-id-value { font-weight: bold; }
 div.console-list ul.console li div.display-status { font-weight: bold; font-size: 14px; }
 div.console-list ul.console li div.requested-for-value { font-weight: bold; }
