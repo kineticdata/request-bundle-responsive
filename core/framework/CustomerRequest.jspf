@@ -250,8 +250,8 @@
         public boolean isReviewRequest() {
             // Determine if is a review
             return (this.customerSurveyReview != null ||
-                    this.customerSurveyReviewPages != null ||
-                    this.customerSurveyReviewPages.size() != 0) ? true : false;
+                   (this.customerSurveyReviewPages != null &&
+                    this.customerSurveyReviewPages.size() != 0)) ? true : false;
         }
         
         /**
