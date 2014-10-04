@@ -67,8 +67,32 @@
     // Create a scoped alias to simplify references to BUNDLE.common
     var common = BUNDLE.common;
     
+    /**
+     * Define loader handler JavaScript UI
+     * 
+     * @param {Object} options
+     * @param {String} options.loaderImageUrl
+     * @param {String} options.text
+     * @param {String} options.cssClass
+     * @returns {HTML}
+     */
+    common.loaderHandler = function(options) {
+        // Define options
+        options = options || {};
+        options.cssClass = options.cssClass || '';
+        options.text = options.text || 'Loading Results.';
+        options.loaderImageUrl = options.loaderImageUrl || BUNDLE.config.loaderImageUrl;
+        // Define loader
+        var loader = $('<div>').addClass('loader ' + options.cssClass).append(
+                $('<img>').prop({'alt': options.text, 'src': options.loaderImageUrl})
+            ).append(
+                $('<div>').addClass('text').text(options.text)
+            );
+        return loader.get(0).outerHTML;
+    };
+    
     /** 
-     * Define message handler for package JavaScript UI
+     * Define message handler JavaScript UI
      * 
      * @param {String} messageType
      * @param {String} messageContent
