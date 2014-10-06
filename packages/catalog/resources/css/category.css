@@ -18,11 +18,11 @@ div.breadcrumbs ul li a:hover { text-decoration: none; }
 section.container ul.templates { float: left; }
 
 /* Subcategories */
-section.container div.subcategories { float: left; background-color: #a0b13a; color: white; }
+section.container div.subcategories { float: left; }
 section.container div.subcategories h5 { padding: 0 5px; }
-section.container div.subcategories ul li { background-color: #808e2e; border-top: 1px solid #a0b13a; }
-section.container div.subcategories a { color: white; display: block; padding: 5px; }
-section.container div.subcategories ul a:hover { background-color: #607200; text-decoration: none; }
+section.container div.subcategories ul li { border-top: 1px solid; }
+section.container div.subcategories a { display: block; padding: 5px; }
+section.container div.subcategories ul a:hover { text-decoration: none; }
 
 /* Responsive */
 @media (min-width: 991px) {

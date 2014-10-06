@@ -57,14 +57,16 @@
                                         while(iterator.hasNext()) {
                                         Category category = iterator.next();
                                         String activeClass = "";
+                                        String href = "";
                                         if(!iterator.hasNext()) {
-                                            activeClass = "active"
+                                            activeClass = "active";
+                                            href = category.getName();
+                                        } else {
+                                            href= "<a href='"+ bundle.getProperty("categoryUrl")+ "&category=" + URLEncoder.encode(category.getFullName(), "UTF-8") +"' alt='" + category.getName() + "'>" + category.getName() + "</a>";    
                                         }
                                     %>
-                                        <li>
-                                            <a href="<%= bundle.getProperty("categoryUrl") %>&category=<%= URLEncoder.encode(category.getFullName(), "UTF-8")%>" alt="<%= category.getName() %>" class="<% active %>">    
-                                                <%= category.getName() %>
-                                            </a>
+                                        <li class="<%= activeClass %>">
+                                                <%= href %>
                                         </li>
                                     <% } %>
                             </ul>
@@ -97,7 +99,7 @@
                                         <div class="content-wrap">
                                             <% if (template.hasTemplateAttribute("ServiceItemImage")) { %>
                                                 <div class="image">
-                                                    <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(template.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" />
+                                                    <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(template.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" alt="<%= template.getName()%>" />
                                                 </div>
                                                 <div class="col-md-6 description-small">
                                             <% } else {%>
@@ -141,15 +143,15 @@
                                 <%}%>
                             </ul>
                             <% if (currentCategory.hasNonEmptySubcategories()) {%>
-                                <div class="subcategories">
-                                    <h5>
+                                <div class="subcategories background-tertiary">
+                                    <h5 class="color-white color-hover-white">
                                         Subcategories
                                     </h5>
                                     <ul class="unstyled">
                                         <% for (Category subcategory : currentCategory.getSubcategories()) { %>
                                             <% if (subcategory.hasTemplates()) { %>
                                             <li class="subcategory" data-id="<%= subcategory.getId()%>" data-name="<%= subcategory.getName()%>">
-                                                <a href="<%= bundle.getProperty("categoryUrl") %>&category=<%= URLEncoder.encode(subcategory.getFullName(), "UTF-8")%>" class="name">
+                                                <a href="<%= bundle.getProperty("categoryUrl") %>&category=<%= URLEncoder.encode(subcategory.getFullName(), "UTF-8")%>" class="name background-tertiary-compliment color-white color-hover-white">
                                                     <%= subcategory.getName()%>
                                                 </a>
                                             </li>
