@@ -44,10 +44,10 @@
                 element: null
             };
         }
-        if($('div.warningContainer').exists()) {
+        if($('div.warningContainer').length > 0) {
             $('div.warningContainer').html(options.body);
         } else {
-            if($('div[label="Bottom of Page"]').exists()) {
+            if($('div[label="Bottom of Page"]').length > 0) {
                 $('div[label="Bottom of Page"]').before('<div class="warningContainer">' + options.body + '</div>');
             } else {
                 $('div.templateButtonLayer').before('<div class="warningContainer">' + options.body + '</div>');

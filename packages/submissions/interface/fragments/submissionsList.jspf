@@ -108,7 +108,7 @@
                                                 <%-- Count the number of submissions that match the current query --%>
                                                 <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                                                 <li class="">
-                                                    <a class="color-gray-dark" data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=requests&status=<%=groupName%>" alt="<%=groupName%>">
+                                                    <a class="color-gray-dark" data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=requests" alt="<%=groupName%>">
                                                         <%=count%>&nbsp;
                                                         <% if (count != 1) { %>
                                                             <%=groupName%>s
@@ -125,7 +125,7 @@
                                                 <%-- Count the number of submissions that match the current query --%>
                                                 <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                                                 <li class="">
-                                                    <a class="color-gray-dark" data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals&status=<%=groupName%>">
+                                                    <a class="color-gray-dark" data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals" alt="<%=groupName%>">
                                                         <%=count%>&nbsp;
                                                         <% if (count != 1) { %>
                                                             <%=groupName%>s

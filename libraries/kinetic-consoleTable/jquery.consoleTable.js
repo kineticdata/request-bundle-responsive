@@ -123,7 +123,7 @@
                 }
             });
             widget.refresh = $('<a>').addClass('refresh').attr('href', 'javascript:void(0)').text('Refresh');
-            widget.table = $('<table>').addClass('kd-table');
+            widget.table = $('<table>').addClass('table kd-table');
             widget.information = $('<div>').addClass('information');
             widget.pagination = $('<nav>').addClass('pagination');
             widget.header = $('<div>').addClass('header');

@@ -47,7 +47,7 @@
                 <div class="pointer-events">
                     <%-- SUBMISSION TABLE LINKS --%>
                     <% if (context != null) { %>
-                        <header class="sub">
+                        <header class="sub background-gray-lightest">
                             <div class="container">
                                 <ul class="unstyled">
                                     <% if(submissionType.equals("requests")) {%>

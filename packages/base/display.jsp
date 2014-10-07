@@ -47,7 +47,7 @@
                         </h2>
                         <hr class="soften">
                     </header>
-                    <section class="container">
+                    <section class="container display-page">
                         <%@include file="../../core/interface/fragments/displayBodyContent.jspf"%>
                     </section>
                 </div>

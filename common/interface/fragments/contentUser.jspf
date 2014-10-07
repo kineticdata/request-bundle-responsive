@@ -12,7 +12,7 @@ if(context != null) {
 <a class="profile" href="javascript:void(0)" data-target="div.user-card">
     <i class="gravatar-icon"></i>
 </a>
-<div class="user-card" aria-hidden="true">
+<div class="user-card hide" aria-hidden="true">
     <div class="wrap">
         <a class="user" href="<%= bundle.getProperty("profileUrl")%>">
         </a>
