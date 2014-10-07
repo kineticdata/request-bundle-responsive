@@ -7,7 +7,7 @@
         // Define submission group name hash
         submissions.status = document.location.hash;
         // Define how many entries maximum should display
-        submissions.entryOptionSelected = 10;
+        submissions.entryOptionSelected = 11;
         // Get query string parameters into an object
         var urlParameters = BUNDLE.common.getUrlParameters();
         // Determine if type is a real type
