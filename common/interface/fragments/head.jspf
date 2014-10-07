@@ -66,6 +66,48 @@
         var s = Localization[key];
         return ( s ) ? s : this;
     }
+    // Define common require js configuration namespace
+    BUNDLE.config.requireJs = {};
+    // Setup common UI configurations
+    BUNDLE.config.requireJs = {
+        baseUrl: BUNDLE.bundlePath,
+        paths: {
+            placeholders: 'libraries/placeholders/placeholders.min',
+            moment: 'libraries/moment/moment',
+            jquery: 'libraries/jquery/jquery-1.11.0.min',
+            jqueryUi: 'libraries/jquery/jquery-ui-1.10.3.custom.min',
+            jqueryCookie: 'libraries/jquery.cookie/jquery.cookie',
+            jqueryMd5: 'libraries/jquery.md5/jquery.md5',
+            bootstrap: 'libraries/bootstrap/js/bootstrap.min',
+            qtip: 'libraries/jquery.qtip/jquery.qtip.min',
+            underscore: 'libraries/underscore/underscore-min',
+            client: 'common/resources/js/client',
+            ajaxLogin: 'common/resources/js/ajaxLogin',
+            bridges: 'common/resources/js/Bridges',
+            common: 'common/resources/js/common'
+        },
+        shim: {
+            jqueryUi: {
+                'export':'$',
+                'deps' : ['jquery']
+            },
+            jqueryCookie: {
+                'deps' : ['jquery']
+            },
+            jqueryMd5: {
+                'deps' : ['jquery']
+            },
+            bootstrap: {
+                'deps' : ['jquery']
+            },
+            qtip: {
+                'deps' : ['jquery']
+            },
+            underscore: {
+                'export' :'_'
+            }
+        }
+    };
 </script>
 
 <!-- Common JavaScript Libraries -->
