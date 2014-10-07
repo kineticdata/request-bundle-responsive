@@ -32,22 +32,62 @@
         <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/requirejs/require.js"></script>
         <!-- Initialize JavaScript -->
         <script type="text/javascript">
-            // Define configuration
-            require.config({
-                baseUrl: BUNDLE.bundlePath,
-                paths: {
-                    main: 'common/resources/js/main',
-                    libraries: 'libraries',
-                    package: BUNDLE.packagePath + 'resources/js'
-                }
-            });
-            // Load the main app module to start the app
+            var requireJsConfig = BUNDLE.config.requireJs;
+            // Define main, which will contain common require configuration
+            requireJsConfig.paths['main'] = 'common/resources/js/main';
+            // Define package dependencies
+            requireJsConfig.paths['consoleList'] = 'libraries/kinetic-consoleList/jquery.consoleList';
+            requireJsConfig.paths['package'] = 'packages/submissions/resources/js/package';
+            requireJsConfig.paths['submissionsList'] = 'packages/submissions/resources/js/submissionsList';
+            // Define console list shim to support jquery and underscore
+            requireJsConfig.shim['consoleList'] = ['jquery', 'underscore'];
+            // Define require js configuration
+            require.config(requireJsConfig);
+            // Load the main application module to start the application
             require(["main"], function(main) {
                 // Load package modules
-                require(['libraries/kinetic-consoleList/jquery.consoleList'], function(consoleList) {});
-                require(['package/package'], function(package) {});
-                require(['package/submissions'], function(submissions) {});
-                require(['package/submissionsList'], function(submissionsList) {});
+                require([
+                    'consoleList',
+                    'package',
+                    'submissionsList'
+                ], function(
+                    consoleList,
+                    package,
+                    submissionsList 
+                ) {
+                    // Process the code below after package modules are loaded
+                    $(function() {
+                        // Get query string parameters into an object
+                        var urlParameters = BUNDLE.common.getUrlParameters();
+                        // Determine if type is a real type
+                        if(urlParameters.type !== 'requests' && urlParameters.type !== 'approvals') {
+                            urlParameters.type = 'requests';
+                        }
+                        // Active link class
+                        var activeNavSelector = $('ul li.requests');
+                        if(urlParameters.type === 'approvals') { activeNavSelector = $('ul li.approvals') };
+                        activeNavSelector.addClass('active').append($('<div>').addClass('arrow-left'));
+                        // Set active link
+                        $('header.sub div.container ul li').each(function(index, value) {
+                            if(urlParameters.status == $(this).find('a').data('group-name')) {
+                                $(this).addClass('active');
+                            }
+                        });
+                        // Position scroll for small devices
+                        var activeLinkPosition = $('header.sub div.container > ul li.active').position();
+                        if(activeLinkPosition !== undefined && activeLinkPosition.left !== undefined) { 
+                            $('header.sub div.container > ul').scrollLeft(activeLinkPosition.left); 
+                        }
+                        // How many entries to show on page load
+                        var entryOptionSelected = 10;
+                        // Start table
+                        BUNDLE.package.submissions.initialize({
+                            'status':urlParameters.status,
+                            'type':urlParameters.type,
+                            'entryOptionSelected': entryOptionSelected
+                        });
+                    });
+                });
             });
         </script>
     </head>
