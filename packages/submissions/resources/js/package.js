@@ -1,4 +1,4 @@
-(function($, _) {    
+define('package', ['jquery'], function($) {    
     /*----------------------------------------------------------------------------------------------
      * PACKAGE INIALIZATION
      *   This code is executed when the Javascript file is loaded
@@ -17,4 +17,4 @@
         return this.indexOf(str) == 0;
       };
     }
-})(jQuery, _);
+});

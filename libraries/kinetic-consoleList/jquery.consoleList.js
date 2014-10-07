@@ -10,7 +10,7 @@
  * Required libraries:
  * jQuery and Underscore.
  */
-(function($, _) {
+define(['jquery', 'jqueryUi'], function ($, jqueryUi) {
     // Create the bundle namespace
     BUNDLE = BUNDLE || {};
     // Create the libraries namespace
@@ -477,4 +477,4 @@
             this.consoleList.remove();
         }
     });
-})(jQuery, _);
+});

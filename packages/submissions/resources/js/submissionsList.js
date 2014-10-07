@@ -1,4 +1,4 @@
-(function($, _) {
+define('submissionsList', ['jquery', 'package'], function($, package) {
     /*----------------------------------------------------------------------------------------------
      * SUBMISSIONS INIALIZATION
      *   This code is executed when the Javascript file is loaded
@@ -228,7 +228,28 @@
         }
     };
 
-    submissions.initialize = function(params, status, entryOptionSelected) {
+    submissions.initialize = function(options) {
+        // Define options
+        var options = options || {};
+        // Define entry options selected
+        var entryOptionSelected = options.entryOptionSelected || 5;
+        // Define status (the status group the submissions belong under)
+        var status = options.status || 'Open Request';
+        // Define type, requests or approvals
+        var type = options.type || 'requests';
+        // Determine if the status is a real status
+        var statusCheck = true;
+        $.each(submissions.consoleParams, function(index) { 
+            if(status === index) {
+                statusCheck = false;
+                return false;
+            }
+        });
+        if(statusCheck) {
+            status = (type === 'requests') ? 'Open Request': 'Pending Approval';
+        }
+        // Define the console specific properties
+        var params = submissions.consoleParams[status];
         var loader = $('div#loader');
         var responseMessage = $('div.results-message');
         // Define console options
@@ -295,4 +316,4 @@
         });
     };
 
-})(jQuery, _);
+});
