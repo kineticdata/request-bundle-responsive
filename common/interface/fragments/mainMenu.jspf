@@ -1,7 +1,7 @@
 <a class="main-menus color-white color-hover-secondary" href="javascript:void(0)" data-target="div.main-menus" data-description="Navigate">
     <i class="fa fa-th"></i>
 </a>
-<div class="main-menus background-white" aria-hidden="true">
+<div class="main-menus background-white hide" aria-hidden="true">
     <ul class="list-unstyled clearfix">
         <li class="catalog">
             <a href="<%= bundle.getProperty("catalogUrl")%>" class="color-gray-darkest color-hover-secondary">

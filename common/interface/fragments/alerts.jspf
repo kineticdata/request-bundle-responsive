@@ -1,7 +1,7 @@
 <a class="alerts color-white color-hover-secondary" href="javascript:void(0)" data-target="div.alerts" data-description="Notifications">
     <i class="fa fa-bell-o"></i>
 </a>
-<div class="alerts background-white" aria-hidden="true">
+<div class="alerts background-white hide" aria-hidden="true">
     <ul class="list-unstyled clearfix">
         <li class="background-hover-gray-lightest border-bottom border-primary">
             <a href="#" class="color-gray-dark color-hover-gray-darkest">
