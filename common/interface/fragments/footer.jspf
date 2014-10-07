@@ -27,7 +27,9 @@
 <!--[if lt IE 9]>
 <%-- Add respond.css to head --%>
 <script type='text/javascript'>
+(function($) {
     $('head').append(respondCssInclude);
+});
 </script>
 <%-- Initialize the respond js --%>
 <script type='text/javascript' src='<%=bundle.bundlePath()%>libraries/respond/respond.min.js'></script>

@@ -42,7 +42,7 @@ if(context != null) {
 </div>
 
 <script type="text/javascript">
-(function($) {
+require(['jquery', 'common'], function($, common) {
     $(function() {
         // Add gravatar image to ui
         BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'i.gravatar-icon');

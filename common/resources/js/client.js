@@ -1,4 +1,4 @@
-(function($, _) {
+(function($) {
     /*----------------------------------------------------------------------------------------------
      * DOM MANIPULATION AND EVENT REGISTRATION
      *   This section is executed on page load to register events and otherwise manipulate the DOM.
@@ -67,4 +67,4 @@
         date.setTime(date.getTime() + (1 * 1000));
         return $.cookie('cookieCheck', 'valid', { expires: date }) && $.cookie('cookieCheck') === 'valid';
     };
-})(jQuery, _);
+})(jQuery);

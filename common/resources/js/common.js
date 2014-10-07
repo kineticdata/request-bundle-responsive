@@ -1,4 +1,14 @@
-(function($, _) {
+define([
+    'jquery',
+    'jqueryMd5',
+    'underscore',
+    'client'
+], function(
+    $, 
+    underscore,
+    jqueryMd5,
+    client
+) {
     /*----------------------------------------------------------------------------------------------
      * DOM MANIPULATION AND EVENT REGISTRATION
      *   This section is executed on page load to register events and otherwise manipulate the DOM.
@@ -418,4 +428,4 @@
         window.onbeforeunload = callback;
     };
 
-})(jQuery, _);
+});

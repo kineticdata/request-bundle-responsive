@@ -61,7 +61,7 @@
     <%}%>
 </div>
 <script type="text/javascript">
-(function($) {
+require(['jquery', 'qtip', 'common'], function($, qtip, common) {
     $(function() {
         // Define qtip options for menus
         var qtipOptions = {
