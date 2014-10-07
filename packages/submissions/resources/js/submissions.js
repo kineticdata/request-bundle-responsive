@@ -5,7 +5,7 @@
      *--------------------------------------------------------------------------------------------*/
     $(function() {
         // Define submission group name hash
-        submissions.status = document.location.hash;
+        submissions.status = document.location.hash.substr(1);
         // Define how many entries maximum should display
         submissions.entryOptionSelected = 11;
         // Get query string parameters into an object
