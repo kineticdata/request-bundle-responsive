@@ -4,6 +4,10 @@
      *   This section is executed on page load to register events and otherwise manipulate the DOM.
      *--------------------------------------------------------------------------------------------*/
     $(function() {
+        // Define submission group name hash
+        submissions.status = document.location.hash;
+        // Define how many entries maximum should display
+        submissions.entryOptionSelected = 10;
         // Get query string parameters into an object
         var urlParameters = BUNDLE.common.getUrlParameters();
         // Determine if type is a real type
@@ -13,37 +17,54 @@
         // Determine if the status is a real status
         var statusCheck = true;
         $.each(submissions.consoleParams, function(index) { 
-            if(urlParameters.status === index) {
+            if(submissions.status === index) {
                 statusCheck = false;
                 return false;
             }
         });
         if(statusCheck) {
             if(urlParameters.type === 'requests') {
-                urlParameters.status = 'Open Request';
+                submissions.status = 'Open Request';
             } else {
-                 urlParameters.status = 'Pending Approval';
+                 submissions.status = 'Pending Approval';
             }
+            // Update hash
+            document.location.hash = submissions.status;
         }
         // Active link class
         var activeNavSelector = $('ul li.requests');
-        if(urlParameters.type === 'approvals') { activeNavSelector = $('ul li.approvals') };
+        if(urlParameters.type === 'approvals') { activeNavSelector = $('ul li.approvals'); };
         activeNavSelector.addClass('active').append($('<div>').addClass('arrow-left'));
         // Set active link
-        $('header.sub div.container ul li').each(function(index, value) {
-            if(urlParameters.status == $(this).find('a').data('group-name')) {
-                $(this).addClass('active');
-            }
-        });
+        $('header a[data-group-name="' + submissions.status + '"]').parents('li').addClass('active');
         // Position scroll for small devices
         var activeLinkPosition = $('header.sub div.container > ul li.active').position();
         if(activeLinkPosition !== undefined && activeLinkPosition.left !== undefined) { $('header.sub div.container > ul').scrollLeft(activeLinkPosition.left); }
         // Get console specific properties
-        var params = submissions.consoleParams[urlParameters.status];
-        // How many entries to show on page load
-        var entryOptionSelected = 10;
+        var params = submissions.consoleParams[submissions.status];
         // Start table
-        submissions.initialize(params, urlParameters.status, entryOptionSelected);
+        submissions.initialize(params, submissions.status, submissions.entryOptionSelected);
+        
+        // Click event for each submissions bucket
+        $('header.sub').on('click', 'ul li a', function(event) {
+            event.preventDefault();
+            var submissionGroupName = $(this).data('group-name');
+            // Update hash
+            document.location.hash = submissionGroupName;
+            // Update status
+            submissions.status = submissionGroupName;
+            // Try to destroy console
+            // This allows the console to be initialized again
+            try { $('div.results').consoleList('destroy'); } catch(exception) { /* Do nothing */ }
+            // Get console specific properties
+            var params = submissions.consoleParams[submissions.status];
+            // Start table
+            submissions.initialize(params, submissions.status, submissions.entryOptionSelected);
+            // Clear all active links
+            $('header.sub div.container ul li').removeClass('active');
+            // Set active link
+            $('header a[data-group-name="' + submissions.status + '"]').parents('li').addClass('active');
+        });
     });
     
     /*----------------------------------------------------------------------------------------------
