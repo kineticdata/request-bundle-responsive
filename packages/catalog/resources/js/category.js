@@ -1,4 +1,4 @@
-(function($, _) {
+(function($) {
     /*----------------------------------------------------------------------------------------------
      * DOM MANIPULATION AND EVENT REGISTRATION
      *   This section is executed on page load to register events and otherwise manipulate the DOM.
@@ -37,4 +37,4 @@
             }
         }
     });
-})(jQuery, _);
+});

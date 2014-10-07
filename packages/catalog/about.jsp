@@ -27,6 +27,19 @@
         <%@include file="../../core/interface/fragments/displayHeadContent.jspf"%>
         <%-- Include the form head content, including attached css/javascript files and custom header content --%>
         <%@include file="../../core/interface/fragments/formHeadContent.jspf"%>
+        <!-- Require JavaScript -->
+        <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/requirejs/require.js"></script>
+        <!-- Initialize JavaScript -->
+        <script type="text/javascript">
+            // Define alias to require js configuration in common
+            var requireJsConfig = BUNDLE.config.requireJs;
+            // Define main, which will contain common require configuration
+            requireJsConfig.paths['main'] = 'common/resources/js/main';
+            // Define require js configuration
+            require.config(requireJsConfig);
+            // Load the main application module to start the application
+            require(['main'], function(main) {});
+        </script>
     </head>
     <body>
         <div class="sticky-footer">

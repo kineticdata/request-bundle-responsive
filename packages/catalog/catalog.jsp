@@ -28,9 +28,31 @@
         <!-- Page Stylesheets -->
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/package.css" type="text/css" />
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/catalog.css" type="text/css" />
-        <!-- Page Javascript -->
-        <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/package.js"></script>
-        <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/catalog.js"></script>
+        <!-- Require JavaScript -->
+        <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/requirejs/require.js"></script>
+        <!-- Initialize JavaScript -->
+        <script type="text/javascript">
+            // Define alias to require js configuration in common
+            var requireJsConfig = BUNDLE.config.requireJs;
+            // Define main, which will contain common require configuration
+            requireJsConfig.paths['main'] = 'common/resources/js/main';
+            // Define package dependencies
+            requireJsConfig.paths['package'] = 'packages/catalog/resources/js/package';
+            requireJsConfig.paths['catalog'] = 'packages/catalog/resources/js/catalog';
+            // Define require js configuration
+            require.config(requireJsConfig);
+            // Load the main application module to start the application
+            require(['main'], function(main) {
+                // Load package modules
+                require([
+                    'package',
+                    'catalog'
+                ], function(
+                    package,
+                    catalog 
+                ) {});
+            });
+        </script>
     </head>
     <body>
         <div class="view-port">
