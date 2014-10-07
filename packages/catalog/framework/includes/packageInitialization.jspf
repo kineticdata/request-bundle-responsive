@@ -43,7 +43,11 @@
       <%@include file="../models/kineticSample/Incident.jspf
       <%@include file="../models/kineticSample/Person.jspf
 --%>
-
+<%@include file="../models/SubmissionConsole.jspf" %>
+<%@include file="../models/Incident.jspf" %>
+<%@include file="../models/IncidentWorkLog.jspf" %>
+<%@include file="../models/Change.jspf" %>
+<%@include file="../models/ChangeWorkLog.jspf" %>
 <%--
     Instantiate any appropriate helper objects.  By convention, the
     PackageHelper class will typically be instantiated here.  The PackageHelper
@@ -54,9 +58,10 @@
 <% PathHelper pathHelper = new PathHelper(bundle); %>
 
 <%--
-    Include the package configuration file.
+    Include the package & sub-package configuration files.
 --%>
 <%@include file="../../config/config.jspf" %>
 
 <%-- Include the package language initialization file. --%>
 <%@include file="languageInitialization.jspf" %>
+

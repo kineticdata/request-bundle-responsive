@@ -18,7 +18,13 @@
     BUNDLE.package = BUNDLE.package || {};
     // Create a scoped alias to simplify references
     var package = BUNDLE.package;
-    
+    // Determine if startsWith exists
+    if (typeof String.prototype.startsWith != 'function') {
+      // Define startsWith
+      String.prototype.startsWith = function (str){
+        return this.indexOf(str) == 0;
+      };
+    }
     /**
      * Initializes the dropdown menus
      * @returns {undefined}

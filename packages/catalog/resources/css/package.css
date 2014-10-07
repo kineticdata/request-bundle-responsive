@@ -295,7 +295,9 @@ table tbody tr td.nav-pop-h {
 table tbody tr td.nav-pop-v {
     background-image: url(../images/nav-pop-v.png);
 }
-
+div.fixed-header-spacer {
+    height: 110px;
+}
 /* Responsive */
 @media (min-width: 991px) {
 }
