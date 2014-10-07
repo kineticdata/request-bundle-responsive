@@ -98,7 +98,7 @@
                         <section class="container">
                             <ul class="templates unstyled">
                                 <% for (int i = 0; i < matchingTemplates.length; i++) {%>
-                                    <li class="border-top clearfix">
+                                    <li class="border-top border-gray-light clearfix">
                                         <div class="content-wrap">
                                             <% if (matchingTemplates[i].hasTemplateAttribute("ServiceItemImage")) { %>
                                                 <div class="image">
