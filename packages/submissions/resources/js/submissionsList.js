@@ -1,5 +1,33 @@
 define('submissionsList', ['jquery', 'package'], function($, package) {
     /*----------------------------------------------------------------------------------------------
+     * DOM MANIPULATION AND EVENT REGISTRATION
+     *   This section is executed on page load to register events and otherwise manipulate the DOM.
+     *--------------------------------------------------------------------------------------------*/
+    $(function() {
+        // Click event for each submission's status group
+        $('header.sub').on('click', 'ul li a', function(event) {
+            event.preventDefault();
+            // Get group status from current link
+            var submissionGroupStatus = $(this).data('group-name');
+            // Update hash
+            document.location.hash = submissionGroupStatus;
+            // Try to destroy console
+            // This allows the console to be initialized again
+            try { $('div.results').consoleList('destroy'); } catch(exception) { /* Do nothing */ }
+            // Start console
+            BUNDLE.package.submissions.initialize({
+                'status':submissionGroupStatus,
+                'type':submissions.type,
+                'entryOptionSelected': submissions.entryOptionSelected
+            });
+            // Clear all active links
+            $('header.sub div.container ul li').removeClass('active');
+            // Set active link
+            $('header.sub a[data-group-name="' + submissionGroupStatus + '"]').parents('li').addClass('active');
+        });
+    });
+    
+    /*----------------------------------------------------------------------------------------------
      * SUBMISSIONS INIALIZATION
      *   This code is executed when the Javascript file is loaded
      *--------------------------------------------------------------------------------------------*/
@@ -227,29 +255,51 @@ define('submissionsList', ['jquery', 'package'], function($, package) {
             completeCallback: submissions.defaultCompleteCallback
         }
     };
-
+    
+    /**
+     * Initializes the Subimssions console.
+     * 
+     * @param {Object} options.
+     * @param {Number} options.entryOptionSelected is how many results to show.
+     * @param {String} options.type is either requests are approvals.
+     * @param {String} options.status is the submission status group (Open, Closed, Pending).
+     * @returns {undefined}
+     */
     submissions.initialize = function(options) {
         // Define options
-        var options = options || {};
-        // Define entry options selected
-        var entryOptionSelected = options.entryOptionSelected || 5;
-        // Define status (the status group the submissions belong under)
-        var status = options.status || 'Open Request';
+        options = options || {};
         // Define type, requests or approvals
-        var type = options.type || 'requests';
+        submissions.type = options.type || 'requests';
+        // Define status (the status group the submissions belong under)
+        submissions.status = options.status || 'Open Request';
         // Determine if the status is a real status
         var statusCheck = true;
         $.each(submissions.consoleParams, function(index) { 
-            if(status === index) {
+            if(submissions.status === index) {
                 statusCheck = false;
                 return false;
             }
         });
         if(statusCheck) {
-            status = (type === 'requests') ? 'Open Request': 'Pending Approval';
+            submissions.status = (submissions.type === 'requests') ? 'Open Request': 'Pending Approval';
+        }
+        // Define entry options selected
+        submissions.entryOptionSelected = options.entryOptionSelected || 5;
+        // Active link class
+        var activeNavSelector = $('ul li.requests');
+        // Setup active nav selector based on type
+        if(submissions.type === 'approvals') { activeNavSelector = $('ul li.approvals'); };
+        // Add active link
+        activeNavSelector.addClass('active').append($('<div>').addClass('arrow-left'));
+        // Set active group link
+        $('header.sub a[data-group-name="' + submissions.status + '"]').parents('li').addClass('active');
+        // Position scroll for small devices on the header containing the submission group links
+        var activeLinkPosition = $('header.sub div.container > ul li.active').position();
+        if(activeLinkPosition !== undefined && activeLinkPosition.left !== undefined) { 
+            $('header.sub div.container > ul').scrollLeft(activeLinkPosition.left); 
         }
         // Define the console specific properties
-        var params = submissions.consoleParams[status];
+        var params = submissions.consoleParams[submissions.status];
         var loader = $('div#loader');
         var responseMessage = $('div.results-message');
         // Define console options
@@ -257,7 +307,7 @@ define('submissionsList', ['jquery', 'package'], function($, package) {
             displayFields: params.displayFields,
             paginationPageRange: 5,
             pagination: true,
-            entryOptionSelected: entryOptionSelected,
+            entryOptionSelected: submissions.entryOptionSelected,
             entryOptions: [5, 10, 20, 50, 100],
             entries: false,
             info: false,
@@ -272,7 +322,7 @@ define('submissionsList', ['jquery', 'package'], function($, package) {
                     dataType: 'json',
                     cache: false,
                     type: 'get',
-                    url: BUNDLE.config.submissionsUrl + '&callback=submissions&qualification=' + status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
+                    url: BUNDLE.config.submissionsUrl + '&callback=submissions&qualification=' + submissions.status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
                     beforeSend: function(jqXHR, settings) {
                         responseMessage.empty();
                         loader.show();
@@ -287,7 +337,7 @@ define('submissionsList', ['jquery', 'package'], function($, package) {
                             killScroll = false;
                         } else {
                             $('section.container nav.submissions-navigation').show();
-                            responseMessage.html('<h4>There Are No ' + status + 's</h4>').show();
+                            responseMessage.html('<h4>There Are No ' + submissions.status + 's</h4>').show();
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
