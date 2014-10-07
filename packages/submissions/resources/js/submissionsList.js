@@ -271,7 +271,7 @@ define('submissionsList', ['jquery', 'package'], function($, package) {
         // Define type, requests or approvals
         submissions.type = options.type || 'requests';
         // Define status (the status group the submissions belong under)
-        submissions.status = options.status || 'Open Request';
+        submissions.status = options.status || '';
         // Determine if the status is a real status
         var statusCheck = true;
         $.each(submissions.consoleParams, function(index) { 
@@ -365,5 +365,4 @@ define('submissionsList', ['jquery', 'package'], function($, package) {
             }
         });
     };
-
 });
