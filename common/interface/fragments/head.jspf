@@ -73,20 +73,20 @@
         baseUrl: BUNDLE.bundlePath,
         paths: {
             // Use production main
-            placeholders: 'setup/main',
-            moment: 'setup/main',
-            jquery: 'setup/main',
-            jqueryUi: 'setup/main',
-            jqueryCookie: 'setup/main',
-            jqueryMd5: 'setup/main',
-            bootstrap: 'setup/main',
-            qtip: 'setup/main',
-            underscore: 'setup/main',
-            client: 'setup/main',
-            ajaxLogin: 'setup/main',
-            bridges: 'setup/main',
-            common: 'setup/main',
-            main: 'setup/main'
+            placeholders: 'common/resources/js/main',
+            moment: 'common/resources/js/main',
+            jquery: 'common/resources/js/main',
+            jqueryUi: 'common/resources/js/main',
+            jqueryCookie: 'common/resources/js/main',
+            jqueryMd5: 'common/resources/js/main',
+            bootstrap: 'common/resources/js/main',
+            qtip: 'common/resources/js/main',
+            underscore: 'common/resources/js/main',
+            client: 'common/resources/js/main',
+            ajaxLogin: 'common/resources/js/main',
+            bridges: 'common/resources/js/main',
+            common: 'common/resources/js/main',
+            main: 'common/resources/js/main'
         },
         shim: {
             jqueryUi: {
@@ -112,6 +112,8 @@
     };
     <% if(bundle.getProperty("applicationEnv") != null &&
         bundle.getProperty("applicationEnv").equals("dev")) {%>
+            // Bust the cache
+            //BUNDLE.config.requireJs.urlArgs = 'bust=' + Math.random();
             // Use development resources
             BUNDLE.config.requireJs.paths = {
                 placeholders: 'libraries/placeholders/placeholders.min',
