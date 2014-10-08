@@ -41,8 +41,6 @@
         <script type="text/javascript">
             // Define alias to require js configuration in common
             var requireJsConfig = BUNDLE.config.requireJs;
-            // Define main, which will contain common require configuration
-            requireJsConfig.paths['main'] = 'common/resources/js/main';
             // Define require js configuration
             require.config(requireJsConfig);
             // Load the main application module to start the application

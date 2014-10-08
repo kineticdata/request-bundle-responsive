@@ -74,6 +74,26 @@
         <!-- Page Stylesheets -->
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/package.css" type="text/css" />
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/search.css" type="text/css" />
+        <!-- Require JavaScript -->
+        <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/requirejs/require.js"></script>
+        <!-- Initialize JavaScript -->
+        <script type="text/javascript">
+            // Define alias to require js configuration in common
+            var requireJsConfig = BUNDLE.config.requireJs;
+            // Define package dependencies
+            requireJsConfig.paths['package'] = 'packages/catalog/resources/js/package';
+            // Define require js configuration
+            require.config(requireJsConfig);
+            // Load the main application module to start the application
+            require(['main'], function(main) {
+                // Load package modules
+                require([
+                    'package'
+                ], function(
+                    package
+                ) {});
+            });
+        </script>
     </head>
     <body>
         <div class="view-port">

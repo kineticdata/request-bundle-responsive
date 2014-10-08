@@ -34,8 +34,6 @@
         <script type="text/javascript">
             // Define alias to require js configuration in common
             var requireJsConfig = BUNDLE.config.requireJs;
-            // Define main, which will contain common require configuration
-            requireJsConfig.paths['main'] = 'common/resources/js/main';
             // Define package dependencies
             requireJsConfig.paths['package'] = 'packages/catalog/resources/js/package';
             requireJsConfig.paths['popularRequests'] = 'packages/catalog/resources/js/popularRequests';
