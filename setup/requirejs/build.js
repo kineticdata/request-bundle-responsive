@@ -18,7 +18,8 @@
             name: 'main'
         }
     ],
-    fileExclusionRegExp: /^(r|build)\.js$/, // Exclude this file
+    fileExclusionRegExp: /^(r|build)\.js$/, // Exclude this file.
+    preserveLicenseComments: false, // Removes comments.
     // Define the paths that are required by main to process this distribution.
     // The file path is relative to the baseUrl specified above.
     paths: {
