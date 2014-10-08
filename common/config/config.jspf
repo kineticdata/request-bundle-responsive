@@ -49,6 +49,9 @@
     // Service Item Image Library Path
     bundle.setProperty("serviceItemImagePath", bundle.bundlePath() + "../../surveys/kineticImageLibrary/");
     
+    // Define application environment
+    bundle.setProperty("applicationEnv", "dev");
+
     // Loop through attributes and store them as bundle properties, which overrides any properties assigned above
     for (CatalogAttribute attribute : catalogAttributes) {
         if(StringUtils.isNotBlank(attribute.getValue())) {

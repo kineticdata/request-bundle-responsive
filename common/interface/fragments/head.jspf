@@ -72,19 +72,21 @@
     BUNDLE.config.requireJs = {
         baseUrl: BUNDLE.bundlePath,
         paths: {
-            placeholders: 'libraries/placeholders/placeholders.min',
-            moment: 'libraries/moment/moment',
-            jquery: 'libraries/jquery/jquery-1.11.0.min',
-            jqueryUi: 'libraries/jquery/jquery-ui-1.10.3.custom.min',
-            jqueryCookie: 'libraries/jquery.cookie/jquery.cookie',
-            jqueryMd5: 'libraries/jquery.md5/jquery.md5',
-            bootstrap: 'libraries/bootstrap/js/bootstrap.min',
-            qtip: 'libraries/jquery.qtip/jquery.qtip.min',
-            underscore: 'libraries/underscore/underscore-min',
-            client: 'common/resources/js/client',
-            ajaxLogin: 'common/resources/js/ajaxLogin',
-            bridges: 'common/resources/js/Bridges',
-            common: 'common/resources/js/common'
+            // Use production main
+            placeholders: 'setup/main',
+            moment: 'setup/main',
+            jquery: 'setup/main',
+            jqueryUi: 'setup/main',
+            jqueryCookie: 'setup/main',
+            jqueryMd5: 'setup/main',
+            bootstrap: 'setup/main',
+            qtip: 'setup/main',
+            underscore: 'setup/main',
+            client: 'setup/main',
+            ajaxLogin: 'setup/main',
+            bridges: 'setup/main',
+            common: 'setup/main',
+            main: 'setup/main'
         },
         shim: {
             jqueryUi: {
@@ -108,6 +110,26 @@
             }
         }
     };
+    <% if(bundle.getProperty("applicationEnv") != null &&
+        bundle.getProperty("applicationEnv").equals("dev")) {%>
+            // Use development resources
+            BUNDLE.config.requireJs.paths = {
+                placeholders: 'libraries/placeholders/placeholders.min',
+                moment: 'libraries/moment/moment',
+                jquery: 'libraries/jquery/jquery-1.11.0.min',
+                jqueryUi: 'libraries/jquery/jquery-ui-1.10.3.custom.min',
+                jqueryCookie: 'libraries/jquery.cookie/jquery.cookie',
+                jqueryMd5: 'libraries/jquery.md5/jquery.md5',
+                bootstrap: 'libraries/bootstrap/js/bootstrap.min',
+                qtip: 'libraries/jquery.qtip/jquery.qtip.min',
+                underscore: 'libraries/underscore/underscore-min',
+                client: 'common/resources/js/client',
+                ajaxLogin: 'common/resources/js/ajaxLogin',
+                bridges: 'common/resources/js/Bridges',
+                common: 'common/resources/js/common',
+                main: 'common/resources/js/main'
+            };
+   <%}%>
 </script>
 
 <!-- Common JavaScript Libraries -->
