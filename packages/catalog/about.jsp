@@ -27,8 +27,6 @@
         <%@include file="../../core/interface/fragments/displayHeadContent.jspf"%>
         <%-- Include the form head content, including attached css/javascript files and custom header content --%>
         <%@include file="../../core/interface/fragments/formHeadContent.jspf"%>
-        <!-- Require JavaScript -->
-        <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/requirejs/require.js"></script>
         <!-- Initialize JavaScript -->
         <script type="text/javascript">
             // Define alias to require js configuration in common

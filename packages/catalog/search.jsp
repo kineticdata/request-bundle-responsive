@@ -74,8 +74,6 @@
         <!-- Page Stylesheets -->
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/package.css" type="text/css" />
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/search.css" type="text/css" />
-        <!-- Require JavaScript -->
-        <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/requirejs/require.js"></script>
         <!-- Initialize JavaScript -->
         <script type="text/javascript">
             // Define alias to require js configuration in common

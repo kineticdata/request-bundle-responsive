@@ -145,3 +145,5 @@
     });
 });
 </script>
+<!-- Require JavaScript -->
+<script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/requirejs/require.js"></script>
