@@ -3,6 +3,8 @@
 
 /* jQuery custom ui */
 @import url(../../libraries/jquery/jquery-ui-1.10.3.custom.min.css);
+
+/* jQuery qtip */
 @import url(../../libraries/jquery.qtip/jquery.qtip.min.css);
 
 /* Front awesome */
