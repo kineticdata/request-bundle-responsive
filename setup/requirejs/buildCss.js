@@ -10,7 +10,7 @@
  * http://requirejs.org/docs/optimization.html
  */
 ({
-  cssIn: '../sass/application.css',
+  cssIn: 'application.css',
   out: 'application.min.css',
   optimizeCss: 'standard', // Minifies to one line
   preserveLicenseComments: false, // Removes comments.
