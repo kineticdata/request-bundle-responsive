@@ -1,5 +1,8 @@
 # These ignores come from: https://github.com/github/gitignore
 
+# Ignore sass cache
+.sass-cache
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
