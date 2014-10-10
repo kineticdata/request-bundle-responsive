@@ -81,7 +81,7 @@ This setup can be leveraged to manage modules using npm. The following dependenc
 
 ## Installation
 
-Install [node.js](http://nodejs.org) to start using npm to manage the dependencies above.  These dependencies can be installed using bash (Unix Shell) in bundle/setup/npm.  These commands use [npm install](https://www.npmjs.org/doc/cli/npm-install.html). Navigate to bundle/setup/npm and run the following commands:
+Install [node.js](http://nodejs.org) to start using npm to manage the dependencies above.  These dependencies can be installed using bash (Unix Shell) in **bundle/setup/npm.**  These commands use [npm install](https://www.npmjs.org/doc/cli/npm-install.html). Navigate to bundle/setup/npm and run the following commands:
 
 ```shell
 npm install --save-dev browserify watchify uglify-js
@@ -93,7 +93,9 @@ npm install jquery --save
 npm install jquery-ui --save
 ```
 
-Once the required dependencies for package.json are setup, a minified installation of the JavaScript dependencies including bundle common JavaScript can be generated using the scripts from package.json.  
+## Build
+
+Once the required dependencies for **package.json** are setup, a minified installation of the JavaScript dependencies including bundle common JavaScript can be generated using the scripts from **package.json.**
 
 ```json
 "scripts": {
@@ -104,7 +106,7 @@ Once the required dependencies for package.json are setup, a minified installati
   }
 ```
 
-These scripts use bundle/setup/npm/application.js to create the desired output.  The [npm run](https://www.npmjs.org/doc/cli/npm-run-script.html) command can execute the scripts based on the script name. For example, the minification script can be executed using bash in bundle/setup/npm:
+These scripts use **bundle/setup/npm/application.js** to create the desired output.  The [npm run](https://www.npmjs.org/doc/cli/npm-run-script.html) command can execute the scripts based on the script name. For example, the minification script can be executed using bash in **bundle/setup/npm:**
 
 ```shell
 npm run build-min
