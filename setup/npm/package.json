@@ -1,0 +1,49 @@
+{
+  "name": "browserify",
+  "version": "1.0.0",
+  "description": "browser-side require() the node way",
+  "main": "application.js",
+  "scripts": {
+    "build-debug": "browserify application.js -d --s application > dist/application.js",
+    "build-min": "browserify application.js --s application | uglifyjs -c > dist/application.min.js",
+    "build": "npm run build-debug && npm run build-min",
+    "watch": "watchify application.js -d --s application -o dist/application.js -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kineticdata/request-bundle-responsive"
+  },
+  "keywords": [
+    "responsive",
+    "fluid",
+    "browser",
+    "require",
+    "commonjs",
+    "commonj-esque",
+    "bundle",
+    "npm",
+    "javascript"
+  ],
+  "author": {
+    "name": "Kinetic Data",
+    "url": "http://www.kineticdata.com/"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kineticdata/request-bundle-responsive/issues"
+  },
+  "homepage": "https://github.com/kineticdata/request-bundle-responsive",
+  "devDependencies": {
+    "browserify": "^6.0.3",
+    "uglify-js": "^2.4.15",
+    "watchify": "^2.0.0"
+  },
+  "dependencies": {
+    "jquery": "^1.11.1",
+    "jquery-ui": "^1.10.5",
+    "jquery.cookie": "^1.4.1",
+    "moment": "^2.8.3",
+    "qtip2": "^2.2.0",
+    "underscore": "^1.7.0"
+  }
+}
