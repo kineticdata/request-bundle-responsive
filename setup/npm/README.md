@@ -104,7 +104,7 @@ Once the required dependencies for package.json are setup, a minified installati
   }
 ```
 
-These scripts use bundle/setup/npm/application.js to create the desired output.  For example, these scripts can be executed in bundle/setup/npm using bash:
+These scripts use bundle/setup/npm/application.js to create the desired output.  The [npm run](https://www.npmjs.org/doc/cli/npm-run-script.html) command can execute the scripts based on the script name. For example, the minification script can be executed using bash in bundle/setup/npm:
 
 ```shell
 npm run build-min
