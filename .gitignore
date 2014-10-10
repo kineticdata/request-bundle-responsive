@@ -66,3 +66,6 @@ node_modules
 
 # Users Environment Variables
 .lock-wscript
+
+# Ignore sass cache
+.sass-cache
