@@ -60,10 +60,10 @@ and load modules installed by [npm](https://npmjs.org).
   }
 }
 ```
+## Dependencies
+This setup can be leveraged to manage modules using npm. The following dependencies are required for this setup to work:
 
-This setup can be leveraged to manage modules using npm. The following dependencies are required for this setup to work.
-
-```
+```json
  "devDependencies": {
     "browserify": "^6.0.3",
     "uglify-js": "^2.4.15",
@@ -83,7 +83,7 @@ This setup can be leveraged to manage modules using npm. The following dependenc
 
 Install [node.js](http://nodejs.org) to start using npm to manage the dependencies above.  These dependencies can be installed using bash (Unix Shell) in bundle/setup/npm.  These commands use [npm install](https://www.npmjs.org/doc/cli/npm-install.html). Navigate to bundle/setup/npm and run the following commands:
 
-```
+```shell
 npm install --save-dev browserify watchify uglify-js
 npm install -g browserify --save
 npm install -g watchify --save
@@ -95,7 +95,7 @@ npm install jquery-ui --save
 
 Once the required dependencies for package.json are setup, a minified installation of the JavaScript dependencies including bundle common JavaScript can be generated using the scripts from package.json.  
 
-```
+```json
 "scripts": {
     "build-debug": "browserify application.js -d --s application > dist/application.js",
     "build-min": "browserify application.js --s application | uglifyjs -c > dist/application.min.js",
@@ -106,6 +106,6 @@ Once the required dependencies for package.json are setup, a minified installati
 
 These scripts use bundle/setup/npm/application.js to create the desired output.  For example, these scripts can be executed in bundle/setup/npm using bash:
 
-```
+```shell
 npm run build-min
 ```
