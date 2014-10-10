@@ -11,9 +11,9 @@ and load modules installed by [npm](https://npmjs.org).
 
 ```json
 {
-  "name": "responsive",
+  "name": "browserify",
   "version": "1.0.0",
-  "description": "Responsive Bundle",
+  "description": "browser-side require() the node way",
   "main": "application.js",
   "scripts": {
     "build-debug": "browserify application.js -d --s application > dist/application.js",
@@ -28,9 +28,18 @@ and load modules installed by [npm](https://npmjs.org).
   "keywords": [
     "responsive",
     "fluid",
-    "pretty"
+    "browser",
+    "require",
+    "commonjs",
+    "commonj-esque",
+    "bundle",
+    "npm",
+    "javascript"
   ],
-  "author": "Kinetic Data",
+  "author": {
+    "name": "Kinetic Data",
+    "url": "http://www.kineticdata.com/"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kineticdata/request-bundle-responsive/issues"
