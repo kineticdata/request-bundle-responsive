@@ -28,5 +28,5 @@ gem install --pre sass-css-importer
 You can process **bundle/setup/sass/application.scss** so it's a single minified version of all the css files required by common:
 
 ```shell
-sass -r sass-css-importer application.scss application.css --style compressed
+sass -r sass-css-importer application.scss application.min.css --style compressed
 ```

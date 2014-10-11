@@ -10,17 +10,20 @@
 // Front awesome
 @import "CSS:../../libraries/font-awesome/css/font-awesome.min";
 
-// Ajax login
+// Theme Ajax login
 @import "CSS:../../common/resources/css/ajaxLogin";
 
-// Bundle theme mixins
+// Theme mixins
 @import "theme/mixins";
 
-// Bundle theme colors
+// Theme colors
 @import "theme/colors";
 
-// Bundle theme utils
+// Theme fonts
+@import "theme/fonts";
+
+// Theme utils
 @import "theme/utilities";
 
-// Bundle specific theme
+// Theme layout
 @import "theme/layout";
