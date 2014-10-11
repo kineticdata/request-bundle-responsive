@@ -25,7 +25,7 @@ Parent path:
 ```shell
 java -jar kurl.jar -action=build_catalog -directory=path-to-kurl-catalog-directory
 ```
-**Note**: If you are executing the kurl.jar from **bundle/setup**, your path to kurl directory would be **kurl/**.
+> **Tip**: If you are executing the kurl.jar from **bundle/setup**, your path to the kurl directory is **kurl/**.
 
 
 6. When the import is complete, verify that the catalog is visible in Remedy and all the service items are imported.
