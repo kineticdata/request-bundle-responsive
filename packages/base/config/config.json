@@ -1,0 +1,14 @@
+{
+    "package": "base",
+    "layout": "layout.jsp",
+    "views": {},
+     "links": [
+        {
+            "label": "View Profile",
+            "class": "profile",
+            "description": "My Profile",
+            "icon": "<i class=\"gravatar-icon\"></i>",
+            "displayName": "Profile"
+        }
+    ]
+}

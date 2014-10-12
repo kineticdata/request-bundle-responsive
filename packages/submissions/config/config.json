@@ -1,0 +1,40 @@
+{
+    "package": "submissions",
+    "layout": "layout.jsp",
+    "views": {
+        "submissionsJson": {
+            "type": "callback",
+            "content": "interface/callbacks/submissions.json.jsp"
+        },
+        "submissionActivity": {
+            "type": "page",
+            "content": "interface/views/submissionActivity.jsp"
+        },
+        "default": {
+            "type": "page",
+            "content": "interface/views/submissions.jsp"
+        }
+    },
+     "links": [
+        {
+            "label": "Requests",
+            "class": "requests",
+            "description": "View My Submissions",
+            "icon": "<i class=\"fa fa-pencil-square-o\"></i>",
+            "displayName": "Submissions",
+            "params": {
+                "type": ["requests"]
+            }
+        },
+        {
+            "label": "Approvals",
+            "class": "approvals",
+            "description": "View My Approvals",
+            "icon": "<i class=\"fa fa-check\"></i>",
+            "displayName": "Submissions",
+            "params": {
+                "type": ["approvals"]
+            }
+        }
+    ]
+}
