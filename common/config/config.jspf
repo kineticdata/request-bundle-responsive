@@ -11,13 +11,17 @@
     // Define url friendly slug, which is used in the urls below
     bundle.setProperty("slug", "Responsive");
     
-    // Find all the catalog attributes (used to dynamically set bundle properties from the authoring tool
-    CatalogAttribute[] catalogAttributes = CatalogAttribute.findByCategoryInstanceId(systemContext, customerRequest.getCatalogId());
+    // Define catalog attributes
+    Map<String,String> catalogAttributes = Configurator.getCatalogAttributeConfiguration(
+        session,
+        systemContext,
+        customerRequest.getCatalogId()
+    );
     // Loop through attributes
-    for (CatalogAttribute attribute : catalogAttributes) {
+    for (Map.Entry<String,String> attribute : catalogAttributes.entrySet()) {
         // For now, only override the slug above if it exists as a catalog attribute
-        if(attribute.getName().equals("slug") && StringUtils.isNotBlank(attribute.getValue())) {
-            bundle.setProperty(attribute.getName(), attribute.getValue());
+        if(attribute.getKey().equals("slug") && StringUtils.isNotBlank(attribute.getValue())) {
+            bundle.setProperty(attribute.getKey(), attribute.getValue());
             break;
         }
     }
@@ -50,9 +54,9 @@
     bundle.setProperty("serviceItemImagePath", bundle.bundlePath() + "../../surveys/kineticImageLibrary/");
     
     // Loop through attributes and store them as bundle properties, which overrides any properties assigned above
-    for (CatalogAttribute attribute : catalogAttributes) {
+    for (Map.Entry<String,String> attribute : catalogAttributes.entrySet()) {
         if(StringUtils.isNotBlank(attribute.getValue())) {
-            bundle.setProperty(attribute.getName(), attribute.getValue());
+            bundle.setProperty(attribute.getKey(), attribute.getValue());
         }
     }
 
