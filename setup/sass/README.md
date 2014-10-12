@@ -6,12 +6,12 @@ Use  [SASS](http://sass-lang.com/) to organize your CSS code with functions (mix
 
 ## Dependencies
 
-[Ruby](https://www.ruby-lang.org/) and [SASS CSS importer](https://github.com/chriseppstein/sass-css-importer).
+[Ruby](https://www.ruby-lang.org/), [SASS](http://sass-lang.com/) and [SASS CSS importer](https://github.com/chriseppstein/sass-css-importer).
 
 ## Installation
-Installing SASS requires Ruby and depends on the operating system you are working with.  More documentation can be found  [here](http://sass-lang.com/install) for setting up SASS on different operating systems.
+SASS requires [Ruby](https://www.ruby-lang.org/).  More documentation can be found  [here](http://sass-lang.com/install) for setting up Ruby with SASS on different operating systems.
 
-After Ruby is installed, you would execute the following command to install SASS:
+After Ruby is installed, you can execute the following command to install SASS:
 
 ```shell
 gem install sass
@@ -25,7 +25,7 @@ gem install --pre sass-css-importer
 
 ## Build
 
-You can process **bundle/setup/sass/application.scss** so it's a single minified version of all the css files required by common:
+The SASS preprocessor can be used to output **bundle/setup/sass/application.scss** to a single minified version of all the css files required by common with the .css file type:
 
 ```shell
 sass -r sass-css-importer application.scss application.min.css --style compressed
