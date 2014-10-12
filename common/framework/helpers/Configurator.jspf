@@ -1,0 +1,255 @@
+<%@page import="java.io.File"%>
+<%@page import="org.json.simple.parser.JSONParser"%>
+<%@page import="org.json.simple.JSONObject"%>
+<%@page import="java.io.FileReader"%>
+<%!
+    /**
+     * Configurator Helper
+     */
+    public static class Configurator {
+        
+        private JsonBase configuration;
+        private Map<String,JsonBase> configurationsByPackage;
+        private String currentPackage = "base";
+        
+        public static Map<String,String> getCatalogAttributeConfiguration(
+            HttpSession session,
+            HelperContext systemContext,
+            String catalogId
+        ) {
+            // Define map of catalog attributes
+            Map<String,String> results = new LinkedHashMap<String,String>();
+            // Determine if they exist in session by catalog id
+            if(session.getAttribute(catalogId) != null) {
+                // Update to session catalog data
+                results = (Map<String,String>) session.getAttribute(catalogId);
+            } else {
+                // Get catalog attribtues by catalog id and loop through them
+                for(CatalogAttribute attribute : CatalogAttribute.findByCategoryInstanceId(
+                        systemContext,
+                        catalogId
+                    )
+                ) {
+                    // Add to map
+                    results.put(attribute.getName(), attribute.getValue());
+                }
+                // Store in session
+                session.setAttribute(catalogId, results);
+            }
+            return results;
+        }
+
+        public Configurator(String path, String currentPackage) {
+            this.currentPackage = currentPackage;
+            Map<String,JsonBase> configurationsByPackage = new HashMap<String,JsonBase>();  
+            // Define packages file
+            File packagesFile = new File(path);
+            // Get list of all files
+            File[] files = packagesFile.listFiles();
+            // Loop through directory names
+            for(File file : files) {
+                // Determine if this is a directory
+                if (file.isDirectory()) {
+                    // Define package directory
+                    String packageDirectory = file.getAbsolutePath();
+                    // Define package JSON config
+                    String packageConfigurationFile = packageDirectory + File.separator + "config" + File.separator + "config.json";
+                    try {
+                        JSONParser parser = new JSONParser();
+                        JSONObject jsonConfiguration = (JSONObject) parser.parse(new FileReader(packageConfigurationFile));
+                        configurationsByPackage.put(file.getName(), new JsonBase(jsonConfiguration));
+                    } catch (Exception e) {}
+                }
+            } 
+            // Set configurations
+            this.configurationsByPackage = configurationsByPackage;   
+        }
+        
+        public String getPackagesConfiguration() {
+            return JSONValue.toJSONString(this.configurationsByPackage);
+        }
+        
+        public JsonBase getCurrentPackageConfig() {
+            // Define result
+            JsonBase packageConfig = null;
+            // Define current package json base config
+            JsonBase jsonBase = this.configurationsByPackage.get(this.currentPackage);
+            // Check that we found the current package config
+            if(jsonBase != null) {
+               // Update result
+               packageConfig = jsonBase;
+            }
+            return packageConfig;
+        }
+        
+        public JsonBase getPackageViewByName(String packageViewName) {
+            // Define result
+            JsonBase view = null;
+            // Check for null
+            if(packageViewName == null) { packageViewName = "";}
+            // Define current package json base config
+            JsonBase jsonBase = this.getCurrentPackageConfig();
+            // Check that we found the current package config
+            if(jsonBase != null) {
+               // Define package views
+               JsonBase packageViews = jsonBase.getObject("views");
+               // Check for null
+               if(packageViews != null) {
+                   view = packageViews.getObject(packageViewName);
+               }
+            }
+            return view;
+        }
+        
+        public JsonBase getDefaultPackageView() {
+            // Define result
+            JsonBase view = null;
+            // Define current package json base config
+            JsonBase jsonBase = this.getCurrentPackageConfig();
+            // Check that we found the current package config
+            if(jsonBase != null) {
+                // Define package views
+                JsonBase views = jsonBase.getObject("views");
+                // Update view
+                view = views.getObject("default");
+            }
+            return view;
+        }
+        
+        public String getDefaultViewContent() {
+            // Define result
+            String content = null;
+            // Define default view
+            JsonBase view = this.getDefaultPackageView();
+            // Determine null
+            if(view != null) {
+                // Update page content
+                content = view.getString("content");
+            }
+            return content;
+        }
+        
+        public String getDefaultViewHead() {
+            // Define result
+            String head = null;
+            // Define default view
+            JsonBase view = this.getDefaultPackageView();
+            // Determine null
+            if(view != null) {
+                // Update page content
+                head = view.getString("head");
+            }
+            return head;
+        }
+        
+        public String getDefaultViewType() {
+            // Define result
+            String head = null;
+            // Define default view
+            JsonBase view = this.getDefaultPackageView();
+            // Determine null
+            if(view != null) {
+                // Update page content
+                head = view.getString("type");
+            }
+            return head;
+        }
+        
+        public String getCurrentViewContent(String packageViewName) { 
+            // Define result
+            String content = null;
+            // Define current package json base config
+            JsonBase jsonBase = this.getCurrentPackageConfig();
+            // Determine null
+            if(jsonBase != null) {
+                // Define package views
+                JsonBase views = jsonBase.getObject("views");
+                // Define page specific view
+                JsonBase view = views.getObject(packageViewName);
+                // Determine if not null
+                if(view != null) {
+                    // Update page content
+                    content = view.getString("content");
+                }
+                // Determine if content is null
+                if(content == null) {
+                    // Update to package configured default view
+                    content = this.getDefaultViewContent();
+                }
+            }
+            return content;
+        }
+        
+        public String getCurrentViewHead(String packageViewName) {
+            // Define result
+            String head = null;
+            // Define current package json base config
+            JsonBase jsonBase = this.getCurrentPackageConfig();
+            // Determine null
+            if(jsonBase != null) {
+                // Define package views
+                JsonBase views = jsonBase.getObject("views");
+                // Define view
+                JsonBase view = views.getObject(packageViewName);
+                // Determine if not null
+                if(view != null) {
+                    // Update page content
+                    head = view.getString("head");
+                }
+                // Determine if content is null
+                if(head == null) {
+                    // Update to package configured default view
+                    head = this.getDefaultViewHead();
+                }
+            }
+            return head;
+        }
+        
+        public String getCurrentViewType(String packageViewName) {
+            // Define result
+            String type = null;
+            // Define current package json base config
+            JsonBase jsonBase = this.getCurrentPackageConfig();
+            // Determine null
+            if(jsonBase != null) {
+                // Define package views
+                JsonBase views = jsonBase.getObject("views");
+                // Define view
+                JsonBase view = views.getObject(packageViewName);
+                // Determine if not null
+                if(view != null) {
+                    // Update page content
+                    type = view.getString("type");
+                }
+                // Determine if content is null
+                if(type == null) {
+                    // Update to package configured default view
+                    type = this.getDefaultViewType();
+                }
+            }
+            return type;
+        }
+        
+        public void processView(HttpServletRequest request, HttpServletResponse response) {
+            // Define view type
+            String viewType = this.getCurrentViewType(request.getParameter("view"));
+            // Determine if view is a callback
+            if(viewType != null && viewType.equals("callback")) {
+                // Forward to callback
+                RequestDispatcher dispatcher = request.getRequestDispatcher(
+                    this.getCurrentViewContent(request.getParameter("view"))
+                );
+                try {
+                   dispatcher.forward(request, response);
+                   return;
+                } catch(Exception e) {
+                    throw new RuntimeException("Cannot process view: " + e.getMessage());
+                }
+            }
+            // Set head attribute
+            request.setAttribute("head", this.getCurrentViewHead(request.getParameter("view")));
+            // Set content attribute
+            request.setAttribute("content", this.getCurrentViewContent(request.getParameter("view")));
+        }
+    }
+%>

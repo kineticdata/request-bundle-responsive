@@ -22,6 +22,7 @@
 <%@include file="../../framework/helpers/LogHelper.jspf" %>
 <%@include file="../../framework/helpers/ServiceItemImageHelper.jspf" %>
 <%@include file="../../framework/helpers/CategoryHelper.jspf" %>
+<%@include file="../../framework/helpers/Configurator.jspf" %>
 
 <%--
     Include any model files.
@@ -33,6 +34,7 @@
 --%>
 <%@include file="../models/Person.jspf"%>
 <%@include file="../models/KSSamplePeople.jspf"%>
+<%@include file="../models/JsonBase.jspf" %>
 
 <%-- Include the configuration file in the common package. --%>
 <%@include file="../../config/config.jspf" %>
