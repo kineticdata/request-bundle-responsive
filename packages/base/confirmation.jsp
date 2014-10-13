@@ -8,20 +8,6 @@
     String configurationFile = getServletContext().getRealPath(bundle.relativeBundlePath() + "packages");
     // Load the Bundle JSON configuration
     Configurator configuration = new Configurator(configurationFile, "base");
-    // Retrieve the main catalog object
-    Catalog catalog = Catalog.findByName(context, customerRequest.getCatalogName());
-    // Preload the catalog child objects (such as Categories, Templates, etc)
-    catalog.preload(context);
-
-    // Retrieve objects
-    Template currentTemplate = catalog.getTemplateById(customerSurvey.getSurveyTemplateInstanceID());
-    if(currentTemplate == null) {
-        throw new Exception("Current template does not exist!");
-    }
-    Category currentCategory = null;
-    if(currentTemplate.hasTemplateAttribute("DefaultCategory")) {
-        currentCategory = catalog.getCategoryByName(currentTemplate.getTemplateAttributeValue("DefaultCategory"));
-    }
 %>
 <!DOCTYPE html>
 <html>
@@ -37,41 +23,35 @@
             BUNDLE.config.packages = <%= configuration.getPackagesConfiguration()%>
         </script>
         <title>
-            <%= bundle.getProperty("companyName")%>&nbsp;|
-            <% if(currentCategory != null) {%>
-                <%= currentCategory.getName()%> |
-            <% }%>
-            <%= customerRequest.getTemplateName()%>
+            <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;<%= customerRequest.getTemplateName()%>
         </title>
-        <!-- Common Flyout navigation -->
-        <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/flyout.js"></script>
          <!-- Page Stylesheets -->
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/displayPackage.css" type="text/css" />
     </head>
     <body>
-        <div class="sticky-footer">
-            <%@include file="../../common/interface/fragments/header.jspf"%>
-            <header class="container">
-                <h2>
-                    <% if(currentCategory != null) {%>
-                        <%= currentCategory.getName()%>:
-                    <% }%> Request <%= customerRequest.getTemplateName()%>
-                </h2>
-                <hr class="soften">
-            </header>
-            <section class="container">
-                <div id="pageQuestionsForm" class="border rounded">
-                    <p>
-                        <b>Thank you for submitting a request for <%= customerRequest.getTemplateName()%>. Your Request ID is <%= customerRequest.getKsr()%>.
-                        </b>
-                    </p>
-                    <p>
-                        To track the status of your request, click the <a href="<%= bundle.getProperty("submissionsUrl")%>">My Request</a> link.
-                    </p>
+        <div class="view-port">
+            <%@include file="../../common/interface/fragments/navigationSlide.jspf"%>
+            <div class="content-slide" data-target="div.navigation-slide">
+                <%@include file="../../common/interface/fragments/header.jspf"%>
+                <div class="pointer-events">
+                    <header class="container">
+                        <h2>
+                            <%= customerRequest.getTemplateName()%>
+                        </h2>
+                        <hr class="soften">
+                    </header>
+                    <section class="container display-page">
+                        <p>
+                            <b>Thank you for submitting a request for <%= customerRequest.getTemplateName()%>. Your Request ID is <%= customerRequest.getKsr()%>.
+                            </b>
+                        </p>
+                        <p>
+                            To track the status of your request, click the <a href="<%= bundle.getProperty("submissionsUrl")%>">My Request</a> link.
+                        </p>
+                    </section>
                 </div>
-            </section>
-            <div class="sticky-footer-push"></div>
+                <%@include file="../../common/interface/fragments/footer.jspf"%>
+            </div>
         </div>
-        <%@include file="../../common/interface/fragments/footer.jspf"%>
     </body>
 </html>

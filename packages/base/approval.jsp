@@ -8,10 +8,6 @@
     String configurationFile = getServletContext().getRealPath(bundle.relativeBundlePath() + "packages");
     // Load the Bundle JSON configuration
     Configurator configuration = new Configurator(configurationFile, "base");
-    // Retrieve the main catalog object
-    Catalog catalog = Catalog.findByName(context, customerRequest.getCatalogName());
-    // Preload the catalog child objects (such as Categories, Templates, etc)
-    catalog.preload(context);
 %>
 <!DOCTYPE html>
 <html>

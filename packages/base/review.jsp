@@ -7,20 +7,6 @@
     String configurationFile = getServletContext().getRealPath(bundle.relativeBundlePath() + "packages");
     // Load the Bundle JSON configuration
     Configurator configuration = new Configurator(configurationFile, "base");
-    // Retrieve the main catalog object
-    Catalog catalog = Catalog.findByName(context, customerRequest.getCatalogName());
-    // Preload the catalog child objects (such as Categories, Templates, etc)
-    catalog.preload(context);
-
-    // Retrieve objects
-    Template currentTemplate = catalog.getTemplateById(customerSurvey.getSurveyTemplateInstanceID());
-    if(currentTemplate == null) {
-        throw new Exception("Current template does not exist!");
-    }
-    Category currentCategory = null;
-    if(currentTemplate.hasTemplateAttribute("DefaultCategory")) {
-        currentCategory = catalog.getCategoryByName(currentTemplate.getTemplateAttributeValue("DefaultCategory"));
-    }
 %>
 <!DOCTYPE html>
 <html>
