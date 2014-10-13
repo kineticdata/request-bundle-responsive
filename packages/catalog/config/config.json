@@ -1,9 +1,33 @@
 {
     "package": "catalog",
     "layout": "layout.jsp",
-    "views": {},
+    "views": {
+        "about": {
+            "type": "page",
+            "content": "interface/views/about.jsp",
+            "title": "About"
+        },
+        "category": {
+            "type": "page",
+            "content": "interface/views/category.jsp"
+        },
+        "popularRequests": {
+            "type": "page",
+            "content": "interface/views/popularRequests.jsp"
+        },
+        "search": {
+            "type": "page",
+            "content": "interface/views/search.jsp"
+        },
+        "default": {
+            "type": "page",
+            "content": "interface/views/catalog.jsp",
+            "title": "Home"
+        }
+    },
      "links": [
         {
+            "type": "main-menu",
             "label": "Home",
             "class": "catalog",
             "description": "Home",
@@ -11,11 +35,22 @@
             "displayName": "Catalog"
         },
         {
+            "type": "main-menu",
             "label": "Popular Requests",
             "class": "popular-requests",
             "description": "View My Popular Requests",
             "icon": "<i class=\"fa fa-star-o\"></i>",
-            "displayName": "PopularRequests"
+            "displayName": "Catalog",
+            "params": {
+                "view": ["popularRequests"]
+            }
+        },
+        {
+            "type": "footer",
+            "label": "About",
+            "class": "about",
+            "description": "About",
+            "displayName": "About"
         }
     ]
 }
