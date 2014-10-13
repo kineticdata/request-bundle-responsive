@@ -10,6 +10,13 @@
             "description": "My Profile",
             "icon": "<i class=\"gravatar-icon\"></i>",
             "displayName": "Profile"
+        },
+        {
+            "type": "footer",
+            "label": "Site Feedback",
+            "class": "site-feedback pull-right",
+            "description": "Site Feedback",
+            "displayName": "Feedback"
         }
     ]
 }

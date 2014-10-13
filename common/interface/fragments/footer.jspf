@@ -1,19 +1,46 @@
 <!-- Footer -->
 <footer class="footer background-primary-darkest">
-    <span style="display:none">&nbsp;</span>
+    <span style="display:none">
+        &nbsp;
+    </span>
     <div class="container" style="text-align: center;">
-        <span class="pull-left">
-            <a href="<%= bundle.getProperty("aboutUrl")%>&view=about" class="color-white color-hover-white">
-                About
-            </a>
-        </span>
-        <span class="pull-right">
-            <a href="<%= bundle.getProperty("feedbackUrl")%>" class="color-white color-hover-white">
-                Site Feedback
-            </a>
-        </span>
     </div>
 </footer>
+<script type="text/javascript">
+(function($, _) {
+    // Builds the footer links based on package configuration
+    $(function() {
+        var packagesLinkList = _.flatten(_.pluck(BUNDLE.config.packages, 'links'));
+        var footerLinks = _.filter(packagesLinkList, function(link) {
+            // Define result, assume failure
+            var result = false;
+            if(link['type'] === 'footer') {
+                result = true;
+            }
+            return result;
+        });
+        // Loop through footer links and add them
+        _.each(footerLinks, function(value) {
+            // Define url
+            var url = BUNDLE.applicationPath + 'DisplayPage?name=' +
+                    BUNDLE.config['slug'] + '-' + value['displayName'];
+            // Define params if not defined
+            var params = value.params || {};
+            // Check size and append url params
+            if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
+            // Define list element with link
+            var span = $('<span>').addClass(value['class']).append(
+                $('<a>').addClass('color-white color-hover-white').attr({
+                    'href': url,
+                    'aria-label': value.description
+                }).text(value.label)
+            );
+            // Add links to main menus
+            $('footer.footer').find('div.container').append(span);
+        });
+    });
+})(jQuery, _);
+</script>
 <%-- 
     The respond.css include below has properties that are meant to override the body.hide
     class (added by JavaScript to body in header.jspf) after respond finishes processing. 

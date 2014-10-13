@@ -48,9 +48,12 @@
         {
             "type": "footer",
             "label": "About",
-            "class": "about",
+            "class": "about pull-left",
             "description": "About",
-            "displayName": "About"
+            "displayName": "About",
+            "params": {
+                "view": ["about"]
+            }
         }
     ]
 }
