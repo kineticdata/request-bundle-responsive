@@ -74,6 +74,7 @@
                 // appropriate values from the CustomerSurveyReview object.
                 customerSurvey.setCustomerSurveyRequestID(customerSurveyReview.getCustomerSurveyRequestID());
                 customerSurvey.setCategory(customerSurveyReview.getCategory());
+                customerSurvey.setCategoryId(customerSurveyReview.getCategoryId());
                 customerSurvey.setCompanyName(customerSurveyReview.getCompanyName());
                 customerSurvey.setCompanyID(customerSurveyReview.getCompanyID());
                 customerSurvey.setFirstName(customerSurveyReview.getFirstName());
