@@ -29,7 +29,7 @@
                 <%@include file="logo.jspf"%>
                 <%@include file="portalSearchForm.jspf"%>
             </div>
-            <nav class="col-sm-3">
+            <nav class="col-sm-3 hide">
                 <%@include file="contentUser.jspf"%>
                 <%@include file="alerts.jspf"%>
                 <%@include file="mainMenu.jspf"%>
@@ -38,3 +38,11 @@
     </div>
 </header>
 <div class="fixed-header-spacer"></div>
+<script type="text/javascript">
+(function($) {
+    $(function() {
+        // Fade in header menu items after the dom is ready
+        $('header.main').find('nav.col-sm-3').fadeIn();
+    });
+})(jQuery);
+</script>
