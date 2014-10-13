@@ -131,7 +131,7 @@
             innerRightColumn.prepend('<br />')
                 .prepend(
                     $('<a>').addClass('view-activity templateButton')
-                        .attr('href', encodeURI(BUNDLE.config.submissionActivityUrl + '&id=' + instanceId))
+                        .attr('href', encodeURI(BUNDLE.config.submissionsUrl + '&view=submissionActivity&id=' + instanceId))
                         .attr('target', '_self')
                         .append('View Activity Details')
                 );
@@ -251,7 +251,7 @@
                     dataType: 'json',
                     cache: false,
                     type: 'get',
-                    url: BUNDLE.config.submissionsUrl + '&callback=submissions&qualification=' + status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
+                    url: BUNDLE.config.submissionsUrl + '&view=submissionsJson&qualification=' + status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
                     beforeSend: function(jqXHR, settings) {
                         responseMessage.empty();
                         loader.show();

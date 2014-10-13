@@ -17,6 +17,7 @@
     },
      "links": [
         {
+            "type": "main-menu",
             "label": "Requests",
             "class": "requests",
             "description": "View My Submissions",
@@ -27,6 +28,7 @@
             }
         },
         {
+            "type": "main-menu",
             "label": "Approvals",
             "class": "approvals",
             "description": "View My Approvals",

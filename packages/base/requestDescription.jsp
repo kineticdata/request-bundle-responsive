@@ -6,11 +6,13 @@
 
 <%-- Retrieve the Catalog --%>
 <%
+    // Define packages path
+    String configurationFile = getServletContext().getRealPath(bundle.relativeBundlePath() + "packages");
+    // Load the Bundle JSON configuration
+    Configurator configuration = new Configurator(configurationFile, "base");
     // Retrieve the main catalog object
     Catalog catalog = Catalog.findByName(context, customerRequest.getCatalogName());
-    // Preload the catalog child objects (such as Categories, Templates, etc) so
-    // that they are available.  Preloading all of the related objects at once
-    // is more efficient than loading them individually.
+    // Preload the catalog child objects (such as Categories, Templates, etc)
     catalog.preload(context);
 
     // Retrieve objects
@@ -43,6 +45,14 @@
     <head>
         <%-- Include the common content. --%>
         <%@include file="../../common/interface/fragments/head.jspf"%>
+        <script type="text/javascript">
+            // Ensure the BUNDLE global object exists
+            BUNDLE = BUNDLE || {};
+            // Initialize the BUNDLE configuration hash
+            BUNDLE.config = BUNDLE.config || {};
+            // Setup packages configuration
+            BUNDLE.config.packages = <%= configuration.getPackagesConfiguration()%>
+        </script>
         <title>
             <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;<%= requestTemplate.getName()%>
         </title>

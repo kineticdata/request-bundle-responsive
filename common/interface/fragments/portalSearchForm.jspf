@@ -15,6 +15,7 @@
 %>
 <form class="portal-search" method="get" action="<%= bundle.applicationPath()%>DisplayPage">
     <input type="hidden" name="name" value="<%= bundle.getProperty("searchNameParam") %>" />
+    <input type="hidden" name="view" value="search" />
     <p>
         <label class="hide" for="search">Search Catalog</label>
         

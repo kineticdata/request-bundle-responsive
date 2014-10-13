@@ -4,23 +4,28 @@
 <%-- Include the package initialization file. --%>
 <%@include file="framework/includes/packageInitialization.jspf"%>
 <%
+    // Define packages path
+    String configurationFile = getServletContext().getRealPath(bundle.relativeBundlePath() + "packages");
+    // Load the Bundle JSON configuration
+    Configurator configuration = new Configurator(configurationFile, "base");
     // Retrieve the main catalog object
     Catalog catalog = Catalog.findByName(context, customerRequest.getCatalogName());
-    // Preload the catalog child objects (such as Categories, Templates, etc) so
-    // that they are available.  Preloading all of the related objects at once
-    // is more efficient than loading them individually.
+    // Preload the catalog child objects (such as Categories, Templates, etc)
     catalog.preload(context);
 %>
 <!DOCTYPE html>
 <html>
     <head>
-        <%-- 
-            Specify that modern IE versions should render the page with their own 
-            rendering engine (as opposed to falling back to compatibility mode.
-            NOTE: THIS HAS TO BE RIGHT AFTER <head>!
-        --%>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta charset="utf-8">
+        <%-- Include the bundle common content. --%>
+        <%@include file="../../common/interface/fragments/head.jspf"%>
+        <script type="text/javascript">
+            // Ensure the BUNDLE global object exists
+            BUNDLE = BUNDLE || {};
+            // Initialize the BUNDLE configuration hash
+            BUNDLE.config = BUNDLE.config || {};
+            // Setup packages configuration
+            BUNDLE.config.packages = <%= configuration.getPackagesConfiguration()%>
+        </script>
         <title>
             <%= bundle.getProperty("companyName")%>
             |
@@ -29,11 +34,6 @@
         <%-- Include the application head content. --%>
         <%@include file="../../core/interface/fragments/applicationHeadContent.jspf"%>
         <%@include file="../../core/interface/fragments/displayHeadContent.jspf"%>
-
-        <%-- Include the bundle common content. --%>
-        <%@include file="../../common/interface/fragments/head.jspf"%>
-        <!-- Common js lib -->
-        <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/flyout.js"></script>
         <!-- Package Stylesheets -->
         <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/displayPackage.css" type="text/css" />
         <!-- Package Javascript -->
@@ -42,16 +42,23 @@
         <%@include file="../../core/interface/fragments/formHeadContent.jspf"%>
     </head>
     <body>
-        <%@include file="../../common/interface/fragments/header.jspf"%>
-        <header class="container">
-            <h2>
-                <%= customerRequest.getTemplateName()%>
-            </h2>
-            <hr class="soften">
-        </header>
-        <section class="container">
-            <%@include file="../../core/interface/fragments/displayBodyContent.jspf"%>
-        </section>
-        <%@include file="../../common/interface/fragments/footer.jspf"%>
+        <div class="view-port">
+            <%@include file="../../common/interface/fragments/navigationSlide.jspf"%>
+            <div class="content-slide" data-target="div.navigation-slide">
+                <%@include file="../../common/interface/fragments/header.jspf"%>
+                <div class="pointer-events">
+                    <header class="container">
+                        <h2>
+                            <%= customerRequest.getTemplateName()%>
+                        </h2>
+                        <hr class="soften">
+                    </header>
+                    <section class="container display-page">
+                        <%@include file="../../core/interface/fragments/displayBodyContent.jspf"%>
+                    </section>
+                </div>
+                <%@include file="../../common/interface/fragments/footer.jspf"%>
+            </div>
+        </div>
     </body>
 </html>

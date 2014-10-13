@@ -33,16 +33,13 @@
     bundle.setProperty("displayPageUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug"));
     // Urls
     bundle.setProperty("catalogUrl", bundle.getProperty("displayPageUrl") + "-Catalog");
-    bundle.setProperty("popularRequestsUrl", bundle.getProperty("displayPageUrl") + "-PopularRequests");
-    bundle.setProperty("searchUrl", bundle.getProperty("displayPageUrl") + "-Search");
     bundle.setProperty("submissionsUrl", bundle.getProperty("displayPageUrl") + "-Submissions");
-    bundle.setProperty("categoryUrl", bundle.getProperty("displayPageUrl") + "-Category");
     bundle.setProperty("aboutUrl", bundle.getProperty("displayPageUrl") + "-About");
     bundle.setProperty("profileUrl", bundle.getProperty("displayPageUrl") + "-Profile");
     bundle.setProperty("feedbackUrl", bundle.getProperty("displayPageUrl") + "-Feedback");
     
     // This param is required for get requests using the catalog search portal form
-    bundle.setProperty("searchNameParam", bundle.getProperty("slug") + "-Search");
+    bundle.setProperty("searchNameParam", bundle.getProperty("slug") + "-Catalog");
     
     // Url to authentication servlet for logout
     bundle.setProperty("logoutUrl", "KSAuthenticationServlet?Logout=true");

@@ -3,7 +3,7 @@
     <span style="display:none">&nbsp;</span>
     <div class="container" style="text-align: center;">
         <span class="pull-left">
-            <a href="<%= bundle.getProperty("aboutUrl")%>" class="color-white color-hover-white">
+            <a href="<%= bundle.getProperty("aboutUrl")%>&view=about" class="color-white color-hover-white">
                 About
             </a>
         </span>

@@ -4,6 +4,7 @@
     "views": {},
      "links": [
         {
+            "type": "main-menu",
             "label": "View Profile",
             "class": "profile",
             "description": "My Profile",
