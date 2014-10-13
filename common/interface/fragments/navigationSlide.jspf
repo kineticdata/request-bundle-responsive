@@ -1,38 +1,6 @@
 <div class="navigation-slide background-primary-darkest">  
     <%@include file="portalSearchForm.jspf"%>
     <ul>
-        <% if(bundle.getProperty("profileUrl") != null ) { %>
-            <li class="profile">
-                <a href="<%= bundle.getProperty("profileUrl")%>" class="color-white color-hover-secondary">
-                    <i class="gravatar-icon"></i>
-                    Me
-                </a>
-            </li>
-        <% } %>
-        <li class="catalog">
-            <a href="<%= bundle.getProperty("catalogUrl")%>" class="color-white color-hover-secondary">
-                <i class="fa fa-home"></i>
-                Home
-            </a> 
-        </li>
-        <li class="popular-requests">
-            <a href="<%= bundle.getProperty("popularRequestsUrl")%>" class="color-white color-hover-secondary">
-                <i class="fa fa-star-o"></i>
-                Popular Requests
-            </a> 
-        </li>
-        <li class="approvals">
-            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals" class="color-white color-hover-secondary">
-                <i class="fa fa-check"></i>
-                Approvals
-            </a>
-        </li>
-        <li class="requests">
-            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=requests" class="color-white color-hover-secondary">
-                <i class="fa fa-exchange"></i>
-                Requests
-            </a>
-        </li>
         <% if (logoutEnabled && context != null) {%>
             <li>
                 <a href="<%= bundle.getProperty("logoutUrl")%>" class="color-white color-hover-secondary">
@@ -43,3 +11,35 @@
         <% } %>
     </ul>
 </div>
+<script type="text/javascript">
+(function($, _) {
+    $(function() {
+        // Determine if package configuration available and build available links
+        if(BUNDLE.config.packages) {
+            // Pluck only the "links" arrays from config.packages and flatten for each
+            // So package defined links are available inside the UI
+            _.each(_.flatten(_.pluck(BUNDLE.config.packages, 'links')), function(value) {
+                // Only display main menu type items
+                if(value['type'] === 'main-menu') {
+                    // Define url
+                    var url = BUNDLE.applicationPath + 'DisplayPage?name=' +
+                            BUNDLE.config['slug'] + '-' + value['displayName'];
+                    // Define params if not defined
+                    var params = value.params || {};
+                    // Check size and append url params
+                    if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
+                    // Define list element with link
+                    var li = $('<li>').addClass(value['class']).append(
+                        $('<a>').addClass('color-white color-hover-secondary').attr({
+                            'href': url,
+                            'aria-label': value.description
+                        }).append(value.icon).append(value.label)
+                    );
+                    // Add links to main menus
+                    $('div.navigation-slide').find('ul').first().prepend(li);
+                }
+            });
+        }
+    });
+})(jQuery, _);
+</script>
