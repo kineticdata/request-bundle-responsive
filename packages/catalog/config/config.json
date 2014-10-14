@@ -20,7 +20,7 @@
         "search": {
             "type": "page",
             "content": "interface/views/search.jsp",
-            "title": "Search"
+            "title": "Search Results"
         },
         "default": {
             "type": "page",
