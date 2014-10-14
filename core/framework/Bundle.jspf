@@ -42,7 +42,21 @@
             // Retrieve the URI of the request.  This is the actual URI of the
             // JSP that is being rendered, not the URL of the Servlet that is
             // dispatching the request.
-            String requestUri = request.getContextPath()+request.getServletPath();
+            String requestUri = request.getContextPath() + request.getServletPath();
+            // Define the include path for dynamic includes
+            String includeServletPath = (String) request.getAttribute("javax.servlet.include.servlet_path");
+            // Define the last forwarded path for packages forwarding to a layout
+            String lastForwardServletPath = (String) request.getAttribute("lastForwardServletPath");
+            // Determine if this path is not null
+            if(includeServletPath != null) {
+                // If it is not null, this indicates a dynamic include in this request.
+                // Update servlet path.
+                requestUri = request.getContextPath() + includeServletPath;
+            } else if(lastForwardServletPath != null) {
+                // If it is not null, this indicates a forward in this request.
+                // Update servlet path.
+                requestUri = request.getContextPath() + lastForwardServletPath;
+            }
             // Calculate the terminating indexes
             int endOfRootPath = requestUri.indexOf("/"+BUNDLE_DIR);
             int startOfBundleName = requestUri.indexOf("/"+BUNDLE_DIR+"/")+("/"+BUNDLE_DIR+"/").length();
