@@ -11,7 +11,5 @@
             // Update oage title
             $('title').append("for '" + $.trim(params['q']) + "'");
         }
-        // Adds an active style to the popular requests
-        $('ul li.popular-requests').addClass('active').append($('<div>').addClass('arrow-left'));
     });
 })(jQuery, _);
