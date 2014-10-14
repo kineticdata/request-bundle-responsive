@@ -12,7 +12,7 @@
     bundle.setProperty("slug", "Responsive");
     
     // Define catalog attributes
-    Map<String,String> catalogAttributes = Configurator.getCatalogAttributeConfiguration(
+    Map<String,String> catalogAttributes = CatalogAttributeHelper.getCatalogAttributeConfiguration(
         session,
         systemContext,
         customerRequest.getCatalogId()

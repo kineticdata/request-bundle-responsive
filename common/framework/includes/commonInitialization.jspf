@@ -23,6 +23,7 @@
 <%@include file="../../framework/helpers/ServiceItemImageHelper.jspf" %>
 <%@include file="../../framework/helpers/CategoryHelper.jspf" %>
 <%@include file="../../framework/helpers/Configurator.jspf" %>
+<%@include file="../../framework/helpers/CatalogAttributeHelper.jspf" %>
 
 <%--
     Include any model files.
