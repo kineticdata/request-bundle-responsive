@@ -9,15 +9,18 @@
         },
         "category": {
             "type": "page",
-            "content": "interface/views/category.jsp"
+            "content": "interface/views/category.jsp",
+            "title": "Categories"
         },
         "popularRequests": {
             "type": "page",
-            "content": "interface/views/popularRequests.jsp"
+            "content": "interface/views/popularRequests.jsp",
+            "title": "Popular Requests"
         },
         "search": {
             "type": "page",
-            "content": "interface/views/search.jsp"
+            "content": "interface/views/search.jsp",
+            "title": "Search"
         },
         "default": {
             "type": "page",
