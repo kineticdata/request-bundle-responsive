@@ -238,6 +238,9 @@
                         title = view.getString("title");
                     }
                 }
+                if(title == null) {
+                    title = "";
+                }
             }
             return title;
         }

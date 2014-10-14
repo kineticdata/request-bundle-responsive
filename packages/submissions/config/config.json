@@ -8,7 +8,8 @@
         },
         "submissionActivity": {
             "type": "page",
-            "content": "interface/views/submissionActivity.jsp"
+            "content": "interface/views/submissionActivity.jsp",
+            "title": "Request Details"
         },
         "default": {
             "type": "page",

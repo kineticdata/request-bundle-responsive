@@ -11,12 +11,7 @@ configuration.processView(request, response);
         <%-- Include the common content. --%>
         <%@include file="../../common/interface/fragments/head.jspf"%>
         <title>
-            <%= bundle.getProperty("companyName")%>&nbsp;|
-            <% if(bundle.getProperty("submissionType").equals("requests")) {%>
-                My&nbsp;Requests&nbsp;
-            <% } else if(bundle.getProperty("submissionType").equals("approvals")) {%>
-                My&nbsp;Approvals&nbsp;
-            <%}%>
+            <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;<%= configuration.getCurrentViewTitle(request)%>
         </title>
         <script type="text/javascript">
             // Ensure the BUNDLE global object exists

@@ -37,6 +37,10 @@
         activeNavSelector.addClass('active').append($('<div>').addClass('arrow-left'));
         // Set active link
         $('header a[data-group-name="' + submissions.status + '"]').parents('li').addClass('active');
+        // Store original title in memory
+        var originalTitle = $('title').text();
+        // Set title based on active link
+        $('title').html(originalTitle + $.trim($('header.sub div.container ul li.active').text()));
         // Position scroll for small devices
         var activeLinkPosition = $('header.sub div.container > ul li.active').position();
         if(activeLinkPosition !== undefined && activeLinkPosition.left !== undefined) { $('header.sub div.container > ul').scrollLeft(activeLinkPosition.left); }
@@ -64,6 +68,8 @@
             $('header.sub div.container ul li').removeClass('active');
             // Set active link
             $('header a[data-group-name="' + submissions.status + '"]').parents('li').addClass('active');
+            // Set title based on active link
+            $('title').html(originalTitle + $.trim($('header.sub div.container ul li.active').text()));
         });
     });
     
