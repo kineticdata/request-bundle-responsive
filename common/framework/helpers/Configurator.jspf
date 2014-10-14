@@ -6,44 +6,26 @@
     /**
      * Configurator Helper
      */
-    public static class Configurator {
+    public class Configurator {
         
         private JsonBase configuration;
         private Map<String,JsonBase> configurationsByPackage;
         private String currentPackage = "base";
-        
-        public static Map<String,String> getCatalogAttributeConfiguration(
-            HttpSession session,
-            HelperContext systemContext,
-            String catalogId
-        ) {
-            // Define map of catalog attributes
-            Map<String,String> results = new LinkedHashMap<String,String>();
-            // Determine if they exist in session by catalog id
-            if(session.getAttribute(catalogId) != null) {
-                // Update to session catalog data
-                results = (Map<String,String>) session.getAttribute(catalogId);
-            } else {
-                // Get catalog attribtues by catalog id and loop through them
-                for(CatalogAttribute attribute : CatalogAttribute.findByCategoryInstanceId(
-                        systemContext,
-                        catalogId
-                    )
-                ) {
-                    // Add to map
-                    results.put(attribute.getName(), attribute.getValue());
-                }
-                // Store in session
-                session.setAttribute(catalogId, results);
-            }
-            return results;
-        }
+        private Bundle bundle;
 
-        public Configurator(String path, String currentPackage) {
-            this.currentPackage = currentPackage;
+        public Configurator(Bundle bundle) {
+            // Set bundle
+            this.bundle = bundle;
+            // Define package path
+            String packagePath = getServletContext().getRealPath(bundle.packagePath());
+            // Update current package
+            this.currentPackage = new File(packagePath).getName();
+            // Define packages path
+            String packagesDirectory = getServletContext().getRealPath(bundle.relativeBundlePath() + "packages");
+            // Define configurations by package
             Map<String,JsonBase> configurationsByPackage = new HashMap<String,JsonBase>();  
             // Define packages file
-            File packagesFile = new File(path);
+            File packagesFile = new File(packagesDirectory);
             // Get list of all files
             File[] files = packagesFile.listFiles();
             // Loop through directory names
@@ -230,14 +212,46 @@
             return type;
         }
         
+        public String getCurrentViewTitle(HttpServletRequest request) {
+            // Define result
+            String title = null;
+            // Define current package json base config
+            JsonBase jsonBase = this.getCurrentPackageConfig();
+            // Determine null
+            if(jsonBase != null) {
+                // Define package views
+                JsonBase views = jsonBase.getObject("views");
+                // Define view
+                JsonBase view = views.getObject(request.getParameter("view"));
+                // Determine if not null
+                if(view != null) {
+                    // Update page content
+                    title = view.getString("title");
+                }
+                // Determine if title is null and use default view title
+                if(title == null) {
+                    // Get default view
+                    view = this.getDefaultPackageView();
+                    // Determine null
+                    if(view != null) {
+                        // Update page content
+                        title = view.getString("title");
+                    }
+                }
+            }
+            return title;
+        }
+        
         public void processView(HttpServletRequest request, HttpServletResponse response) {
+            // Define absolute application context path to current package
+            String currentPackagePath = File.separator + this.bundle.relativePackagePath;
             // Define view type
             String viewType = this.getCurrentViewType(request.getParameter("view"));
             // Determine if view is a callback
             if(viewType != null && viewType.equals("callback")) {
                 // Forward to callback
                 RequestDispatcher dispatcher = request.getRequestDispatcher(
-                    this.getCurrentViewContent(request.getParameter("view"))
+                    currentPackagePath + this.getCurrentViewContent(request.getParameter("view"))
                 );
                 try {
                    dispatcher.forward(request, response);
@@ -247,9 +261,9 @@
                 }
             }
             // Set head attribute
-            request.setAttribute("head", this.getCurrentViewHead(request.getParameter("view")));
+            request.setAttribute("head", currentPackagePath + this.getCurrentViewHead(request.getParameter("view")));
             // Set content attribute
-            request.setAttribute("content", this.getCurrentViewContent(request.getParameter("view")));
+            request.setAttribute("content", currentPackagePath + this.getCurrentViewContent(request.getParameter("view")));
         }
     }
 %>

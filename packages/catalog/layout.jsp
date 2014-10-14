@@ -1,10 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="framework/includes/packageInitialization.jspf"%>
 <%
-// Define packages path
-String configurationFile = getServletContext().getRealPath(bundle.relativeBundlePath() + "packages");
-// Load the Bundle JSON configuration
-Configurator configuration = new Configurator(configurationFile, "catalog");
+// Load all of the package's JSON configurations
+Configurator configuration = new Configurator(bundle);
 configuration.processView(request, response);
 %>
 <!DOCTYPE html>
@@ -13,7 +11,7 @@ configuration.processView(request, response);
         <%-- Include the common content. --%>
         <%@include file="../../common/interface/fragments/head.jspf"%>
         <title>
-            <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;
+            <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;<%= configuration.getCurrentViewTitle(request)%>
         </title>
         <script type="text/javascript">
             // Ensure the BUNDLE global object exists

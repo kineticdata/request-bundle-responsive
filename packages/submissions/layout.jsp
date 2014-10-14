@@ -1,10 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@include file="framework/includes/packageInitialization.jspf"%>
 <%
-// Define packages path
-String configurationFile = getServletContext().getRealPath(bundle.relativeBundlePath() + "packages");
-// Load the Bundle JSON configuration
-Configurator configuration = new Configurator(configurationFile, "submissions");
+// Load all of the package's JSON configurations
+Configurator configuration = new Configurator(bundle);
 configuration.processView(request, response);
 %>
 <!DOCTYPE html>
