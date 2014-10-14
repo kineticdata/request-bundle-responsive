@@ -11,7 +11,7 @@ configuration.processView(request, response, (String) request.getAttribute("view
         <%-- Include the common content. --%>
         <%@include file="../fragments/head.jspf"%>
         <title>
-            <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;<%= configuration.getCurrentViewTitle(request)%>
+            <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;<%= customerRequest.getTemplateName()%>
         </title>
         <script type="text/javascript">
             // Ensure the BUNDLE global object exists

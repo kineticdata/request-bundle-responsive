@@ -14,4 +14,6 @@
 <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/review.js"></script>
 <%-- Include the form head content, including attached css/javascript files and custom header content --%>
 <%@include file="../../../../core/interface/fragments/formHeadContent.jspf"%>
-<%@include file="../../../../core/interface/fragments/reviewBodyContent.jspf"%>
+<section class="container">
+    <%@include file="../../../../core/interface/fragments/reviewBodyContent.jspf"%>
+</section>

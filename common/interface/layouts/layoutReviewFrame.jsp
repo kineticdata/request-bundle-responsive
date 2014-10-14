@@ -10,9 +10,6 @@ configuration.processView(request, response, (String) request.getAttribute("view
     <head>
         <%-- Include the common content. --%>
         <%@include file="../fragments/head.jspf"%>
-        <title>
-            <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;<%= configuration.getCurrentViewTitle(request)%>
-        </title>
         <script type="text/javascript">
             // Ensure the BUNDLE global object exists
             BUNDLE = BUNDLE || {};
@@ -23,8 +20,6 @@ configuration.processView(request, response, (String) request.getAttribute("view
         </script>
     </head> 
     <body class="loadAllPages_<%=customerRequest.getLoadAllPages()%> reviewFrame">
-        <section class="container">
-            <jsp:include page="${content}" />
-        </section>
+        <jsp:include page="${content}" />      
     </body>
 </html>
