@@ -76,7 +76,7 @@
                         // Only build links that are not profile
                         if(value['class'] !== 'profile' && value['type'] === 'main-menu') {
                             // Define url
-                            var url = BUNDLE.config['displayPageUrl'] + value['displayName'];
+                            var url = BUNDLE.config['displayPageUrlSlug'] + value['displayName'];
                             // Define params if not defined
                             var params = value.params || {};
                             // Check size and append url params

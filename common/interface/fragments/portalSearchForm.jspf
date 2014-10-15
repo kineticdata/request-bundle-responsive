@@ -13,13 +13,10 @@
         bundle.setProperty("portalSearchValue", escape(request.getParameter("q").trim()));
     }
 %>
-<form class="portal-search" method="get" action="<%= bundle.applicationPath()%>DisplayPage">
-    <input type="hidden" name="name" value="<%= bundle.getProperty("searchNameParam") %>" />
-    <input type="hidden" name="view" value="search" />
+<form class="portal-search " method="get">
     <p>
-        <label class="hide" for="search">Search Catalog</label>
-        
-        <input id="search" class="form-control" type="text" name="q" value="<%=bundle.getProperty("portalSearchValue")%>" autofocus="autofocus" placeholder="Search Catalog" />
+        <label class="hide" for="search">Search Catalog</label> 
+        <input id="search" class="form-control" type="text" name="q" value="<%=bundle.getProperty("portalSearchValue")%>" autofocus="autofocus"  />
         <span>
             <button class="btn btn-primary fa fa-search" type="submit"></button>
         <span>

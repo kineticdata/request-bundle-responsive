@@ -9,7 +9,7 @@
     HelperContext systemContext = RemedyHandler.getDefaultHelperContext();
     
     // Define url friendly slug, which is used in the urls below
-    bundle.setProperty("slug", "Responsive");
+    bundle.setProperty("slug", "Responsive-");
     
     // Define catalog attributes
     Map<String,String> catalogAttributes = CatalogAttributeHelper.getCatalogAttributeConfiguration(
@@ -25,19 +25,19 @@
             break;
         }
     }
+    
     // Define company name
     bundle.setProperty("companyName", "ACME");
     // Define catalog name
     bundle.setProperty("catalogName", customerRequest.getCatalogName());
     // Define display page url with slug
-    bundle.setProperty("displayPageUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug") + "-");
+    bundle.setProperty("displayPageUrl", bundle.applicationPath() + "DisplayPage");
+    // Define display page url with slug
+    bundle.setProperty("displayPageUrlSlug", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug"));
     // Urls
-    bundle.setProperty("catalogUrl", bundle.getProperty("displayPageUrl") + "Catalog");
-    bundle.setProperty("submissionsUrl", bundle.getProperty("displayPageUrl") + "Submissions");
-    bundle.setProperty("profileUrl", bundle.getProperty("displayPageUrl") + "Profile");
-    
-    // This param is required for get requests using the catalog search portal form
-    bundle.setProperty("searchNameParam", bundle.getProperty("slug") + "Catalog");
+    bundle.setProperty("catalogUrl", bundle.getProperty("displayPageUrlSlug") + "Catalog");
+    bundle.setProperty("submissionsUrl", bundle.getProperty("displayPageUrlSlug") + "Submissions");
+    bundle.setProperty("profileUrl", bundle.getProperty("displayPageUrlSlug") + "Profile");
     
     // Url to authentication servlet for logout
     bundle.setProperty("logoutUrl", "KSAuthenticationServlet?Logout=true");
@@ -57,7 +57,6 @@
 
     // Boolean for displaying the logout link
     Boolean logoutEnabled = true;
-
     // Category filter for not displaying categories in the flyout navigation that are portal page specific like self help
     ArrayList<String> categoryFilter = new ArrayList<String>();
     //categoryFilter.add("Self Help");

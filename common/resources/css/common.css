@@ -614,6 +614,7 @@ header.main {
   box-shadow: 0 2px 4px 0 rgba(50, 50, 50, 0.45);
   -moz-box-shadow: 0 2px 4px 0 rgba(50, 50, 50, 0.45);
   z-index: 1030;
+  min-height: 50px;
 }
 header.main div.container a.logo {
   float: left;

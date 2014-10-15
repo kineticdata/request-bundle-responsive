@@ -22,7 +22,15 @@
             "title": "Home"
         }
     },
-     "links": [
+    "searchConfig": {
+        "displayName": "Catalog",
+        "params": {
+            "view": ["search"],
+            "name": ["Catalog"]
+        },
+        "placeholder": "Search Catalog"
+    },
+    "links": [
         {
             "type": "main-menu",
             "label": "Home",

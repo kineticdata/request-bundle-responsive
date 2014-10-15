@@ -4,6 +4,51 @@
      *   This section is executed on page load to register events and otherwise manipulate the DOM.
      *--------------------------------------------------------------------------------------------*/
     $(function() {
+        // Create jquery object of portal search forms
+        var portalSearch = $('form.portal-search');
+        // Determine if catalog search available
+        if(BUNDLE.config.packages &&
+            BUNDLE.config.packages.catalog &&
+            BUNDLE.config.packages.catalog.searchConfig &&
+            BUNDLE.config.packages.catalog.searchConfig) {
+            var searchConfig = BUNDLE.config.packages.catalog.searchConfig;
+            // Define action
+            var action = BUNDLE.config['displayPageUrl'];
+            // Set action
+            portalSearch.attr({'action': action});
+            // Set placeholder
+            if(searchConfig['placeholder']) {
+                portalSearch.find('input#search').attr({'placeholder': searchConfig['placeholder']});
+            }
+            // Define params if not defined
+            var params = searchConfig.params || {};
+            // Check size
+            if(_.size(params) > 0) {
+                if(params['view'].length > 0) {
+                    // Define hidden input
+                    var viewInput = $('<input>').attr({
+                        'type': 'hidden',
+                        'name': 'view',
+                        'value': params['view'][0]
+                    });
+                    // Add input to form
+                    portalSearch.prepend(viewInput);
+                }
+            }
+            // Check size
+            if(_.size(params) > 0) {
+                if(params['name'].length > 0) {
+                    // Define hidden input
+                    var nameInput = $('<input>').attr({
+                        'type': 'hidden',
+                        'name': 'name',
+                        'value': BUNDLE.config['slug'] + params['name'][0]
+                    });
+                    // Add input to form
+                    portalSearch.prepend(nameInput);
+                }
+            }
+        }
         // Define content area that will need to shift
         // right for the slide in navigation.
         var contentSlide = $('div.content-slide');
