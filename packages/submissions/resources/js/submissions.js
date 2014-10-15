@@ -5,7 +5,7 @@
      *--------------------------------------------------------------------------------------------*/
     $(function() {
         // Define submission group name hash
-        submissions.status = document.location.hash.substr(1);
+        submissions.status = decodeURI(document.location.hash.substr(1));
         // Define how many entries maximum should display
         submissions.entryOptionSelected = 11;
         // Get query string parameters into an object
@@ -29,7 +29,7 @@
                  submissions.status = 'Pending Approval';
             }
             // Update hash
-            document.location.hash = submissions.status;
+            document.location.hash = encodeURI(submissions.status);
         }
         // Active link class
         var activeNavSelector = $('ul li.requests');
@@ -50,7 +50,7 @@
             event.preventDefault();
             var submissionGroupName = $(this).data('group-name');
             // Update hash
-            document.location.hash = submissionGroupName;
+            document.location.hash = encodeURI(submissionGroupName);
             // Update status
             submissions.status = submissionGroupName;
             // Try to destroy console
