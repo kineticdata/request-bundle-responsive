@@ -22,8 +22,7 @@
         // Loop through footer links and add them
         _.each(footerLinks, function(value) {
             // Define url
-            var url = BUNDLE.applicationPath + 'DisplayPage?name=' +
-                    BUNDLE.config['slug'] + '-' + value['displayName'];
+            var url = BUNDLE.config['displayPageUrl'] + value['displayName'];
             // Define params if not defined
             var params = value.params || {};
             // Check size and append url params
