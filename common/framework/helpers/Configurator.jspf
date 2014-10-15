@@ -162,6 +162,31 @@
             return content;
         }
         
+        public String getCurrentCallback(String packageCallbackName) { 
+            // Define result
+            String content = null;
+            // Define current package json base config
+            JsonBase jsonBase = this.getCurrentPackageConfig();
+            // Determine null
+            if(jsonBase != null) {
+                // Define package views
+                JsonBase views = jsonBase.getObject("callbacks");
+                // Define page specific view
+                JsonBase view = views.getObject(packageCallbackName);
+                // Determine if not null
+                if(view != null) {
+                    // Update page content
+                    content = view.getString("content");
+                }
+                // Determine if callback null
+                if(content == null) {
+                    String message = "callback " + packageCallbackName + " not in package configuraiton";
+                    throw new RuntimeException(message);
+                }
+            }
+            return content;
+        }
+        
         public String getCurrentViewHead(String packageViewName) {
             // Define result
             String head = null;
@@ -185,31 +210,6 @@
                 }
             }
             return head;
-        }
-        
-        public String getCurrentViewType(String packageViewName) {
-            // Define result
-            String type = null;
-            // Define current package json base config
-            JsonBase jsonBase = this.getCurrentPackageConfig();
-            // Determine null
-            if(jsonBase != null) {
-                // Define package views
-                JsonBase views = jsonBase.getObject("views");
-                // Define view
-                JsonBase view = views.getObject(packageViewName);
-                // Determine if not null
-                if(view != null) {
-                    // Update page content
-                    type = view.getString("type");
-                }
-                // Determine if content is null
-                if(type == null) {
-                    // Update to package configured default view
-                    type = this.getDefaultViewType();
-                }
-            }
-            return type;
         }
         
         public String getCurrentViewTitle(HttpServletRequest request) {
@@ -248,20 +248,9 @@
         public void processView(HttpServletRequest request, HttpServletResponse response) {
             // Define absolute application context path to current package
             String currentPackagePath = File.separator + this.bundle.relativePackagePath;
-            // Define view type
-            String viewType = this.getCurrentViewType(request.getParameter("view"));
-            // Determine if view is a callback
-            if(viewType != null && viewType.equals("callback")) {
-                // Forward to callback
-                RequestDispatcher dispatcher = request.getRequestDispatcher(
-                    currentPackagePath + this.getCurrentViewContent(request.getParameter("view"))
-                );
-                try {
-                   dispatcher.forward(request, response);
-                   return;
-                } catch(Exception e) {
-                    throw new RuntimeException("Cannot process view: " + e.getMessage());
-                }
+            // Determine if callback defined
+            if(StringUtils.isNotBlank(request.getParameter("callback"))) {
+                this.processCallback(request, response, request.getParameter("callback"));
             }
             // Set head attribute
             request.setAttribute("head", currentPackagePath + this.getCurrentViewHead(request.getParameter("view")));
@@ -272,25 +261,29 @@
         public void processView(HttpServletRequest request, HttpServletResponse response, String view) {
             // Define absolute application context path to current package
             String currentPackagePath = File.separator + this.bundle.relativePackagePath;
-            // Define view type
-            String viewType = this.getCurrentViewType(view);
-            // Determine if view is a callback
-            if(viewType != null && viewType.equals("callback")) {
-                // Forward to callback
-                RequestDispatcher dispatcher = request.getRequestDispatcher(
-                    currentPackagePath + this.getCurrentViewContent(view)
-                );
-                try {
-                   dispatcher.forward(request, response);
-                   return;
-                } catch(Exception e) {
-                    throw new RuntimeException("Cannot process view: " + e.getMessage());
-                }
-            }
             // Set head attribute
             request.setAttribute("head", currentPackagePath + this.getCurrentViewHead(view));
             // Set content attribute
             request.setAttribute("content", currentPackagePath + this.getCurrentViewContent(view));
+        }
+        
+        public void processCallback(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            String callbackName
+        ) {
+            // Define absolute application context path to current package
+            String currentPackagePath = File.separator + this.bundle.relativePackagePath;
+            // Forward to callback
+            RequestDispatcher dispatcher = request.getRequestDispatcher(
+                currentPackagePath + this.getCurrentCallback(callbackName)
+            );
+            try {
+               dispatcher.forward(request, response);
+               return;
+            } catch(Exception e) {
+                throw new RuntimeException("Cannot process view: " + e.getMessage());
+            }
         }
     }
 %>

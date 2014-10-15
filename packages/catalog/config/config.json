@@ -1,29 +1,23 @@
 {
     "package": "catalog",
-    "layout": "layout.jsp",
     "views": {
         "about": {
-            "type": "page",
             "content": "interface/views/about.jsp",
             "title": "About"
         },
         "category": {
-            "type": "page",
             "content": "interface/views/category.jsp",
             "title": "Categories"
         },
         "popularRequests": {
-            "type": "page",
             "content": "interface/views/popularRequests.jsp",
             "title": "Popular Requests"
         },
         "search": {
-            "type": "page",
             "content": "interface/views/search.jsp",
             "title": "Search Results"
         },
         "default": {
-            "type": "page",
             "content": "interface/views/catalog.jsp",
             "title": "Home"
         }

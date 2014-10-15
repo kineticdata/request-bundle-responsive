@@ -1,32 +1,25 @@
 {
     "package": "base",
-    "layout": "layout.jsp",
     "views": {
         "display": {
-            "type": "page",
             "content": "interface/views/display.jsp"
         },
         "requestDescription": {
-            "type": "page",
             "content": "interface/views/requestDescription.jsp"
         },
         "approval": {
-            "type": "page",
             "content": "interface/views/approval.jsp",
             "title": "Approval"
         },
         "confirmation": {
-            "type": "page",
             "content": "interface/views/confirmation.jsp",
             "title": "Confirmation"
         },
         "review": {
-            "type": "page",
             "content": "interface/views/review.jsp",
             "title": "Review"
         },
         "reviewFrame": {
-            "type": "page",
             "content": "interface/views/reviewFrame.jsp",
             "title": "Review Iframe"
         }
