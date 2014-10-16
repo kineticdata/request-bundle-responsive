@@ -2,24 +2,54 @@
     "package": "catalog",
     "views": {
         "about": {
-            "content": "interface/views/about.jsp",
+            "content": "interface/views/catalog/about.jsp",
             "title": "About"
         },
         "category": {
-            "content": "interface/views/category.jsp",
+            "content": "interface/views/catalog/category.jsp",
             "title": "Categories"
         },
         "popularRequests": {
-            "content": "interface/views/popularRequests.jsp",
+            "content": "interface/views/catalog/popularRequests.jsp",
             "title": "Popular Requests"
         },
         "search": {
-            "content": "interface/views/search.jsp",
+            "content": "interface/views/catalog/search.jsp",
             "title": "Search Results"
         },
+        "submissions": {
+            "content": "interface/views/catalog/submissions.jsp"
+        },
+        "submissionActivity": {
+            "content": "interface/views/catalog/submissionActivity.jsp",
+            "title": "Request Details"
+        },
+        "service": {
+            "content": "interface/views/service/service.jsp"
+        },
+        "description": {
+            "content": "interface/views/description/description.jsp"
+        },
+        "approval": {
+            "content": "interface/views/approval/approval.jsp",
+        },
+        "confirmation": {
+            "content": "interface/views/confirmation/confirmation.jsp",
+        },
+        "review": {
+            "content": "interface/views/review/review.jsp",
+        },
+        "reviewFrame": {
+            "content": "interface/views/review/reviewFrame.jsp",
+        },
         "default": {
-            "content": "interface/views/catalog.jsp",
+            "content": "interface/views/catalog/catalog.jsp",
             "title": "Home"
+        }
+    },
+    "callbacks": {
+        "submissions": {
+            "content": "interface/callbacks/submissions.json.jsp"
         }
     },
     "searchConfig": {
@@ -49,6 +79,45 @@
             "params": {
                 "view": ["popularRequests"]
             }
+        },
+        {
+            "type": "main-menu",
+            "label": "Requests",
+            "class": "requests",
+            "description": "View My Submissions",
+            "icon": "<i class=\"fa fa-pencil-square-o\"></i>",
+            "displayName": "Catalog",
+            "params": {
+                "type": ["requests"],
+                "view": ["submissions"]
+            }
+        },
+        {
+            "type": "main-menu",
+            "label": "Approvals",
+            "class": "approvals",
+            "description": "View My Approvals",
+            "icon": "<i class=\"fa fa-check\"></i>",
+            "displayName": "Catalog",
+            "params": {
+                "type": ["approvals"],
+                "view": ["submissions"]
+            }
+        },
+        {
+            "type": "main-menu",
+            "label": "View Profile",
+            "class": "profile",
+            "description": "My Profile",
+            "icon": "<i class=\"gravatar-icon\"></i>",
+            "displayName": "Profile"
+        },
+        {
+            "type": "footer",
+            "label": "Site Feedback",
+            "class": "site-feedback pull-right",
+            "description": "Site Feedback",
+            "displayName": "Feedback"
         },
         {
             "type": "footer",
