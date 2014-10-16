@@ -10,25 +10,25 @@
         <li class="osc">
             <a href="#" class="color-gray-darkest color-hover-secondary">
                 <i class="fa fa-cogs"></i>
-                <div>OSC</div>
+                <div><%=ThemeLocalizer.getString(commonResourceBundle,"OSC")%></div>
             </a> 
         </li>
         <li class="favorites">
             <a href="#" class="color-gray-darkest color-hover-secondary">
                 <i class="fa fa-bookmark-o"></i>
-                <div>Favorites</div>
+                <div><%=ThemeLocalizer.getString(commonResourceBundle,"Favorites")%></div>
             </a>
         </li>
         <li class="fulfilment">
             <a href="#" class="color-gray-darkest color-hover-secondary">
                 <i class="fa fa-exchange"></i>
-                <div>Fulfilment</div>
+                <div><%=ThemeLocalizer.getString(commonResourceBundle,"Fulfilment")%></div>
             </a>
         </li>
         <li class="cmdb">
             <a href="#" class="color-gray-darkest color-hover-secondary">
                 <i class="fa fa-database"></i>
-                <div>CMDB</div>
+                <div><%=ThemeLocalizer.getString(commonResourceBundle,"CMDB")%></div>
             </a>
         </li>
     </ul>

@@ -5,7 +5,7 @@
             <%= bundle.getProperty("companyName") %>
         </div>
         <div style="font-size: 11px;">
-            Service Catalog
+            <%=ThemeLocalizer.getString(commonResourceBundle,"Service Catalog")%>
         </div>
     </div>
 </a>

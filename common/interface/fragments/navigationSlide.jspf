@@ -5,7 +5,7 @@
             <li>
                 <a href="<%= bundle.getProperty("logoutUrl")%>" class="color-white color-hover-secondary">
                     <i class="fa fa-sign-out"></i>
-                    Sign Out
+                    <%=ThemeLocalizer.getString(commonResourceBundle,"Sign Out")%>
                 </a>
             </li>
         <% } %>
