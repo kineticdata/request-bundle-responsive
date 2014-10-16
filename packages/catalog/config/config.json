@@ -17,9 +17,21 @@
             "content": "interface/views/search.jsp",
             "title": "Search Results"
         },
+        "submissions": {
+            "content": "interface/views/submissions.jsp"
+        },
+        "submissionActivity": {
+            "content": "interface/views/submissionActivity.jsp",
+            "title": "Request Details"
+        },
         "default": {
             "content": "interface/views/catalog.jsp",
             "title": "Home"
+        }
+    },
+    "callbacks": {
+        "submissions": {
+            "content": "interface/callbacks/submissions.json.jsp"
         }
     },
     "searchConfig": {
@@ -48,6 +60,30 @@
             "displayName": "Catalog",
             "params": {
                 "view": ["popularRequests"]
+            }
+        },
+        {
+            "type": "main-menu",
+            "label": "Requests",
+            "class": "requests",
+            "description": "View My Submissions",
+            "icon": "<i class=\"fa fa-pencil-square-o\"></i>",
+            "displayName": "Catalog",
+            "params": {
+                "type": ["requests"],
+                "view": ["submissions"]
+            }
+        },
+        {
+            "type": "main-menu",
+            "label": "Approvals",
+            "class": "approvals",
+            "description": "View My Approvals",
+            "icon": "<i class=\"fa fa-check\"></i>",
+            "displayName": "Catalog",
+            "params": {
+                "type": ["approvals"],
+                "view": ["submissions"]
             }
         },
         {

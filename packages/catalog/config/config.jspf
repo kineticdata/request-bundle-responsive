@@ -10,5 +10,37 @@
     attributeDescriptionNames.add("Who Can Request");  
 
     // Used in catalog.jsp for top Requests. This is used to filter top Requests by their template type
-    String[] templateTypeFilterTopSubmissions = new String[] {"Approval", "Utility", "Request Description", "Resolution Inquiry", "Portal"}; 
+    String[] templateTypeFilterTopSubmissions = new String[] {"Approval", "Utility", "Request Description", "Resolution Inquiry", "Portal"};
+    
+    bundle.setProperty("submissionActivityUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug") + "-SubmissionsActivity");
+
+    // Auto created requests type
+    bundle.setProperty("autoCreatedRequestType", "Auto Created Requests");
+
+    /* These qualfications are designed for custiomer survey, not customer survey base! */
+    java.util.Map<String,String> submissionGroups = new java.util.LinkedHashMap();
+    if (context != null) {
+        submissionGroups.put("Draft Request", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'CustomerSurveyStatus'=\"In Progress\" AND 'Request_Status'=\"Open\" AND 'Submit Type'=$NULL$ AND 'Submitter'=\""+context.getUserName()+"\" AND ('Type' != \"Utility\" OR 'Type' = $NULL$)");
+        submissionGroups.put("Open Request", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'CustomerSurveyStatus'=\"Completed\" AND 'Request_Status'=\"Open\" AND 'Submitter'=\""+context.getUserName()+"\" AND 'Submit Type'=$NULL$ AND ('Type' != \"Utility\" OR 'Type' = $NULL$)");
+        submissionGroups.put("Closed Request", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'Request_Status'=\"Closed\" AND 'Submit Type'=$NULL$ AND 'Submitter'=\""+context.getUserName()+"\" AND ('Type' != \"Utility\" OR 'Type' = $NULL$)");
+        submissionGroups.put("Pending Approval",   "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'CustomerSurveyStatus'=\"Sent\" AND 'Request_Status'=\"Open\" AND 'Submit Type'=\"Approval\" AND 'Submitter'=\""+context.getUserName()+"\"");
+        submissionGroups.put("Completed Approval", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'ApplicationName'=\"Kinetic Request\" AND 'CustomerSurveyStatus'=\"Completed\" AND 'Request_Status'=\"Closed\" AND 'Submit Type'=\"Approval\" AND 'Submitter'=\""+context.getUserName()+"\"");
+    }
+
+    // Create submission list filter based on My Requests or My Approvals (Used for UI)
+    List<String> requestsFilter = Arrays.asList("Draft Request", "Open Request", "Closed Request");
+    List<String> approvalsFilter = Arrays.asList("Pending Approval", "Completed Approval");
+
+    // Used for gathering ticket information in submission activity page
+    bundle.setProperty("incidentHandler", "bmc_itsm7_incident_create_v2");
+    bundle.setProperty("changeHandler", "bmc_itsm7_change_create_v2");
+    // Define submission type
+    bundle.setProperty("submissionType", request.getParameter("type"));
+    // Determine if the type exists and is set and is a real type
+    if(bundle.getProperty("submissionType") == null ||
+        !bundle.getProperty("submissionType").equals("requests") &&
+        !bundle.getProperty("submissionType").equals("approvals")) {
+        // Set to default type requests
+        bundle.setProperty("submissionType", "requests");
+    }
 %>

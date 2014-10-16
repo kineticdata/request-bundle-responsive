@@ -14,6 +14,6 @@
         </b>
     </p>
     <p>
-        To track the status of your request, click the <a href="<%= bundle.getProperty("submissionsUrl")%>">My Request</a> link.
+        To track the status of your request, click the <a href="<%= bundle.getProperty("catalogUrl")%>&view=submissions">My Request</a> link.
     </p>
 </section>

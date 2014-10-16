@@ -1,5 +1,9 @@
 @charset "utf-8";
 
+div.fixed-header-spacer {
+    height: 110px;
+}
+
 /* Loader */
 div#loader { float: none; width: auto; text-align: center; margin: 20px auto; clear: both; }
 

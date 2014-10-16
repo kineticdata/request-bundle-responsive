@@ -43,6 +43,11 @@
       <%@include file="../models/kineticSample/Incident.jspf
       <%@include file="../models/kineticSample/Person.jspf
 --%>
+<%@include file="../models/SubmissionConsole.jspf" %>
+<%@include file="../models/Incident.jspf" %>
+<%@include file="../models/IncidentWorkLog.jspf" %>
+<%@include file="../models/Change.jspf" %>
+<%@include file="../models/ChangeWorkLog.jspf" %>
 
 <%--
     Instantiate any appropriate helper objects.  By convention, the

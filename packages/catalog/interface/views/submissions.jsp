@@ -1,8 +1,8 @@
 <%-- Include the package initialization file. --%>
 <%@include file="../../framework/includes/packageInitialization.jspf" %>
 <%-- // Determine if view is set to table. --%>
-<% if(StringUtils.isNotBlank(request.getParameter("view")) && 
-    "table".equals(request.getParameter("view"))) {%>
+<% if(StringUtils.isNotBlank(request.getParameter("look")) && 
+    "table".equals(request.getParameter("look"))) {%>
     <%-- Include the libraries for rendering a submission's table UI. --%>
     <!-- Page Libraries -->
     <link rel="stylesheet" href="<%=bundle.bundlePath()%>libraries/jquery.qtip/jquery.qtip.min.css" type="text/css" />
@@ -40,7 +40,7 @@
                             <%-- Count the number of submissions that match the current query --%>
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
-                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=requests&status=<%=groupName%>">
+                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=requests&status=<%=groupName%>">
                                     <%=count%>
                                     <% if (count != 1) { %>
                                         <%=groupName%>s
@@ -57,7 +57,7 @@
                             <%-- Count the number of submissions that match the current query --%>
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
-                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals&status=<%=groupName%>">
+                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=approvals&status=<%=groupName%>">
                                     <%=count%>
                                     <% if (count != 1) { %>
                                         <%=groupName%>s

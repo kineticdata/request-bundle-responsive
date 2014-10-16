@@ -83,4 +83,13 @@
             }
         });
     };
+    
+    // Determine if startsWith exists
+    if (typeof String.prototype.startsWith != 'function') {
+      // Define startsWith
+      String.prototype.startsWith = function (str){
+        return this.indexOf(str) == 0;
+      };
+    }
+    
 })(jQuery, _);
