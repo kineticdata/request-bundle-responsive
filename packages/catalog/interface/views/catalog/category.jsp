@@ -23,7 +23,7 @@
 <!-- Page Javascript -->
 <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/package.js"></script>
 <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/category.js"></script>
-<%@include file="../fragments/flyout.jspf"%>
+<%@include file="../../fragments/flyout.jspf"%>
 <% if(currentCategory != null) {%>
     <header class="container">
         <ul class="breadcrumb clearfix">
