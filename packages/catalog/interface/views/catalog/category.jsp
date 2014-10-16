@@ -1,5 +1,5 @@
 <%-- Include the package initialization file. --%>
-<%@include file="../../framework/includes/packageInitialization.jspf"%>
+<%@include file="../../../framework/includes/packageInitialization.jspf"%>
 <%-- Retrieve the Catalog --%>
 <%
     // Retrieve the main catalog object

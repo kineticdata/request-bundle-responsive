@@ -1,5 +1,6 @@
 <%-- Include the package initialization file. --%>
-<%@include file="../../framework/includes/packageInitialization.jspf"%>
+<%@include file="../../../framework/includes/packageInitialization.jspf"%>
+<%@include file="../../../framework/includes/serviceLanguageInitialization.jspf"%>
 <!-- Page Stylesheets -->
 <link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/displayPackage.css" type="text/css" />
 <header class="container">

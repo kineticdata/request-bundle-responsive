@@ -8,12 +8,13 @@
     4.  Set the languge for the template page content and make it available as the property "templatePageContent" for core to use.
 --%>
 <%
-    // Set real path to the package on the webserver
-    String packageRealPath = getServletContext().getRealPath(bundle.relativePackagePath());
-    // Set the absolute path to the directory containing the locale property files
-    String packageTranslationPath = packageRealPath + File.separator + "resources" + File.separator + "languages";
     // Set template shared resource bundle (includes common service item translations)
-    ResourceBundle templateSharedResourceBundle = ThemeLocalizer.getResourceBundle("templateShared", bundle.getProperty("preferredLocale"), packageTranslationPath);
+    ResourceBundle templateSharedResourceBundle = ThemeLocalizer.getResourceBundle(
+        "templateShared",
+        bundle.getProperty("preferredLocale"),
+        getServletContext().getRealPath(bundle.relativePackagePath()) +
+        File.separator + "resources" + File.separator + "languages"
+    );
     // Set templateTranslationPath to package path for now
     String templateTranslationPath = packageTranslationPath;
     // Get survey instance id
