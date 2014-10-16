@@ -10,9 +10,6 @@ configuration.processView(request, response, (String) request.getAttribute("view
     <head>
         <%-- Include the common content. --%>
         <%@include file="../fragments/head.jspf"%>
-        <title>
-            <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;<%= customerRequest.getTemplateName()%>
-        </title>
         <script type="text/javascript">
             // Ensure the BUNDLE global object exists
             BUNDLE = BUNDLE || {};
@@ -21,17 +18,8 @@ configuration.processView(request, response, (String) request.getAttribute("view
             // Setup packages configuration
             BUNDLE.config.packages = <%= configuration.getPackagesConfiguration()%>
         </script>
-    </head>
-    <body class="loadAllPages_<%=customerRequest.getLoadAllPages()%> review">
-        <div class="view-port">
-            <%@include file="../fragments/navigationSlide.jspf"%>
-            <div class="content-slide" data-target="div.navigation-slide">
-                <%@include file="../fragments/header.jspf"%>
-                <div class="pointer-events">
-                    <jsp:include page="${content}" />
-                </div>
-                <%@include file="../fragments/footer.jspf"%>
-            </div>
-        </div>
+    </head> 
+    <body class="<%if(request.getAttribute("bodyClass")!=null){%><%=request.getAttribute("bodyClass")%><%}%>">
+        <jsp:include page="${content}" />
     </body>
 </html>

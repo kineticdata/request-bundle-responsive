@@ -22,7 +22,7 @@ configuration.processView(request, response);
             BUNDLE.config.packages = <%= configuration.getPackagesConfiguration()%>
         </script>
     </head>
-    <body>
+    <body class="<%if(request.getAttribute("bodyClass")!=null){%><%=request.getAttribute("bodyClass")%><%}%>">
         <div class="view-port">
             <%@include file="../fragments/navigationSlide.jspf"%>
             <div class="content-slide" data-target="div.navigation-slide">

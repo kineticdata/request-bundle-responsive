@@ -42,6 +42,7 @@
         },
         "reviewFrame": {
             "content": "interface/views/review/reviewFrame.jsp",
+            "title": ""
         },
         "default": {
             "content": "interface/views/catalog/catalog.jsp",
