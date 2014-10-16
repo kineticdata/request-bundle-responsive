@@ -18,7 +18,8 @@
             "title": "Search Results"
         },
         "submissions": {
-            "content": "interface/views/catalog/submissions.jsp"
+            "content": "interface/views/catalog/submissions.jsp",
+            "title": ""
         },
         "submissionActivity": {
             "content": "interface/views/catalog/submissionActivity.jsp",
