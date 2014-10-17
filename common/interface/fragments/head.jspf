@@ -12,7 +12,7 @@
     image with any bookmarks to the site, display the icon in tabs that are
     rendering the site, and may also display it in the URL bar.
 --%>
-<link rel="shortcut icon" href="<%=bundle.bundlePath()%>common/resources/images/favicon.png" type="image/x-icon" />
+<link rel="shortcut icon" href="<%=bundle.bundlePath()%>common/assets/images/favicon.png" type="image/x-icon" />
 
 <%--
     Load the common bundle styling.  This will typically be loaded in the HEAD
@@ -26,8 +26,8 @@
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/jquery.qtip/jquery.qtip.min.css" />
 
 <!-- Common Stylesheets -->
-<link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/common.css" />
-<link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/ajaxLogin.css" />
+<link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/assets/css/common.css" />
+<link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/assets/css/ajaxLogin.css" />
 
 <%-- 
     Initialize the BUNDLE javascript object.  This object is used to store the
@@ -84,10 +84,10 @@
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/underscore/underscore-min.js"></script>
 
 <!-- Common JavaScript -->
-<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/client.js"></script>
-<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/Bridges.js"></script>
-<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/ajaxLogin.js"></script>
-<script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/common.js"></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/assets/js/client.js"></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/assets/js/Bridges.js"></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/assets/js/ajaxLogin.js"></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>common/assets/js/common.js"></script>
 <script type="text/javascript">
 $(function() {
     // Remove KDCACHE cookie until servlet stops creating it.

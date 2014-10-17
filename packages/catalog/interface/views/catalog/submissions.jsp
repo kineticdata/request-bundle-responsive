@@ -11,23 +11,23 @@
     <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/footable/js/footable.min.js"></script>
     <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/kinetic-consoleTable/jquery.consoleTable.js"></script>
     <!-- Page Stylesheets -->
-    <link rel="stylesheet" href="<%=bundle.packagePath()%>resources/css/package.css" type="text/css" />
-    <link rel="stylesheet" href="<%=bundle.packagePath()%>resources/css/submissionsTable.css" type="text/css" />
+    <link rel="stylesheet" href="<%=bundle.packagePath()%>assets/css/package.css" type="text/css" />
+    <link rel="stylesheet" href="<%=bundle.packagePath()%>assets/css/submissionsTable.css" type="text/css" />
     <!-- Page Javascript -->
-    <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/package.js"></script>
-    <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/submissions.js"></script>
-    <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/submissionsTable.js"></script>
+    <script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/package.js"></script>
+    <script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/submissions.js"></script>
+    <script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/submissionsTable.js"></script>
 <%}else{%>
     <%-- Default to the libraries for rendering a submission's list UI. --%>
     <!-- Page Libraries -->
     <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/kinetic-consoleList/jquery.consoleList.js"></script>
     <!-- Page Stylesheets -->
-    <link rel="stylesheet" href="<%=bundle.packagePath()%>resources/css/package.css" type="text/css" />
-    <link rel="stylesheet" href="<%=bundle.packagePath()%>resources/css/submissionsList.css" type="text/css" />
+    <link rel="stylesheet" href="<%=bundle.packagePath()%>assets/css/package.css" type="text/css" />
+    <link rel="stylesheet" href="<%=bundle.packagePath()%>assets/css/submissionsList.css" type="text/css" />
     <!-- Page Javascript -->
-    <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/package.js"></script>
-    <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/submissions.js"></script>
-    <script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/submissionsList.js"></script>
+    <script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/package.js"></script>
+    <script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/submissions.js"></script>
+    <script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/submissionsList.js"></script>
 <%}%>
 <%-- SUBMISSION TABLE LINKS --%>
 <% if (context != null) { %>
@@ -80,7 +80,7 @@
     <div class="results-message hide"></div>
     <%-- LOADER --%>
     <div id="loader">
-        <img alt="Please Wait." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
+        <img alt="Please Wait." src="<%=bundle.bundlePath()%>common/assets/images/spinner.gif" />
         <br />
         Loading Results
     </div>

@@ -7,7 +7,7 @@
     catalog.preload(context);
 %>
 <!-- Page Stylesheets -->
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/about.css" type="text/css" />
+<link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/about.css" type="text/css" />
 <%-- Include the application head content. --%>
 <%@include file="../../../../../core/interface/fragments/applicationHeadContent.jspf"%>
 <%@include file="../../../../../core/interface/fragments/displayHeadContent.jspf"%>

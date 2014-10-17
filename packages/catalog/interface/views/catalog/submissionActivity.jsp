@@ -23,7 +23,7 @@
     }
 %>
 <!-- Page Stylesheets -->
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/submissionActivity.css" type="text/css" />
+<link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/submissionActivity.css" type="text/css" />
 <header class="container">
     <div class="border-top border-left border-right border-gray-light clearfix">
         <div class="request-status border-bottom border-gray-light">

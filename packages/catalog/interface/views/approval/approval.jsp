@@ -5,11 +5,11 @@
 <%@include file="../../../../../core/interface/fragments/applicationHeadContent.jspf"%>
 <%@include file="../../../../../core/interface/fragments/displayHeadContent.jspf"%>
 <!-- Package Stylesheets -->
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/displayPackage.css" type="text/css" />
+<link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/displayPackage.css" type="text/css" />
 <!-- Package Javascript -->
-<script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/package.js"></script>
+<script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/package.js"></script>
 <!-- Page Javascript -->
-<script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/display.js"></script>
+<script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/display.js"></script>
 <%-- Include the form head content, including attached css/javascript files and custom header content --%>
 <%@include file="../../../../../core/interface/fragments/formHeadContent.jspf"%>
 <header class="container">

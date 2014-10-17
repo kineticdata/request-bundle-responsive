@@ -47,7 +47,7 @@
 --%>
 <script type='text/javascript'>
     var respondCssInclude = '<!--[if lt IE 9]>' +
-        '<link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/respond.css" />' +
+        '<link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/assets/css/respond.css" />' +
         '<![endif]-->';
 </script>
 <!--[if lt IE 9]>

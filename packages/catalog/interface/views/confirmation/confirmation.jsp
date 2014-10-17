@@ -2,7 +2,7 @@
 <%@include file="../../../framework/includes/packageInitialization.jspf"%>
 <%@include file="../../../framework/includes/serviceLanguageInitialization.jspf"%>
 <!-- Page Stylesheets -->
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/displayPackage.css" type="text/css" />
+<link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/displayPackage.css" type="text/css" />
 <header class="container">
     <h2>
         <%= customerRequest.getTemplateName()%>
