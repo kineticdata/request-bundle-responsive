@@ -10,6 +10,8 @@
     // Get popular requests
     List<String> globalTopTemplates = SubmissionStatisticsHelper.getMostCommonTemplateNames(systemContext, new String[] {customerRequest.getCatalogName()}, templateTypeFilterTopSubmissions, 5);
 %>
+<%-- Include the bundle js config initialization. --%>
+<%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
 <!-- Page Stylesheets -->
 <link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/package.css" type="text/css" />
 <link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/popularRequests.css" type="text/css" />

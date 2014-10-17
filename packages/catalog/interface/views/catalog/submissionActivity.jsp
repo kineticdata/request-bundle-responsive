@@ -22,6 +22,8 @@
         }
     }
 %>
+<%-- Include the bundle js config initialization. --%>
+<%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
 <!-- Page Stylesheets -->
 <link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/submissionActivity.css" type="text/css" />
 <header class="container">

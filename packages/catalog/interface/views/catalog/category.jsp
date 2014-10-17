@@ -16,6 +16,8 @@
         categoryDescriptions = DescriptionHelper.getCategoryDescriptionMap(context, catalog);
     }
 %>
+<%-- Include the bundle js config initialization. --%>
+<%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
 <!-- Package Stylesheets -->
 <link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/package.css" type="text/css" />
 <!-- Page Stylesheets -->

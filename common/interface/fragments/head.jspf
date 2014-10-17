@@ -1,8 +1,6 @@
-<!-- Common Head Content -->
 <%-- 
     Specify that modern IE versions should render the page with their own 
     rendering engine (as opposed to falling back to compatibility mode.
-    NOTE: THIS HAS TO BE RIGHT AFTER <head>!
 --%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta charset="utf-8" />
@@ -30,11 +28,9 @@
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/assets/css/ajaxLogin.css" />
 
 <%-- 
-    Initialize the BUNDLE javascript object.  This object is used to store the
-    configuration properties for requests in a manner that the client browser
-    can access them after the initial page request has been made.
+    Initialize the BUNDLE javascript object. This object is used to store various properties
+    about the bundle including configuration properties. 
 --%>
-<!-- Configure the BUNDLE object and store the necessary configuration/state.-->
 <script type="text/javascript">
     // Initialize the BUNDLE object.
     var BUNDLE = {};
@@ -44,28 +40,21 @@
     BUNDLE.packagePath = '<%=bundle.packagePath()%>';
     BUNDLE.relativeBundlePath = '<%=bundle.relativeBundlePath()%>';
     BUNDLE.relativePackagePath = '<%=bundle.relativePackagePath()%>';
-    // Initialize the BUNDLE configuration hash.
-    BUNDLE.config = {};
-    // Set all of the bundle configuration properties
-    <% for (String name : bundle.propertyNames()) {%>
-        <% if(bundle.getProperty(name) != null) {%>
-            BUNDLE.config['<%=name%>'] = '<%= escapeEcmaScript(bundle.getProperty(name))%>';
-        <%} else {%>
-            BUNDLE.config['<%=name%>'] = <%=bundle.getProperty(name)%>;
-        <%}%>
-    <% }%>
-    // Set any additional BUNDLE properties
+    // Initialize the BUNDLE configuration hash
+    BUNDLE.config = BUNDLE.config || {};
+    // Set user configuration
     BUNDLE.config.user = '<%= (context == null) ? "" : context.getUserName()%>';
-    
-    // Define localization object
-    var Localization = { <%= (bundle.getProperty("i18nValues") != null) ? bundle.getProperty("i18nValues") : "" %> };
+    // Setup packages configuration
+    BUNDLE.config.packages = <%= configuration.getPackagesConfiguration()%>
+    // Define localization object which can be populated with i18n values by the package views
+    BUNDLE.config.localization = {};
     // Create .localize() string function.  This allows any JavaScript string to be
     // localized by adding ".localize()" to the end.  Examples: "hello".localize().
     String.prototype.localize = function() {
         var key = this.replace(/ /g, "_");
-        var s = Localization[key];
+        var s = BUNDLE.config.localization[key];
         return ( s ) ? s : this;
-    }
+    };
 </script>
 
 <!-- Common JavaScript Libraries -->

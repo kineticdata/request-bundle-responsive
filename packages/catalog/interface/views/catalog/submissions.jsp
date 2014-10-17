@@ -1,5 +1,6 @@
 <%-- Include the package initialization file. --%>
 <%@include file="../../../framework/includes/packageInitialization.jspf" %>
+<%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
 <%-- // Determine if view is set to table. --%>
 <% if(StringUtils.isNotBlank(request.getParameter("look")) && 
     "table".equals(request.getParameter("look"))) {%>

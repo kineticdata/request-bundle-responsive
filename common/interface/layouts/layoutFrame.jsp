@@ -10,14 +10,6 @@ configuration.processView(request, response, (String) request.getAttribute("view
     <head>
         <%-- Include the common content. --%>
         <%@include file="../fragments/head.jspf"%>
-        <script type="text/javascript">
-            // Ensure the BUNDLE global object exists
-            BUNDLE = BUNDLE || {};
-            // Initialize the BUNDLE configuration hash
-            BUNDLE.config = BUNDLE.config || {};
-            // Setup packages configuration
-            BUNDLE.config.packages = <%= configuration.getPackagesConfiguration()%>
-        </script>
     </head> 
     <body class="<%if(request.getAttribute("bodyClass")!=null){%><%=request.getAttribute("bodyClass")%><%}%>">
         <jsp:include page="${content}" />

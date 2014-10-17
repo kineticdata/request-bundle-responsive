@@ -1,7 +1,9 @@
 <%-- Include the package initialization file. --%>
 <%@include file="../../../framework/includes/packageInitialization.jspf"%>
 <%@include file="../../../framework/includes/serviceLanguageInitialization.jspf"%>
-<%-- Include the application head content. --%>
+<%-- Include the bundle js config initialization. --%>
+<%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
+<%-- Include the application content. --%>
 <%@include file="../../../../../core/interface/fragments/applicationHeadContent.jspf"%>
 <%@include file="../../../../../core/interface/fragments/displayHeadContent.jspf"%>
 <!-- Package Stylesheets -->
@@ -12,7 +14,7 @@
 <script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/package.js"></script>
 <!-- Page Javascript -->
 <script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/display.js"></script>
-<%-- Include the form head content, including attached css/javascript files and custom header content --%>
+<%-- Include the form content, including attached css/javascript files and custom header content --%>
 <%@include file="../../../../../core/interface/fragments/formHeadContent.jspf"%>
 <header class="container">
     <h2>

@@ -31,14 +31,16 @@
         }
     }
 %>
-<%-- Include the application head content. --%>
+<%-- Include the bundle js config initialization. --%>
+<%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
+<%-- Include the application content. --%>
 <%@include file="../../../../../core/interface/fragments/applicationHeadContent.jspf"%>
 <%@include file="../../../../../core/interface/fragments/displayHeadContent.jspf"%>
 <!-- Page Stylesheets -->
 <link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/description.css" type="text/css" />
 <!-- Page JavaScript -->
 <script type="text/javascript" src="<%= bundle.packagePath()%>assets/js/description.js"></script>
-<%-- Include the form head content, including attached css/javascript files and custom header content --%>
+<%-- Include the form content, including attached css/javascript files and custom header content --%>
 <%@include file="../../../../../core/interface/fragments/formHeadContent.jspf"%>
 <header class="container">
     <h2>

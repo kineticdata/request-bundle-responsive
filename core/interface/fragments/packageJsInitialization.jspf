@@ -1,0 +1,23 @@
+<%-- 
+    This script is used to store the bundle configuration properties and localiation (i18n values)
+    for the request response. This fragment needs to be initialized on the same instance 
+    as the view content to ensure common and package configuraiton properties are loaded.
+--%>
+<script type="text/javascript">
+    // Ensure the BUNDLE global object exists
+    BUNDLE = BUNDLE || {};
+    // Initialize the BUNDLE configuration hash
+    BUNDLE.config = BUNDLE.config || {};
+    // Set all of the bundle configuration properties
+    <% for (String name : bundle.propertyNames()) {%>
+        <% if(bundle.getProperty(name) != null) {%>
+            BUNDLE.config['<%=name%>'] = '<%= escapeEcmaScript(bundle.getProperty(name))%>';
+        <%} else {%>
+            BUNDLE.config['<%=name%>'] = <%=bundle.getProperty(name)%>;
+        <%}%>
+    <% }%>
+    // Initialize the BUNDLE localization object
+    BUNDLE.config.localization = BUNDLE.config.localization || {};
+    // Update localization object
+    BUNDLE.config.localization = { <%= (bundle.getProperty("i18nValues") != null) ? bundle.getProperty("i18nValues") : "" %> };
+</script>
