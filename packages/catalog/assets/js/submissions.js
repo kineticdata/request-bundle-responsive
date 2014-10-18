@@ -4,10 +4,31 @@
      *   This section is executed on page load to register events and otherwise manipulate the DOM.
      *--------------------------------------------------------------------------------------------*/
     $(function() {
+        // Store original title in memory
+        var originalTitle = document.title;
+        // Define Hashchange event for each submissions bucket
+        $(window).on('hashchange', function()  {
+            // Update submissions status
+            submissions.status = decodeURI(document.location.hash.substr(1));
+            // Try to destroy console
+            // This allows the console to be initialized again
+            try { $('div.results').consoleList('destroy'); } catch(exception) { /* Do nothing */ }
+            // Get console specific properties
+            var params = submissions.consoleParams[submissions.status];
+            // Start console
+            submissions.initialize(params, submissions.status, submissions.entryOptionSelected);
+            // Clear all active links
+            $('header.sub div.container ul li').removeClass('active');
+            // Set active link
+            $('header a[data-group-name="' + submissions.status + '"]').parents('li').addClass('active');
+            // Set title based on active link
+            document.title = originalTitle + $.trim($('header.sub div.container ul li.active').text());
+        });
+
         // Define submission group name hash
         submissions.status = decodeURI(document.location.hash.substr(1));
         // Define how many entries maximum should display
-        submissions.entryOptionSelected = 11;
+        submissions.entryOptionSelected = 10;
         // Get query string parameters into an object
         var urlParameters = BUNDLE.common.getUrlParameters();
         // Determine if type is a real type
@@ -30,47 +51,10 @@
             }
             // Update hash
             document.location.hash = encodeURI(submissions.status);
+        } else {
+            // Trigger hashchange event defined above
+            $(window).trigger('hashchange');
         }
-        // Active link class
-        var activeNavSelector = $('ul li.requests');
-        if(urlParameters.type === 'approvals') { activeNavSelector = $('ul li.approvals'); };
-        activeNavSelector.addClass('active').append($('<div>').addClass('arrow-left'));
-        // Set active link
-        $('header a[data-group-name="' + submissions.status + '"]').parents('li').addClass('active');
-        // Store original title in memory
-        var originalTitle = $('title').text();
-        // Set title based on active link
-        $('title').html(originalTitle + $.trim($('header.sub div.container ul li.active').text()));
-        // Position scroll for small devices
-        var activeLinkPosition = $('header.sub div.container > ul li.active').position();
-        if(activeLinkPosition !== undefined && activeLinkPosition.left !== undefined) { $('header.sub div.container > ul').scrollLeft(activeLinkPosition.left); }
-        // Get console specific properties
-        var params = submissions.consoleParams[submissions.status];
-        // Start table
-        submissions.initialize(params, submissions.status, submissions.entryOptionSelected);
-        
-        // Click event for each submissions bucket
-        $('header.sub').on('click', 'ul li a', function(event) {
-            event.preventDefault();
-            var submissionGroupName = $(this).data('group-name');
-            // Update hash
-            document.location.hash = encodeURI(submissionGroupName);
-            // Update status
-            submissions.status = submissionGroupName;
-            // Try to destroy console
-            // This allows the console to be initialized again
-            try { $('div.results').consoleList('destroy'); } catch(exception) { /* Do nothing */ }
-            // Get console specific properties
-            var params = submissions.consoleParams[submissions.status];
-            // Start table
-            submissions.initialize(params, submissions.status, submissions.entryOptionSelected);
-            // Clear all active links
-            $('header.sub div.container ul li').removeClass('active');
-            // Set active link
-            $('header a[data-group-name="' + submissions.status + '"]').parents('li').addClass('active');
-            // Set title based on active link
-            $('title').html(originalTitle + $.trim($('header.sub div.container ul li.active').text()));
-        });
     });
     
     /*----------------------------------------------------------------------------------------------
