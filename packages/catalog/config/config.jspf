@@ -11,8 +11,6 @@
 
     // Used in catalog.jsp for top Requests. This is used to filter top Requests by their template type
     String[] templateTypeFilterTopSubmissions = new String[] {"Approval", "Utility", "Request Description", "Resolution Inquiry", "Portal"};
-    
-    bundle.setProperty("submissionActivityUrl", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug") + "-SubmissionsActivity");
 
     // Auto created requests type
     bundle.setProperty("autoCreatedRequestType", "Auto Created Requests");
