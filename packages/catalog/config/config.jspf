@@ -3,6 +3,8 @@
     NOTE: This file is required.
 --%>
 <%
+    // Define url to package portal page
+    bundle.setProperty("catalogUrl", bundle.getProperty("displayPageUrlSlug") + "Catalog");
     // Configuration of available description attributes for search and catgory display pages.
     ArrayList<String> attributeDescriptionNames = new ArrayList();
     attributeDescriptionNames.add("Charge");

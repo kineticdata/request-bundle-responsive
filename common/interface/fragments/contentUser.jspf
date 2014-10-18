@@ -35,7 +35,6 @@ if(context != null) {
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
 (function($, _) {
     $(function() {
@@ -73,7 +72,7 @@ if(context != null) {
                     );
                     // Append to user card
                     $(menuSelector).find('div.information').append(profileWrap);
-                    // Add href to image
+                    // Add attributes to image
                     $(menuSelector).find('a.user').attr(userProfileAttributes);
                 }
             },
