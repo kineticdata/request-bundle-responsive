@@ -62,8 +62,8 @@
         },
         "placeholder": "Search Catalog"
     },
-    "links": [
-        {
+    "links": {
+        "home": {
             "type": "main-menu",
             "label": "Home",
             "class": "catalog",
@@ -71,7 +71,7 @@
             "icon": "<i class=\"fa fa-home\"></i>",
             "displayName": "Catalog"
         },
-        {
+        "popularRequests": {
             "type": "main-menu",
             "label": "Popular Requests",
             "class": "popular-requests",
@@ -82,7 +82,7 @@
                 "view": ["popularRequests"]
             }
         },
-        {
+        "requests": {
             "type": "main-menu",
             "label": "Requests",
             "class": "requests",
@@ -94,7 +94,7 @@
                 "view": ["submissions"]
             }
         },
-        {
+        "approvals": {
             "type": "main-menu",
             "label": "Approvals",
             "class": "approvals",
@@ -106,7 +106,7 @@
                 "view": ["submissions"]
             }
         },
-        {
+        "userProfile": {
             "type": "main-menu",
             "label": "View Profile",
             "class": "profile",
@@ -114,14 +114,14 @@
             "icon": "<i class=\"gravatar-icon\"></i>",
             "displayName": "Profile"
         },
-        {
+        "siteFeedback": {
             "type": "footer",
             "label": "Site Feedback",
             "class": "site-feedback pull-right",
             "description": "Site Feedback",
             "displayName": "Feedback"
         },
-        {
+        "about": {
             "type": "footer",
             "label": "About",
             "class": "about pull-left",
@@ -131,5 +131,5 @@
                 "view": ["about"]
             }
         }
-    ]
+    }
 }

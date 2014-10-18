@@ -36,8 +36,6 @@
     bundle.setProperty("displayPageUrlSlug", bundle.applicationPath() + "DisplayPage?name=" + bundle.getProperty("slug"));
     // Urls
     bundle.setProperty("catalogUrl", bundle.getProperty("displayPageUrlSlug") + "Catalog");
-    bundle.setProperty("profileUrl", bundle.getProperty("displayPageUrlSlug") + "Profile");
-    
     // Url to authentication servlet for logout
     bundle.setProperty("logoutUrl", "KSAuthenticationServlet?Logout=true");
 

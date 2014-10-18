@@ -10,33 +10,33 @@
 (function($, _) {
     // Builds the footer links based on package configuration
     $(function() {
-        var packagesLinkList = _.flatten(_.pluck(BUNDLE.config.packages, 'links'));
-        var footerLinks = _.filter(packagesLinkList, function(link) {
-            // Define result, assume failure
-            var result = false;
-            if(link['type'] === 'footer') {
-                result = true;
-            }
-            return result;
-        });
-        // Loop through footer links and add them
-        _.each(footerLinks, function(value) {
-            // Define url
-            var url = BUNDLE.config['displayPageUrlSlug'] + value['displayName'];
-            // Define params if not defined
-            var params = value.params || {};
-            // Check size and append url params
-            if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
-            // Define list element with link
-            var span = $('<span>').addClass(value['class']).append(
-                $('<a>').addClass('color-white color-hover-white').attr({
-                    'href': url,
-                    'aria-label': value.description
-                }).text(value.label)
-            );
-            // Add links to main menus
-            $('footer.footer').find('div.container').append(span);
-        });
+        // Determine if package configuration available and build links
+        if(BUNDLE.config.packages) {
+            // Define about link by trying to get the first one found from the package's links
+            var about = _.first(_.compact(_.pluck(_.pluck(BUNDLE.config.packages, 'links'), 'about')));
+            // Define site feedback link by trying to get the first one found from the package's links
+            var siteFeedback = _.first(_.compact(_.pluck(_.pluck(BUNDLE.config.packages, 'links'), 'siteFeedback')));
+            // Define footer links and remove any undefines with compact
+            var footerLinks = _.compact([about, siteFeedback]);
+            // Loop through footer links and add them
+            _.each(footerLinks, function(property) {
+                // Define url
+                var url = BUNDLE.config['displayPageUrlSlug'] + property['displayName'];
+                // Define params if not defined
+                var params = property.params || {};
+                // Check size and append url params
+                if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
+                // Define list element with link
+                var span = $('<span>').addClass(property['class']).append(
+                    $('<a>').addClass('color-white color-hover-white').attr({
+                        'href': url,
+                        'aria-label': property.description
+                    }).text(property.label)
+                );
+                // Add links to main menus
+                $('footer.footer').find('div.container').append(span);
+            });
+        }
     });
 })(jQuery, _);
 </script>
