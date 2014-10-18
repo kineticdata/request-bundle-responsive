@@ -303,9 +303,6 @@ table tbody tr td.nav-pop-v {
     nav.catalog { display: none; }
 }
 @media (max-width: 767px) {
-    header.sub { display: none; }
-    section.container { display: none; }
-
     ul.templates li div.description-wide p,
     ul.templates li div.description-small p { overflow: hidden; max-height: 35px; }
     a.read-more { margin: 0 0 0 10px; }
