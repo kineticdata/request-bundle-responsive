@@ -13,8 +13,13 @@
     // Create a scoped alias to simplify references
     var submissions = BUNDLE.package.submissions;
 
-    /*
+    /**
      * Default row callback
+     * 
+     * @param {Object} tr element object
+     * @param {Object} value is record of key name pairs
+     * @param {Number} index is current record index
+     * @returns {undefined}
      */
     submissions.defaultRowCallback = function(tr, value, index) {
         // Data used for links and buttons
@@ -23,8 +28,14 @@
         tr.data('Id', value['Id']);
     };
 
-    /*
+    /**
      * Default column callback
+     * 
+     * @param {Object} td element object
+     * @param {String|Number|Object|Array} value
+     * @param {String} fieldname
+     * @param {String} label is the display fields label name used in side the UI
+     * @returns {undefined}
      */
     submissions.defaultColumnCallback = function(td, value, fieldname, label) {        
         // qtip options
@@ -79,7 +90,7 @@
                         );
                 }
             } else {
-                window.open(BUNDLE.config['submissionActivityUrl']+'&id=' + $(this).data('Originating Id'));
+                window.open(BUNDLE.config.catalogUrl + '&view=submissionActivity&id=' + $(this).data('Originating Id'));
             }
         });
 
@@ -88,7 +99,7 @@
             // Prevent default action.
             event.preventDefault();
             event.stopImmediatePropagation();
-            window.location = BUNDLE.config['submissionActivityUrl'] + '&id=' + $(this).data('submission-id');
+            window.location = BUNDLE.config.catalogUrl + '&view=submissionActivity&id=' + $(this).data('submission-id');
         });
 
         // Unobstrusive live on click event for review request
@@ -96,14 +107,16 @@
             // Prevent default action.
             event.preventDefault();
             event.stopImmediatePropagation();
-            window.location = BUNDLE.applicationPath + 'ReviewRequest?excludeByName=Review%20Page&csrv=' + $(this).data('submission-id');
+            window.location = BUNDLE.applicationPath + 'ReviewRequest?excludeByName=Review%20Page&csrv=' + 
+                $(this).data('submission-id') + '&reviewPage=' + BUNDLE.config.reviewJsp;
         });
 
         // jQuery unobstrusive live on click event for review request
         this.consoleTable.on('click', 'table tbody tr td a.review', function(event) {
             event.preventDefault();
             event.stopImmediatePropagation();
-            window.open(BUNDLE.applicationPath + 'ReviewRequest?excludeByName=Review%20Page&csrv=' + $(this).parents('tr').data('Originating Id'));
+            window.open(BUNDLE.applicationPath + 'ReviewRequest?excludeByName=Review%20Page&csrv=' +
+                $(this).parents('tr').data('Originating Id') + '&reviewPage=' + BUNDLE.config.reviewJsp);
         });
     };
 
@@ -300,8 +313,22 @@
             completeCallback: submissions.defaultCompleteCallback
         }
     };
-
-    submissions.initialize = function(params, status, entryOptionSelected) {
+    
+    /**
+     * @param {Object} options
+     * @param {Number} options.entryOptionSelected is how many results to show.
+     * @param {String} options.status is the submission status group 
+     * (Open Request, Closed Request, Pending Approval).
+     * @returns {undefined}
+     */
+    submissions.initialize = function(options) {
+        // Define options
+        options = options || {};
+        // Define status
+        options.status = options.status || 'Open Request';
+        // Get console specific properties
+        var params = submissions.consoleParams[options.status];
+        // Define loader
         var loader = $('div#loader');
         var responseMessage = $('div.results-message');
         // Define console options
@@ -309,7 +336,7 @@
             displayFields: params.displayFields,
             paginationPageRange: 3,
             pagination: true,
-            entryOptionSelected: entryOptionSelected,
+            entryOptionSelected: options.entryOptionSelected,
             entryOptions: [5, 10, 20, 50, 100],
             entries: true,
             info: true,
@@ -323,7 +350,7 @@
                     dataType: 'json',
                     cache: false,
                     type: 'get',
-                    url: BUNDLE.config.catalogUrl + '&callback=submissions&qualification=' + status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
+                    url: BUNDLE.config.catalogUrl + '&callback=submissions&qualification=' + options.status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
                     beforeSend: function(jqXHR, settings) {
                         widget.element.hide();
                         responseMessage.empty();
@@ -337,7 +364,7 @@
                             widget.consoleTable.show();
                         } else {
                             $('section.container nav.submissions-navigation').show();
-                            responseMessage.html('<h4>There Are No ' + status + 's</h4>').show();
+                            responseMessage.html('<h4>There Are No ' + options.status + 's</h4>').show();
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {

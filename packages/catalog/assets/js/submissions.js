@@ -13,10 +13,11 @@
             // Try to destroy console
             // This allows the console to be initialized again
             try { $('div.results').consoleList('destroy'); } catch(exception) { /* Do nothing */ }
-            // Get console specific properties
-            var params = submissions.consoleParams[submissions.status];
             // Start console
-            submissions.initialize(params, submissions.status, submissions.entryOptionSelected);
+            submissions.initialize({
+                'status': submissions.status,
+                'entryOptionSelected': 10 // Define how many entries should display on load
+            });
             // Clear all active links
             $('header.sub div.container ul li').removeClass('active');
             // Set active link
@@ -27,8 +28,6 @@
 
         // Define submission group name hash
         submissions.status = decodeURI(document.location.hash.substr(1));
-        // Define how many entries maximum should display
-        submissions.entryOptionSelected = 10;
         // Get query string parameters into an object
         var urlParameters = BUNDLE.common.getUrlParameters();
         // Determine if type is a real type
