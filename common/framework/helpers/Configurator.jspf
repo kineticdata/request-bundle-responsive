@@ -51,6 +51,10 @@
             return JSONValue.toJSONString(this.configurationsByPackage);
         }
         
+        public String getCurrentPackageConfiguration() {
+            return JSONValue.toJSONString(this.configurationsByPackage.get(this.currentPackage));
+        }
+        
         public JsonBase getCurrentPackageConfig() {
             // Define result
             JsonBase packageConfig = null;

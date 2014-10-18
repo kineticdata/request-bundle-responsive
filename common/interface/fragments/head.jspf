@@ -46,6 +46,8 @@
     BUNDLE.config.user = '<%= (context == null) ? "" : context.getUserName()%>';
     // Setup packages configuration
     BUNDLE.config.packages = <%= configuration.getPackagesConfiguration()%>
+    // Setup current package configuration
+    BUNDLE.config.package = <%= configuration.getCurrentPackageConfiguration()%>
     // Define localization object which can be populated with i18n values by the package views
     BUNDLE.config.localization = {};
     // Create .localize() string function.  This allows any JavaScript string to be
