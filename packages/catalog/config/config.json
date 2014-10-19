@@ -51,7 +51,7 @@
     },
     "callbacks": {
         "submissions": {
-            "content": "interface/callbacks/submissions.json.jsp"
+            "content": "interface/callbacks/catalog/submissions.json.jsp"
         }
     },
     "searchConfig": {
