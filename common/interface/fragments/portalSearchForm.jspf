@@ -16,7 +16,7 @@
 <form class="portal-search " method="get">
     <p>
         <label class="hide" for="search"><%=ThemeLocalizer.getString(commonResourceBundle,"Search Catalog")%></label> 
-        <input id="search" class="form-control" type="text" name="q" value="<%=bundle.getProperty("portalSearchValue")%>" autofocus="autofocus"  />
+        <input id="search" class="form-control" type="text" name="q" value="<%=bundle.getProperty("portalSearchValue")%>" autofocus="autofocus" />
         <span>
             <button class="btn btn-primary fa fa-search" type="submit"></button>
         <span>

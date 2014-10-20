@@ -8,8 +8,8 @@
         var params = BUNDLE.common.getUrlParameters();
         // Determine if q exists
         if(params['q']) {
-            // Update oage title
-            $('title').append("for '" + $.trim(params['q']) + "'");
+            // Update page title
+            $('title').append("for".localize + " '" + $.trim(params['q']) + "'");
         }
     });
 })(jQuery, _);
