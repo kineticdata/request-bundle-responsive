@@ -1,11 +1,22 @@
 <a class="logo color-white color-hover-white" href="<%= bundle.getProperty("catalogUrl")%>">
     <!-- <img alt="<%= bundle.getProperty("companyName") %>" src="<%= bundle.bundlePath()%>common/resources/images/logo.png" /> -->
     <div class="company">
-        <div>
+        <div class="name">
             <%= bundle.getProperty("companyName") %>
         </div>
+        <i class="fa fa-home"></i>
         <div style="font-size: 11px;">
             Service Catalog
         </div>
     </div>
 </a>
+<style type="text/css">
+    a.logo i.fa-home {
+        float: left;
+        padding: 0 5px;
+        font-size: 18px;
+    }
+    a.logo div.company div.name {
+        float: left;
+    }
+</style>
