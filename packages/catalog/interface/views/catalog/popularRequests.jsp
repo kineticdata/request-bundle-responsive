@@ -19,7 +19,7 @@
     <% if(globalTopTemplates.size() > 0){%>
             <header class="container">
             <h2>
-                Popular Requests
+                <%=ThemeLocalizer.getString(packageResourceBundle,"Popular Requests")%>
             </h2>
             <hr class="soften">
         </header>
@@ -37,19 +37,19 @@
                             <div class="col-sm-6 description-wide">
                         <% }%>
                         <h3>
-                            <%= popularRequest.getName()%>
+                            <%= ThemeLocalizer.getString(packageResourceBundle,popularRequest.getName())%>
                         </h3>
                         <p>
-                            <%= popularRequest.getDescription() %>
+                            <%= ThemeLocalizer.getString(packageResourceBundle, popularRequest.getDescription()) %>
                         </p>
                         <div class="visible-xs left">
                             <a class="templateButton" href="<%= popularRequest.getAnonymousUrl() %>">
-                                <i class="fa fa-share"></i>Request
+                                <i class="fa fa-share"></i><%= ThemeLocalizer.getString(packageResourceBundle, "Request")%>
                             </a>
                         </div>
                         <% if (templateDescriptions.get(popularRequest.getId()) != null ) { %>
                             <a class="read-more" href="<%= bundle.applicationPath()%>DisplayPage?srv=<%= templateDescriptions.get(popularRequest.getId()) %>">
-                                Read More
+                                <%= ThemeLocalizer.getString(packageResourceBundle, "Read More"%>
                             </a>
                         <% }%>                                         
                     </div>
@@ -59,14 +59,14 @@
                             <% for (String attributeDescriptionName : attributeDescriptionNames) {%>
                                 <% if (popularRequest.hasTemplateAttribute(attributeDescriptionName)) { %>
                                     <p>
-                                        <strong><%= attributeDescriptionName%>:</strong> <%= popularRequest.getTemplateAttributeValue(attributeDescriptionName) %>
+                                        <strong><%= ThemeLocalizer.getString(packageResourceBundle,attributeDescriptionName)%>:</strong> <%= ThemeLocalizer.getString(packageResourceBundle,popularRequest.getTemplateAttributeValue(attributeDescriptionName)) %>
                                     </p>
                                 <% }%>
                             <%}%>
                         </div>
                         <div class="hidden-xs">
                             <a class="templateButton" href="<%= popularRequest.getAnonymousUrl() %>">
-                                <i class="fa fa-share"></i>Request
+                                <i class="fa fa-share"></i><%= ThemeLocalizer.getString(packageResourceBundle,"Request"%>
                             </a>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
         </ul>
     <% } else {%>
         <h3>
-            <i>No popular requests. Please start requesting services to see them.</i>
+            <i><%= ThemeLocalizer.getString(packageResourceBundle,"No popular requests. Please start requesting services to see them.")%></i>
         </h3>
     <% } %>
 </section>

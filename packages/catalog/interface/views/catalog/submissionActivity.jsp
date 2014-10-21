@@ -28,10 +28,10 @@
     <div class="border-top border-left border-right border-gray-light clearfix">
         <div class="request-status border-bottom border-gray-light">
             <h3 class="pull-left color-gray-darkest">
-                <%= submission.getOriginatingForm()%> 
+                <%= ThemeLocalizer.getString(packageResourceBundle,submission.getOriginatingForm())%> 
             </h3>
             <h3 class="pull-right">
-                <%= submission.getOriginatingRequestId()%>
+                <%= ThemeLocalizer.getString(packageResourceBundle,submission.getOriginatingRequestId())%>
 
            </h3>
         </div>
@@ -39,7 +39,7 @@
             <div class="col-md-4  border-right border-gray-light">
                 <div class="wrap">
                     <div class="submitted-label color-gray">
-                        Submitted On&nbsp;
+                        <%= ThemeLocalizer.getString(packageResourceBundle,"Submitted On")%>&nbsp;
                     </div>
                     <div class="submitted-value">
                         <%= DateHelper.formatDate(submission.getCompletedDate(), request.getLocale())%>
@@ -47,7 +47,7 @@
                 </div>
                 <% if (submission.getRequestStatus().equals("Closed")) {%>
                     <div class="closed-label color-gray">
-                        Closed On&nbsp;
+                        <%= ThemeLocalizer.getString(packageResourceBundle,"Closed On")%>&nbsp;
                     </div>
                     <div class="closed-value">
                         <%= DateHelper.formatDate(submission.getRequestClosedDate(), request.getLocale())%>
@@ -55,7 +55,7 @@
                 <%}%>
                 <div class="wrap">
                     <div class="requested-for-label color-gray">
-                        Requested For&nbsp;
+                        <%= ThemeLocalizer.getString(packageResourceBundle,"Requested For")%>&nbsp;
                     </div>
                     <div class="requested-for-value">
                         <%=submission.getFirstName()%>&nbsp;<%=submission.getLastName()%>
@@ -64,12 +64,12 @@
             </div>
             <div class="col-md-4 middle">
                 <h4 class="color-tertiary-compliment">
-                    <%= submission.getValiationStatus()%>
+                    <%= ThemeLocalizer.getString(packageResourceBundle,submission.getValiationStatus())%>
                 </h4>
                 <div class="content-wrap">
                     <% if(submissionTemplate.hasTemplateAttribute("ServiceItemImage")) {%>
                         <div class="image">
-                            <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(submissionTemplate.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" alt="<%= submission.getOriginatingForm()%>">
+                            <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(submissionTemplate.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" alt="<%= ThemeLocalizer.getString(packageResourceBundle,submission.getOriginatingForm())%>">
                         </div>
                     <%}%>
                 </div>
@@ -77,7 +77,7 @@
             <div class="col-md-4">
                 <% if(!submission.getType().equals(bundle.getProperty("autoCreatedRequestType"))) {%>
                     <a class="view-submitted-form templateButton pull-right" target="_self" href="<%= bundle.applicationPath()%>ReviewRequest?csrv=<%=submission.getId()%>&excludeByName=Review%20Page&reviewPage=<%= bundle.getProperty("reviewJsp")%>">
-                        View Submitted Form
+                        <%= ThemeLocalizer.getString(packageResourceBundle,"View Submitted Form")%>
                     </a>
                 <%}%>
             </div>
@@ -94,7 +94,7 @@
                     <li class="task cancelled">
                         <header class="clearfix">
                             <h4>
-                                Request Cancelled
+                                <%= ThemeLocalizer.getString(packageResourceBundle,"Request Cancelled")%>
                             </h4>
                         </header>
                         <hr class="soften" />
@@ -128,25 +128,25 @@
                         <li class="task <%= zebraCycle.cycle()%>" data-task-id="<%= task.getId()%>" data-ticket-id="<%= ticketId%>">
                             <header class="clearfix">
                                 <h4>
-                                    <%= task.getName()%>
+                                    <%= ThemeLocalizer.getString(packageResourceBundle,task.getName())%>
                                 </h4>
                             </header>
                             <hr class="soften" />
                             <% if (incident == null && change == null) {%>
                                 <div class="wrap">
-                                <div class="label">Status</div>
+                                <div class="label"><%= ThemeLocalizer.getString(packageResourceBundle,"Status")%></div>
                                     <div class="value">
-                                        <%= task.getStatus()%>
+                                        <%= ThemeLocalizer.getString(packageResourceBundle,task.getStatus())%>
                                     </div>
                                 </div>
                             <%}%>
                             <div class="wrap">
-                                <div class="label">Initiated</div>
+                                <div class="label"><%= ThemeLocalizer.getString(packageResourceBundle,"Initiated")%></div>
                                 <div class="value"><%= DateHelper.formatDate(task.getCreateDate(), request.getLocale())%></div>
                             </div>
                             <% if (task.getStatus().equals("Closed")) {%>
                                 <div class="wrap">
-                                    <div class="label">Completed</div>
+                                    <div class="label"><%= ThemeLocalizer.getString(packageResourceBundle,"Completed")%></div>
                                     <div class="value"><%= DateHelper.formatDate(task.getModifiedDate(), request.getLocale())%></div>
                                 </div>
                             <%}%>
@@ -154,26 +154,26 @@
                             <!-- Start Custom Incident and Change details -->
                             <!-- Pending Reason -->
                             <% if (incident != null && !incident.getStatusReason().equals("") && incident.getStatus().equals("Pending")) {%>
-                                <div class="label">Pending Reason</div>
+                                <div class="label"><%= ThemeLocalizer.getString(packageResourceBundle,"Pending Reason"%></div>
                                 <div class="value">
-                                    <span><%= incident.getStatusReason()%></span>
+                                    <span><%= ThemeLocalizer.getString(packageResourceBundle,incident.getStatusReason())%></span>
                                 </div>
                             <% } else if(change != null && !change.getStatusReason().equals("") && change.getStatus().equals("Pending")) {%>
-                                <div class="label">Pending Reason</div>
+                                <div class="label"><%= ThemeLocalizer.getString(packageResourceBundle,"Pending Reason")%></div>
                                 <div class="value">
-                                    <span><%= change.getStatusReason()%></span>
+                                    <span><%= ThemeLocalizer.getString(packageResourceBundle,change.getStatusReason())%></span>
                                 </div>
                             <%}%>
                             <!-- Notes -->
                             <% if (submission.getType().equals(bundle.getProperty("autoCreatedRequestType")) && incident != null && !incident.getNotes().equals("")) {%>
-                                <div class="label">Notes</div>
+                                <div class="label"><%= ThemeLocalizer.getString(packageResourceBundle,"Notes")%></div>
                                 <div class="value">
-                                    <span><%= incident.getNotes()%></span>
+                                    <span><%= ThemeLocalizer.getString(packageResourceBundle,incident.getNotes())%></span>
                                 </div>
                             <% } else if(submission.getType().equals(bundle.getProperty("autoCreatedRequestType")) && change != null && !change.getNotes().equals("")) {%>
-                                <div class="label">Notes</div>
+                                <div class="label"><%= ThemeLocalizer.getString(packageResourceBundle,"Notes")%></div>
                                 <div class="value">
-                                    <span><%= change.getNotes()%></span>
+                                    <span><%= ThemeLocalizer.getString(packageResourceBundle,change.getNotes())%></span>
                                 </div>
                             <%}%>
                             <!-- End Custom Incident and Change details -->
@@ -182,10 +182,10 @@
                                 <% TaskMessage[] messages = task.getMessages(context); %>
                                 <% if(task.hasMessages()) {%>
                                     <div class="wrap">
-                                        <div class="label">Messages</div>
+                                        <div class="label"><%= ThemeLocalizer.getString(packageResourceBundle,"Messages")%></div>
                                         <div class="value">
                                             <% for (TaskMessage message : messages) {%>
-                                                <div class="message"><%= message.getMessage()%></div>
+                                                <div class="message"><%= ThemeLocalizer.getString(packageResourceBundle,message.getMessage())%></div>
                                             <% }%>
                                         </div>
                                     </div>

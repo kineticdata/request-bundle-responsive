@@ -40,7 +40,7 @@
                         activeClass = "active";
                         href = category.getName();
                     } else {
-                        href= "<a href='"+ bundle.getProperty("catalogUrl")+ "&view=category&category=" + URLEncoder.encode(category.getFullName(), "UTF-8") +"' alt='" + category.getName() + "'>" + category.getName() + "</a>";    
+                        href= "<a href='"+ bundle.getProperty("catalogUrl")+ "&view=category&category=" + URLEncoder.encode(category.getFullName(), "UTF-8") +"' alt='" + category.getName() + "'>" + ThemeLocalizer.getString(packageResourceBundle,category.getName()) + "</a>";    
                     }
                 %>
                     <li class="<%= activeClass %>">
@@ -57,12 +57,12 @@
             <div class="wrap">
         <% }%>
             <div class="category-description hide" data-description-id="<%= categoryDescriptions.get(currentCategory.getId()) %>">
-                <%= currentCategory.getDescription()%>
+                <%= ThemeLocalizer.getString(packageResourceBundle,currentCategory.getDescription())%>
             </div>
             <div id="loader" class="hide">
                 <img alt="Please Wait." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
                 <br />
-                Loading Results
+                <%=ThemeLocalizer.getString(packageResourceBundle, "Loading Results")%>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -77,26 +77,26 @@
                     <div class="content-wrap">
                         <% if (template.hasTemplateAttribute("ServiceItemImage")) { %>
                             <div class="image">
-                                <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(template.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" alt="<%= template.getName()%>" />
+                                <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(template.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" alt="<%= ThemeLocalizer.getString(packageResourceBundle,template.getName())%>" />
                             </div>
                             <div class="col-md-6 description-small">
                         <% } else {%>
                             <div class="col-md-6 description-wide">
                         <% }%>
                         <h3>
-                            <%= template.getName()%>
+                            <%= ThemeLocalizer.getString(packageResourceBundle,template.getName())%>
                         </h3>
                         <p>
-                            <%= template.getDescription()%>
+                            <%= ThemeLocalizer.getString(packageResourceBundle,template.getDescription())%>
                         </p>
                         <div class="visible-xs visible-sm left">
                             <a class="templateButton" href="<%= template.getAnonymousUrl() %>">
-                                <i class="fa fa-share"></i>Request
+                                <i class="fa fa-share"></i><%= ThemeLocalizer.getString(packageResourceBundle,"Request")%>
                             </a>
                         </div>
                         <% if (templateDescriptions.get(template.getId()) != null ) { %>
                             <a class="" href="<%= bundle.applicationPath()%>DisplayPage?srv=<%= templateDescriptions.get(template.getId()) %>&category=<%= URLEncoder.encode(currentCategory.getFullName(), "UTF-8")%>">
-                                Read More
+                                <%= ThemeLocalizer.getString(packageResourceBundle,"Read More")%>
                             </a>
                         <% }%>                                           
                     </div>
@@ -106,14 +106,14 @@
                             <% for (String attributeDescriptionName : attributeDescriptionNames) {%>
                                 <% if (template.hasTemplateAttribute(attributeDescriptionName)) { %>
                                     <p>
-                                        <strong><%= attributeDescriptionName%>:</strong> <%= template.getTemplateAttributeValue(attributeDescriptionName) %>
+                                        <strong><%= ThemeLocalizer.getString(packageResourceBundle,attributeDescriptionName)%>:</strong> <%= ThemeLocalizer.getString(packageResourceBundle,template.getTemplateAttributeValue(attributeDescriptionName)) %>
                                     </p>
                                 <% }%>
                             <%}%>
                         </div>
                         <div class="hidden-xs hidden-sm">
                             <a class="templateButton" href="<%= template.getAnonymousUrl() %>&category=<%= URLEncoder.encode(currentCategory.getFullName(), "UTF-8")%>">
-                                <i class="fa fa-share"></i>Request
+                                <i class="fa fa-share"></i><%= ThemeLocalizer.getString(packageResourceBundle,"Request")%>
                             </a>
                         </div>
                     </div>
@@ -123,14 +123,14 @@
         <% if (currentCategory.hasNonEmptySubcategories()) {%>
             <div class="subcategories background-tertiary">
                 <h5 class="color-white color-hover-white">
-                    Subcategories
+                    <%= ThemeLocalizer.getString(packageResourceBundle,"Subcategories")%>
                 </h5>
                 <ul class="unstyled">
                     <% for (Category subcategory : currentCategory.getSubcategories()) { %>
                         <% if (subcategory.hasTemplates()) { %>
                         <li class="subcategory" data-id="<%= subcategory.getId()%>" data-name="<%= subcategory.getName()%>">
                             <a href="<%= bundle.getProperty("catalogUrl") %>&view=category&category=<%= URLEncoder.encode(subcategory.getFullName(), "UTF-8")%>" class="name background-tertiary-compliment color-white color-hover-white">
-                                <%= subcategory.getName()%>
+                                <%= ThemeLocalizer.getString(packageResourceBundle,subcategory.getName())%>
                             </a>
                         </li>
                         <% }%>

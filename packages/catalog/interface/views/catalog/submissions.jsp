@@ -41,12 +41,7 @@
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
                                 <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=requests&status=<%=groupName%>">
-                                    <%=count%>
-                                    <% if (count != 1) { %>
-                                        <%=groupName%>s
-                                    <% } else {%>
-                                        <%=groupName%>
-                                    <% }%>
+                                     <%=ThemeLocalizer.getString(packageResourceBundle,groupName)%> (<%=count%>)
                                 </a>
                             </li>
                         <%}%>
@@ -58,12 +53,7 @@
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
                                 <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=approvals&status=<%=groupName%>">
-                                    <%=count%>
-                                    <% if (count != 1) { %>
-                                        <%=groupName%>s
-                                    <% } else {%>
-                                        <%=groupName%>
-                                    <% }%>
+                                    <%=ThemeLocalizer.getString(packageResourceBundle,groupName)%> (<%=count%>)
                                 </a>
                             </li>
                         <%}%>
@@ -80,8 +70,8 @@
     <div class="results-message hide"></div>
     <%-- LOADER --%>
     <div id="loader">
-        <img alt="Please Wait." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
+        <img alt="<%= ThemeLocalizer.getString(packageResourceBundle,"Please Wait")%>." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
         <br />
-        Loading Results
+        <%= ThemeLocalizer.getString(packageResourceBundle,"Loading Results")%>
     </div>
 </section>
