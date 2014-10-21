@@ -16,6 +16,12 @@
     /**
      * Row callback
      * Builds the li
+     * 
+     * @param {Object} li list element object
+     * @param {Object} record of key name pairs
+     * @param {Number} index of the record
+     * @param {Object} displayFields option object
+     * @returns {undefined}
      */
     submissions.defaultRowCallback = function(li, record, index, displayFields) {
         // Li styles
@@ -30,9 +36,8 @@
                 );
         /* Start left column */
         // Left column Originating Request Id
-        var leftColumn = $('<div>').addClass('col-sm-4 border-right border-gray-light')
-            
-
+        var leftColumn = $('<div>').addClass('col-sm-4 border-right border-gray-light');
+        
         if(record['Requested For'] !== null) {
             leftColumn.append(
                 $('<div>').addClass('requested-for-label color-gray')
@@ -102,7 +107,7 @@
                     $('<img>').attr('width', '40')
                         .attr('src', imagePath)
                         .attr('alt', record['Originating Name'])
-                )
+                );
             contentWrap.prepend(image);
         }
 
@@ -154,6 +159,12 @@
 
     /**
      * Field callback
+     * 
+     * @param {Object} li list element object
+     * @param {String|Number|Object|Array} value
+     * @param {String} fieldname
+     * @param {String} label is the display fields label name used in side the UI
+     * @returns {undefined}
      */
     submissions.defaultFieldCallback = function(li, value, fieldname, label) {};
 
@@ -163,7 +174,7 @@
     submissions.defaultCompleteCallback = function() {
         // If window height larger than content slide, get more results
         if($(window).height() > $('div.content-slide').height()) {
-            $('nav.pagination ul.links li.active').next().find('a').trigger('click')
+            $('nav.pagination ul.links li.active').next().find('a').trigger('click');
         }
     };
     
@@ -227,8 +238,22 @@
             completeCallback: submissions.defaultCompleteCallback
         }
     };
-
-    submissions.initialize = function(params, status, entryOptionSelected) {
+    
+    /**
+     * @param {Object} options
+     * @param {Number} options.entryOptionSelected is how many results to show.
+     * @param {String} options.status is the submission status group 
+     * (Open Request, Closed Request, Pending Approval).
+     * @returns {undefined}
+     */
+    submissions.initialize = function(options) {
+        // Define options
+        options = options || {};
+        // Define status
+        options.status = options.status || 'Open Request';
+        // Get console specific properties
+        var params = submissions.consoleParams[options.status];
+        // Define loader
         var loader = $('div#loader');
         var responseMessage = $('div.results-message');
         // Define console options
@@ -236,7 +261,7 @@
             displayFields: params.displayFields,
             paginationPageRange: 5,
             pagination: true,
-            entryOptionSelected: entryOptionSelected,
+            entryOptionSelected: options.entryOptionSelected,
             entryOptions: [5, 10, 20, 50, 100],
             entries: false,
             info: false,
@@ -251,7 +276,7 @@
                     dataType: 'json',
                     cache: false,
                     type: 'get',
-                    url: BUNDLE.config.catalogUrl + '&callback=submissions&qualification=' + status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
+                    url: BUNDLE.config.catalogUrl + '&callback=submissions&qualification=' + options.status + '&offset=' + index + '&limit=' + limit + '&orderField=' + sortOrderField + '&order=' + sortOrder,
                     beforeSend: function(jqXHR, settings) {
                         responseMessage.empty();
                         loader.show();
@@ -266,7 +291,7 @@
                             killScroll = false;
                         } else {
                             $('section.container nav.submissions-navigation').show();
-                            responseMessage.html('<h4>There Are No ' + status + 's</h4>').show();
+                            responseMessage.html('<h4>There Are No ' + options.status + 's</h4>').show();
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {

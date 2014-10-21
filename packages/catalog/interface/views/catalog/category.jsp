@@ -16,13 +16,15 @@
         categoryDescriptions = DescriptionHelper.getCategoryDescriptionMap(context, catalog);
     }
 %>
+<%-- Include the bundle js config initialization. --%>
+<%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
 <!-- Package Stylesheets -->
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/package.css" type="text/css" />
+<link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/package.css" type="text/css" />
 <!-- Page Stylesheets -->
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/category.css" type="text/css" />
+<link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/category.css" type="text/css" />
 <!-- Page Javascript -->
-<script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/package.js"></script>
-<script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/category.js"></script>
+<script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/package.js"></script>
+<script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/category.js"></script>
 <%@include file="../../fragments/flyout.jspf"%>
 <% if(currentCategory != null) {%>
     <header class="container">
@@ -60,7 +62,7 @@
                 <%= ThemeLocalizer.getString(packageResourceBundle,currentCategory.getDescription())%>
             </div>
             <div id="loader" class="hide">
-                <img alt="Please Wait." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
+                <img alt="Please Wait." src="<%=bundle.bundlePath()%>common/assets/images/spinner.gif" />
                 <br />
                 <%=ThemeLocalizer.getString(packageResourceBundle, "Loading Results")%>
             </div>

@@ -54,5 +54,7 @@ nav.catalog ul.breadcrumbs li:not(:last-child) { display: none; }
     div.fixed-header-spacer { height: 90px; }
 }
 @media (max-width: 767px) {
+    header.sub { display: none; }
+    section.container { display: none; }
     div.fixed-header-spacer { height: 50px; }
 }

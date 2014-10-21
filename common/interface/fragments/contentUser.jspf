@@ -14,7 +14,7 @@ if(context != null) {
 </a>
 <div class="user-card hide" aria-hidden="true">
     <div class="wrap">
-        <a class="user" href="<%= bundle.getProperty("profileUrl")%>">
+        <a class="user">
         </a>
         <div class="information">
             <div class="name">
@@ -22,11 +22,6 @@ if(context != null) {
             </div>
             <div class="email">
                 <%= gravatarEmail%>
-            </div>
-            <div class="profile">
-                <a class="btn btn-primary" href="<%= bundle.getProperty("profileUrl")%>">
-                    <%=ThemeLocalizer.getString(commonResourceBundle,"View Profile")%>
-                </a>
             </div>
         </div>
     </div>
@@ -40,33 +35,60 @@ if(context != null) {
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
-$(function() {
-    // Add gravatar image to ui
-    BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'i.gravatar-icon');
-    BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'div.user-card a.user');
-    // Setup parameters for menus
-    var parentSelector = 'header.main';
-    var triggerSelector = 'a.profile';
-    var menuSelector = 'div.user-card';
-    // Initialize menus
-    BUNDLE.common.enableHeadMenus({
-        'parentSelector': parentSelector,
-        'triggerSelector': triggerSelector,
-        'menuSelector': menuSelector,
-        triggerOpenCallback: function() {
-            // Close main menus
-            if($('header.main div.main-menus').attr('aria-hidden') === 'false') {
-                $('header.main a.main-menus').trigger('click');
+(function($, _) {
+    $(function() {
+        // Add gravatar image to ui
+        BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'i.gravatar-icon');
+        BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'div.user-card a.user');
+        // Setup parameters for menus
+        var parentSelector = 'header.main';
+        var triggerSelector = 'a.profile';
+        var menuSelector = 'div.user-card';
+        // Initialize menus
+        BUNDLE.common.enableHeadMenus({
+            'parentSelector': parentSelector,
+            'triggerSelector': triggerSelector,
+            'menuSelector': menuSelector,
+            initializeCallback: function() {
+                // Determine if package configuration available and build links
+                if(BUNDLE.config.packages) {
+                    // Define userProfile link by trying to get the first one found from the package's links
+                    var userProfile = _.first(_.compact(_.pluck(_.pluck(BUNDLE.config.packages, 'links'), 'userProfile')));
+                    // Define url
+                    var url = BUNDLE.config['displayPageUrlSlug'] + userProfile['displayName'];
+                    // Define params if not defined
+                    var params = userProfile.params || {};
+                    // Check size and append url params
+                    if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
+                    // Define user profile anchor tag attributes
+                    var userProfileAttributes = {
+                        'href': url,
+                        'aria-label': userProfile.description
+                    };
+                    // Build href user profile link
+                    var profileWrap = $('<div>').addClass('profile').append(
+                        $('<a>').addClass('btn btn-primary').attr(userProfileAttributes).text(userProfile.label)
+                    );
+                    // Append to user card
+                    $(menuSelector).find('div.information').append(profileWrap);
+                    // Add attributes to image
+                    $(menuSelector).find('a.user').attr(userProfileAttributes);
+                }
+            },
+            triggerOpenCallback: function() {
+                // Close main menus
+                if($('header.main div.main-menus').attr('aria-hidden') === 'false') {
+                    $('header.main a.main-menus').trigger('click');
+                }
+                // Close alerts menus
+                if($('header.main div.alerts').attr('aria-hidden') === 'false') {
+                    $('header.main a.alerts').trigger('click');
+                }
             }
-            // Close alerts menus
-            if($('header.main div.alerts').attr('aria-hidden') === 'false') {
-                $('header.main a.alerts').trigger('click');
-            }
-        }
+        });
     });
-});
+})(jQuery, _);
 </script>
 <style type="text/css">
     header.main a.profile {

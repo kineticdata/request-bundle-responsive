@@ -57,11 +57,13 @@
         responseMessage = "Please Start Your Search";
     }
 %>
+<%-- Include the bundle js config initialization. --%>
+<%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
 <!-- Page Stylesheets -->
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/package.css" type="text/css" />
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/search.css" type="text/css" />
+<link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/package.css" type="text/css" />
+<link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/search.css" type="text/css" />
 <!-- Page Javascript -->
-<script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/search.js"></script>
+<script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/search.js"></script>
 <% if(responseMessage != null) {%>
     <header class="container">
         <h2>

@@ -42,13 +42,17 @@
                         configurationsByPackage.put(file.getName(), new JsonBase(jsonConfiguration));
                     } catch (Exception e) {}
                 }
-            } 
+            }
             // Set configurations
             this.configurationsByPackage = configurationsByPackage;   
         }
         
         public String getPackagesConfiguration() {
             return JSONValue.toJSONString(this.configurationsByPackage);
+        }
+        
+        public String getCurrentPackageConfiguration() {
+            return JSONValue.toJSONString(this.configurationsByPackage.get(this.currentPackage));
         }
         
         public JsonBase getCurrentPackageConfig() {
@@ -215,31 +219,46 @@
         public String getCurrentViewTitle(HttpServletRequest request) {
             // Define result
             String title = null;
-            // Define current package json base config
-            JsonBase jsonBase = this.getCurrentPackageConfig();
-            // Determine null
-            if(jsonBase != null) {
-                // Define package views
-                JsonBase views = jsonBase.getObject("views");
-                // Define view
-                JsonBase view = views.getObject(request.getParameter("view"));
-                // Determine if not null
-                if(view != null) {
-                    // Update page content
-                    title = view.getString("title");
+            // Determine if title set in request, this supercedes ANY package configuration
+            if(request.getAttribute("title") != null) {
+                if(request.getAttribute("title") instanceof String) {
+                    // Update title
+                    title = (String) request.getAttribute("title");
+                } else {
+                    throw new RuntimeException(
+                        "request attribute title: " + request.getAttribute("title") + " not a string."
+                    );
                 }
-                // Determine if title is null and use default view title
-                if(title == null) {
-                    // Get default view
-                    view = this.getDefaultPackageView();
-                    // Determine null
+            }
+            // Attempt to set title from package configuratiion
+            else {
+                // Define current package json base config
+                JsonBase jsonBase = this.getCurrentPackageConfig();
+                // Determine null
+                if(jsonBase != null) {
+                    // Define package views
+                    JsonBase views = jsonBase.getObject("views");
+                    // Define view
+                    JsonBase view = views.getObject(request.getParameter("view"));
+                    // Determine if not null
                     if(view != null) {
                         // Update page content
                         title = view.getString("title");
                     }
-                }
-                if(title == null) {
-                    title = "";
+
+                    // Determine if title is null and use default view title
+                    if(title == null) {
+                        // Get default view
+                        view = this.getDefaultPackageView();
+                        // Determine null
+                        if(view != null) {
+                            // Update page content
+                            title = view.getString("title");
+                        }
+                    }
+                    if(title == null) {
+                        title = "";
+                    }
                 }
             }
             return title;
@@ -252,10 +271,12 @@
             if(StringUtils.isNotBlank(request.getParameter("callback"))) {
                 this.processCallback(request, response, request.getParameter("callback"));
             }
+            // Determine if the view is an attribute which supercedes request parameters
+            String view = (request.getAttribute("view") != null) ? (String) request.getAttribute("view") : request.getParameter("view");
             // Set head attribute
-            request.setAttribute("head", currentPackagePath + this.getCurrentViewHead(request.getParameter("view")));
+            request.setAttribute("head", currentPackagePath + this.getCurrentViewHead(view));
             // Set content attribute
-            request.setAttribute("content", currentPackagePath + this.getCurrentViewContent(request.getParameter("view")));
+            request.setAttribute("content", currentPackagePath + this.getCurrentViewContent(view));
         }
         
         public void processView(HttpServletRequest request, HttpServletResponse response, String view) {

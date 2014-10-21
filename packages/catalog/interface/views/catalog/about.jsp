@@ -6,12 +6,14 @@
     // Preload the catalog child objects (such as Categories, Templates, etc)
     catalog.preload(context);
 %>
+<%-- Include the bundle js config initialization. --%>
+<%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
 <!-- Page Stylesheets -->
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/about.css" type="text/css" />
-<%-- Include the application head content. --%>
+<link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/about.css" type="text/css" />
+<%-- Include the application content. --%>
 <%@include file="../../../../../core/interface/fragments/applicationHeadContent.jspf"%>
 <%@include file="../../../../../core/interface/fragments/displayHeadContent.jspf"%>
-<%-- Include the form head content, including attached css/javascript files and custom header content --%>
+<%-- Include the form content, including attached css/javascript files and custom header content --%>
 <%@include file="../../../../../core/interface/fragments/formHeadContent.jspf"%>
 <section class="container">
     <%@include file="../../../../../core/interface/fragments/displayBodyContent.jspf"%>

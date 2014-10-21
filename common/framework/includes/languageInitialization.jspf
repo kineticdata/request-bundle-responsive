@@ -24,7 +24,7 @@
     // Set real path to the common package on the webserver
     String commonRealPath = getServletContext().getRealPath(bundle.relativeBundlePath() + "common");
     // Set the absolute path to the directory containing the locale property files
-    String commonTranslationPath = commonRealPath + File.separator + "resources" + File.separator + "languages";
+    String commonTranslationPath = commonRealPath + File.separator + "assets" + File.separator + "languages";
     // Start the common resource bundle
     ResourceBundle commonResourceBundle = ThemeLocalizer.getResourceBundle("common", bundle.getProperty("preferredLocale"), commonTranslationPath);
     // Start the service items resource bundles (contains the names and descriptions of each service item)

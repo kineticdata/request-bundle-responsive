@@ -17,7 +17,7 @@ After Ruby is installed, you can execute the following command to install SASS:
 gem install sass
 ```
 
-The current SASS configuration, which is in **bundle/setup/sass/application.scss**, is setup for importing .css and .scss.  SASS does not support .css imports. In order to import .css files using SASS, install the [SASS CSS importer](https://github.com/chriseppstein/sass-css-importer):
+The current SASS configuration, which is in **bundle/setup/tools/sass/application.scss**, is setup for importing .css and .scss.  SASS does not support .css imports. In order to import .css files using SASS, install the [SASS CSS importer](https://github.com/chriseppstein/sass-css-importer):
 
 ```shell
 gem install --pre sass-css-importer
@@ -25,7 +25,7 @@ gem install --pre sass-css-importer
 
 ## Build
 
-The SASS preprocessor can be used to output **bundle/setup/sass/application.scss** to a single minified version of all the css files required by common with the .css file type:
+The SASS preprocessor can be used to output **bundle/setup/tools/sass/application.scss** to a single minified version of all the css files required by common with the .css file type:
 
 ```shell
 sass -r sass-css-importer application.scss application.min.css --style compressed

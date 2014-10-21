@@ -52,7 +52,7 @@ ul.ui-autocomplete li a.ui-widget-header .ui-state-focus span  {
     color: white;
 }
 .ui-autocomplete-loading { 
-    background:url(../../../../common/resources/images/spinner.gif) no-repeat right center;
+    background:url(../../../../common/assets/images/spinner.gif) no-repeat right center;
     background-size: 22px 22px;
 }
 div.advanced-search #loader {

@@ -10,12 +10,14 @@
     // Get popular requests
     List<String> globalTopTemplates = SubmissionStatisticsHelper.getMostCommonTemplateNames(systemContext, new String[] {customerRequest.getCatalogName()}, templateTypeFilterTopSubmissions, 5);
 %>
+<%-- Include the bundle js config initialization. --%>
+<%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
 <!-- Page Stylesheets -->
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/package.css" type="text/css" />
-<link rel="stylesheet" href="<%= bundle.packagePath()%>resources/css/catalog.css" type="text/css" />
+<link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/package.css" type="text/css" />
+<link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/catalog.css" type="text/css" />
 <!-- Page Javascript -->
-<script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/package.js"></script>
-<script type="text/javascript" src="<%=bundle.packagePath()%>resources/js/catalog.js"></script> 
+<script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/package.js"></script>
+<script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/catalog.js"></script> 
 <%@include file="../../fragments/flyout.jspf"%>
 <section class="container">
     <% if(globalTopTemplates.size() > 0){%>

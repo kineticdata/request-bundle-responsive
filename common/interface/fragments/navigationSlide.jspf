@@ -16,27 +16,29 @@
     $(function() {
         // Determine if package configuration available and build available links
         if(BUNDLE.config.packages) {
-            // Pluck only the "links" arrays from config.packages and flatten for each
-            // So package defined links are available inside the UI
-            _.each(_.flatten(_.pluck(BUNDLE.config.packages, 'links')), function(value) {
-                // Only display main menu type items
-                if(value['type'] === 'main-menu') {
-                    // Define url
-                    var url = BUNDLE.config['displayPageUrlSlug'] + value['displayName'];
-                    // Define params if not defined
-                    var params = value.params || {};
-                    // Check size and append url params
-                    if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
-                    // Define list element with link
-                    var li = $('<li>').addClass(value['class']).append(
-                        $('<a>').addClass('color-white color-hover-secondary').attr({
-                            'href': url,
-                            'aria-label': value.description
-                        }).append(value.icon).append(value.label)
-                    );
-                    // Add links to main menus
-                    $('div.navigation-slide').find('ul').first().prepend(li);
-                }
+            // Pluck only the "links" from config.packages to be added to the main menus ui
+            _.each(_.compact(_.pluck(BUNDLE.config.packages, 'links')), function(link) {
+                // Loop through the link's properties
+                _.each(link, function(property) {
+                    // Only display main menu type items
+                    if(property['type'] === 'main-menu') {
+                        // Define url
+                        var url = BUNDLE.config['displayPageUrlSlug'] + property['displayName'];
+                        // Define params if not defined
+                        var params = property.params || {};
+                        // Check size and append url params
+                        if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
+                        // Define list element with link
+                        var li = $('<li>').addClass(property['class']).append(
+                            $('<a>').addClass('color-white color-hover-secondary').attr({
+                                'href': url,
+                                'aria-label': property.description
+                            }).append(property.icon).append(property.label)
+                        );
+                        // Add links to main menus
+                        $('div.navigation-slide').find('ul').first().prepend(li);
+                    }
+                });
             });
         }
     });

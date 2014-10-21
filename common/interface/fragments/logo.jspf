@@ -1,11 +1,46 @@
-<a class="logo color-white color-hover-white" href="<%= bundle.getProperty("catalogUrl")%>">
-    <!-- <img alt="<%= bundle.getProperty("companyName") %>" src="<%= bundle.bundlePath()%>common/resources/images/logo.png" /> -->
+<a class="logo color-white color-hover-white">
+    <!-- <img alt="<%= bundle.getProperty("companyName") %>" src="<%= bundle.bundlePath()%>common/assets/images/logo.png" /> -->
     <div class="company">
-        <div>
+        <div class="name">
             <%= bundle.getProperty("companyName") %>
         </div>
+        <i class="fa fa-home"></i>
         <div style="font-size: 11px;">
             <%=ThemeLocalizer.getString(commonResourceBundle,"Service Catalog")%>
         </div>
     </div>
 </a>
+<script type="text/javascript">
+(function($, _) {
+    $(function() {
+        // Determine if package configuration available and build links
+        if(BUNDLE.config.packages) {
+            // Define home link by trying to get the first one found from the package's links
+            var home = _.first(_.compact(_.pluck(_.pluck(BUNDLE.config.packages, 'links'), 'home')));
+            // Define url
+            var url = BUNDLE.config['displayPageUrlSlug'] + home['displayName'];
+            // Define params if not defined
+            var params = home.params || {};
+            // Check size and append url params
+            if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
+            // Define user profile anchor tag attributes
+            var logoAttributes = {
+                'href': url,
+                'aria-label': home.description
+            };
+            // Add attributes to logo
+            $('a.logo').attr(logoAttributes);
+        }
+    });
+})(jQuery, _);
+</script>
+<style type="text/css">
+    a.logo i.fa-home {
+        float: left;
+        padding: 0 5px;
+        font-size: 18px;
+    }
+    a.logo div.company div.name {
+        float: left;
+    }
+</style>
