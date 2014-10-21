@@ -42,7 +42,7 @@
                         configurationsByPackage.put(file.getName(), new JsonBase(jsonConfiguration));
                     } catch (Exception e) {}
                 }
-            } 
+            }
             // Set configurations
             this.configurationsByPackage = configurationsByPackage;   
         }

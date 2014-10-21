@@ -1,3 +1,5 @@
+<%@page import="java.util.HashMap"%>
+<%@page import="java.util.HashSet"%>
 <%@page import="java.util.Vector"%>
 <%@page import="com.kd.kineticSurvey.beans.CustomerSurveyReview"%>
 <%@page import="java.io.File"%>
@@ -21,6 +23,94 @@
 <%@page import="java.net.URLClassLoader"%>
 <%!
     public static class ThemeLocalizer {
+ 
+        /**
+	 * A Map containing the combined resources from multiple resource bundles
+	 */
+	private Map<String,String> propertiesCombined;
+
+        /**
+         * Loads all property files for the injected locale located under the absolute 
+         * properties file path into properties combined object.
+         *
+         * @param String locale the locale settings (zh_CN_Hans, zh_CN_Hant, de, en)
+         * Note on locale: it goes in the following order: language, country, variant 
+         * (variant is arbitrary but it is usually the variation of the language)
+         * @param String absoluteTranslationPath, the the path to the properties
+         * @return ThemeLocalizer
+         */
+        public ThemeLocalizer(String locale, String absolutePropertiesFilePath) {
+            // Define packages file
+            File packagesFile = new File(absolutePropertiesFilePath);
+            // Get list of all files
+            File[] files = packagesFile.listFiles();
+            // Define hashset of resource bundle names (a hashset will keep the names unqiue)
+            HashSet<String> resourceBundleNames = new HashSet<String>();
+            // Define file name
+            String fileName = null;
+            // Loop through directory names
+            for(File file : files) {
+                // Determine if this is a file
+                if (file.isFile()) {
+                    // Define full property name
+                    fileName = file.getName();
+                    // Split on period and add back slashes for literal dot split
+                    String[] vals = fileName.split("\\.");
+                    // Determine if split has at least one result
+                    if(vals.length >= 0) {
+                        // Get first value assuming this is the name before .properties
+                        String property = vals[0];
+                        // Split
+                        String propertyVals[] = property.split("_");
+                        // Determine if split has at least one result
+                        if(propertyVals.length >= 0) {
+                            // Get resource bundle name
+                            resourceBundleNames.add(propertyVals[0]);
+                        }
+                    }
+                }
+            }
+            
+            // Initialize properties combined
+            this.propertiesCombined = new HashMap<String,String>();
+            // Loop through each bundle name and get the bundle
+            for(String resourceBundleName : resourceBundleNames) {
+                ResourceBundle resourceBundle = ThemeLocalizer.getResourceBundle(
+                    resourceBundleName,
+                    locale,
+                    absolutePropertiesFilePath
+                );
+                // Get the bundle's keys
+                Enumeration<String> enumeration = resourceBundle.getKeys();
+                // Loop through the keys
+                while (enumeration.hasMoreElements()) {
+                    // Get property key
+                    String key = enumeration.nextElement();
+                    // Store the key and value to the properties combined
+                    propertiesCombined.put(key, ThemeLocalizer.getString(resourceBundle, key));
+                }
+            }
+        }
+        
+        /**
+         * Returns the translation property by key name from the resource bundles combined
+         *
+         * @param String is the key that maps to the translation value inside the combined properties object.
+         */
+        public String getString(String key) {
+            // Assume failure and set result to key
+            String result = key;
+            try {
+                // Format key so all spaces are replaced with an underscore
+                String formatKey = key.replaceAll(" ", "_");
+                // Attempt to set translation
+                result = propertiesCombined.get(formatKey);
+            } catch(Exception e) {
+                // Do Nothing
+            }
+            return result;
+        }
+        
         /**
          * Locates the property files based on an absolute file path and 
          * instantiates the Resource Bundle object using locale and the property file.
@@ -32,7 +122,11 @@
          * @param String absoluteTranslationPath, the the path to the properties
          * @return ResourceBundle
          */
-        public static ResourceBundle getResourceBundle(String bundleName, String locale, String absolutePropertyFilesPath) {
+        public static ResourceBundle getResourceBundle(
+            String bundleName,
+            String locale,
+            String absolutePropertyFilesPath
+        ) {
             // Establish var
             ResourceBundle resourceBundle = null;
             // Check if the locale contains any characters
@@ -59,7 +153,10 @@
                     }
                     // Instantiate locale object
                     Locale resourceBundleLocale = new Locale(language, country, variant);
-                    resourceBundle = ResourceBundle.getBundle(bundleName, resourceBundleLocale, classLoader,
+                    resourceBundle = ResourceBundle.getBundle(
+                        bundleName,
+                        resourceBundleLocale,
+                        classLoader,
                         new ResourceBundle.Control() {
                             public long getTimeToLive(String baseName, Locale locale) {
                                 return 0;
@@ -83,7 +180,7 @@
             }  
             return resourceBundle;
         }
-        
+
         /**
          * Returns the translation property by key name from the given Resource Bundle
          *
@@ -105,8 +202,9 @@
         }
 
         /**
-         * i18nValues holds the translations that will be used by JavaScript code. After it is populated with all the values 
-         * from all the resourceBundles in the packages, it is used to populate the Localize javascript function later on in the load process.
+         * i18nValues holds the translations that will be used by JavaScript code. 
+         * After it is populated with all the values from all the resourceBundles in the packages, 
+         * it is used to populate the Localize javascript function later on in the load process.
          *
          * Example use in defining the i18nValues in Java:
          * <pre>
