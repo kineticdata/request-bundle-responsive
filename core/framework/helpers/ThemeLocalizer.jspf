@@ -1,3 +1,4 @@
+<%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.HashSet"%>
 <%@page import="java.util.Vector"%>
@@ -100,15 +101,66 @@
         public String getString(String key) {
             // Assume failure and set result to key
             String result = key;
-            try {
+            // Determine if is not null
+            if(key != null) {
                 // Format key so all spaces are replaced with an underscore
                 String formatKey = key.replaceAll(" ", "_");
-                // Attempt to set translation
-                result = propertiesCombined.get(formatKey);
-            } catch(Exception e) {
-                // Do Nothing
+                // Determine if translation exists in the properties combined
+                if(propertiesCombined.get(formatKey) != null) {
+                    // Update translation
+                    result = propertiesCombined.get(formatKey);
+                }  
             }
             return result;
+        }
+        
+        /**
+         * i18nValues holds the translations that will be used by JavaScript code. 
+         * This method will take all the combined properties for this current instance 
+         * and return the i18n values. These values are used to populate the Localize 
+         * javascript function later on in the load process.
+         *
+         * Example use in defining the i18nValues in Java:
+         * <pre>
+         * {@code
+         * // Building the i18nValues in Java
+         * String i18nValues = "";
+         * i18nValues = ThemeLocalizer.getJavaScriptValues(i18nValues);
+         * }
+         * </pre>
+         *
+         * Example use for setting the i18nValues into JavaScript
+         * <pre>
+         * {@code
+         *  // Create .localize() method for the String function.  This allows any JavaScript string to be
+         *  // localized by adding ".localize()" to the end.  Examples: "hello".localize() or stringVariable.localize()
+         *  var Localization = { %=i18nValues% };
+         *  String.prototype.localize = function() {
+         *      var key=this.replace(/ /g,"_");
+         *      var s = Localization[key];
+         *      return ( s ) ? s : this;
+         *  }
+         * }
+         * </pre>
+         *
+         * @param String which is the i18nValues that can be made available in JavaScript
+         */
+        public String getJavaScriptValues(String i18nValues) {
+            if(this.propertiesCombined != null) {
+                // Determine if null
+                if(i18nValues == null) {
+                    // Update to empty string
+                    i18nValues = "";
+                }
+                // Loop through combined properties
+                for(Map.Entry<String,String> element : this.propertiesCombined.entrySet()) {
+                    String key = element.getKey();
+                    String value = element.getValue();
+                    if (i18nValues != "") { i18nValues += ","; }
+                    i18nValues += "\"" + key + "\" : \"" + value + "\"";
+                }
+            }
+            return i18nValues;
         }
         
         /**

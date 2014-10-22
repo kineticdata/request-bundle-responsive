@@ -1,8 +1,11 @@
 <%--
     Notes:
-    1.  Determine the abosolute file path to the translation files on the webserver, which is required for resource bundle creation.
-    2.  Set the resourceBundle variables that will be used in this package. The properties for the resource bundle can be accessed
-        in the JSP using <%= ThemeLocalizer.getString(packageResourceBundle, "property_key_name")%>
+    1.  Determine the abosolute file path to the translation files on the webserver, 
+        which is required for resource bundle creation.
+    2.  Instantiate the ThemeLocalizer object used in this package using the locale and absolute langauge file path. 
+        The ThemeLocalizer object will load all properties from every propery file into a combined property object
+        which themeLocalizer.getString("property key name") can be used to access the combined properties.
+        Example in the JSP using <%= themeLocalizer.getString("property key name")%>
     3.  Populate the resource bundle i18nValues for the appropriate resourceBundles, which are used in JavaSript in the common head.jspf. 
         These i18nValues are stored in the property files as "javascript.<keyvalue>".  The i18nValues variable is usually started in the 
         common languageInitialization.jspf file.
@@ -12,8 +15,8 @@
     String packageRealPath = getServletContext().getRealPath(bundle.relativePackagePath());
     // Set the absolute path to the directory containing the locale property files
     String packageTranslationPath = packageRealPath + File.separator + "assets" + File.separator + "languages";
-    // Set resource bundles
-    ResourceBundle packageResourceBundle = ThemeLocalizer.getResourceBundle("package", bundle.getProperty("preferredLocale"), packageTranslationPath);
+    // Define the theme localizer object for this package
+    ThemeLocalizer themeLocalizer = new ThemeLocalizer(bundle.getProperty("preferredLocale"), packageTranslationPath);
     // Set the i18nValues for package resource bundle
-    bundle.setProperty("i18nValues", ThemeLocalizer.getJavaScriptValues(packageResourceBundle, bundle.getProperty("i18nValues")));
+    bundle.setProperty("i18nValues", themeLocalizer.getJavaScriptValues(bundle.getProperty("i18nValues")));
 %>
