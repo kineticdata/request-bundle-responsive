@@ -44,9 +44,9 @@
         });
         if(statusCheck) {
             if(urlParameters.type === 'requests') {
-                submissions.status = 'Open Request';
+                submissions.status = 'Open Request'.localize;
             } else {
-                 submissions.status = 'Pending Approval';
+                 submissions.status = 'Pending Approval'.localize;
             }
             // Update hash
             document.location.hash = encodeURI(submissions.status);

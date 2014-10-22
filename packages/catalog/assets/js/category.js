@@ -28,7 +28,7 @@
                        // so we will not handle that response here.
                        if (jqXHR.status !== 401) {
                            $(loader).hide();
-                           $(descriptionContainer).html("Could not load description.")
+                           $(descriptionContainer).html("Could not load description.".localize)
                        }
                    }
                 });

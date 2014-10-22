@@ -81,11 +81,11 @@
                             $('<div>').addClass('footable-row-detail-row').append(
                                 $('<button>').addClass('requests view-activity-details btn-xs btn-gray')
                                     .attr('data-submission-id', $(this).data('Originating Id'))
-                                    .append('View Details')
+                                    .append('View Details'.localize)
                             ).append(
                                 $('<button>').addClass('requests review btn-xs btn-gray')
                                     .attr('data-submission-id', $(this).data('Originating Id'))
-                                    .append('View Form')
+                                    .append('View Form'.localize)
                             )
                         );
                 }
@@ -146,7 +146,7 @@
                                 $('<button>').addClass('requests complete-form btn-xs btn-gray')
                                     .attr('href', 'javascript:void()')
                                     .attr('data-submission-id', $(this).data('Originating Id'))
-                                    .append('Complete Form')
+                                    .append('Complete Form'.localize)
                             )
                         );
                 }
@@ -182,7 +182,7 @@
                                 $('<button>').addClass('requests complete-approval btn-xs btn-gray')
                                     .attr('href', 'javascript:void()')
                                     .attr('data-submission-id', $(this).data('Originating Id'))
-                                    .append('Complete Approval')
+                                    .append('Complete Approval'.localize)
                             )
                         );
                 }

@@ -5,10 +5,10 @@
                 <li class="dropdown background-hover-gradient-primary border-gray-light dropdown-toggle">
                     <span class="nav-button-inner">
                         <span>
-                            <%=ThemeLocalizer.getString(packageResourceBundle,"Browse by")%>
+                            <%=themeLocalizer.getString("Browse by")%>
                         </span>
                         <span class="nav-button-title nav-button-line2">
-                            <%=ThemeLocalizer.getString(packageResourceBundle,"Category")%>
+                            <%=themeLocalizer.getString("Category")%>
                         </span>
                         <i class="hidden nav-sprite"></i>
                     </span>     
@@ -18,9 +18,9 @@
                         <% if (category.hasTemplates() || category.hasNonEmptySubcategories()) { %>
                             <li role="presentation" class="category" data-id="<%= category.getId()%>" data-name="<%= category.getName()%>">
                                 <a href="<%= bundle.getProperty("catalogUrl") %>&category=<%= URLEncoder.encode(category.getFullName(), "UTF-8")%>&view=category" class="name">
-                                    <%=ThemeLocalizer.getString(packageResourceBundle, category.getName())%>
+                                    <%=themeLocalizer.getString(category.getName())%>
                                     <div class="description">
-                                        <%=ThemeLocalizer.getString(packageResourceBundle, category.getDescription())%>
+                                        <%=themeLocalizer.getString(category.getDescription())%>
                                     </div>
                                 </a>
                                 <%-- SUBCATEGORIES DATA --%>
@@ -30,9 +30,9 @@
                                         <% if (subcategory.hasTemplates()) { %>
                                         <li class="subcategory" data-id="<%= subcategory.getId()%>" data-name="<%= subcategory.getName()%>">
                                             <a href="<%= bundle.getProperty("catalogUrl") %>&category=<%= URLEncoder.encode(subcategory.getFullName(), "UTF-8")%>&view=category" class="name">
-                                                <%=ThemeLocalizer.getString(packageResourceBundle, subcategory.getName())%>
+                                                <%=themeLocalizer.getString(subcategory.getName())%>
                                                 <div class="description">
-                                                    <%=ThemeLocalizer.getString(packageResourceBundle, subcategory.getDescription())%>
+                                                    <%=themeLocalizer.getString(subcategory.getDescription())%>
                                                 </div>
                                             </a>
                                         </li>

@@ -32,7 +32,7 @@
 <%}%>
 <%-- SUBMISSION TABLE LINKS --%>
 <% if (context != null) { %>
-    <header class="sub">
+    <header class="sub background-gray-lightest">
         <div class="container">
             <ul class="unstyled">
                 <% if(bundle.getProperty("submissionType").equals("requests")) {%>
@@ -42,7 +42,7 @@
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
                                 <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=requests#<%=groupName%>">
-                                     <%=ThemeLocalizer.getString(packageResourceBundle,groupName)%> (<%=count%>)
+                                     <%=themeLocalizer.getString(groupName)%> (<%=count%>)
                                 </a>
                             </li>
                         <%}%>
@@ -54,7 +54,7 @@
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
                                 <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=approvals#<%=groupName%>">
-                                    <%=ThemeLocalizer.getString(packageResourceBundle,groupName)%> (<%=count%>)
+                                    <%=themeLocalizer.getString(groupName)%> (<%=count%>)
                                 </a>
                             </li>
                         <%}%>
@@ -71,8 +71,8 @@
     <div class="results-message hide"></div>
     <%-- LOADER --%>
     <div id="loader">
-        <img alt="<%= ThemeLocalizer.getString(packageResourceBundle,"Please Wait")%>." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
+        <img alt="<%= themeLocalizer.getString("Please Wait")%>." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
         <br />
-        <%= ThemeLocalizer.getString(packageResourceBundle,"Loading Results")%>
+        <%= themeLocalizer.getString("Loading Results")%>
     </div>
 </section>

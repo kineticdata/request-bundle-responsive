@@ -17,7 +17,7 @@
 <%@include file="../../../../../core/interface/fragments/formHeadContent.jspf"%>
 <header class="container">
     <h2>
-        Review: <%= customerRequest.getTemplateName()%>
+        <%= themeLocalizer.getString("Review")%>: <%= themeLocalizer.getString(customerRequest.getTemplateName())%>
     </h2>
     <hr class="soften">
 </header>

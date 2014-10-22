@@ -44,10 +44,10 @@
 <%@include file="../../../../../core/interface/fragments/formHeadContent.jspf"%>
 <header class="container">
     <h2>
-        <%= requestTemplate.getName()%>
+        <%= themeLocalizer.getString(requestTemplate.getName())%>
     </h2>
-    <a class="templateButton create-request hide" href="<%= requestTemplate.getAnonymousUrl()%>&category=<%= URLEncoder.encode(currentCategory.getFullName(), "UTF-8")%>" class="">
-        <i class="fa fa-share"></i>Request this Service
+    <a class="templateButton create-request hide" href="<%= requestTemplate.getAnonymousUrl()%>&category=<%= URLEncoder.encode(currentCategory.getFullName(), "UTF-8")%>">
+        <i class="fa fa-share"></i><%= themeLocalizer.getString("Request this Service")%>
     </a>
     <hr class="soften">
 </header>

@@ -67,14 +67,14 @@
 <% if(responseMessage != null) {%>
     <header class="container">
         <h2>
-            <%=ThemeLocalizer.getString(packageResourceBundle, responseMessage )%>
+            <%=themeLocalizer.getString(responseMessage )%>
         </h2>
         <hr class="soften">
     </header>
 <% } else {%>
     <header class="container">
         <h2>
-            <%=ThemeLocalizer.getString(packageResourceBundle, "Results found for")%> '<%= request.getParameter("q")%>'.
+            <%=themeLocalizer.getString("Results found for")%> '<%= request.getParameter("q")%>'.
         </h2>
         <hr class="soften">
     </header>
@@ -92,19 +92,19 @@
                             <div class="col-sm-6 description-wide">
                         <% }%>
                         <h3>
-                            <%=ThemeLocalizer.getString(packageResourceBundle, matchingTemplates[i].getName())%>
+                            <%=themeLocalizer.getString(matchingTemplates[i].getName())%>
                         </h3>
                         <p>
-                            <%=ThemeLocalizer.getString(packageResourceBundle,matchingTemplates[i].getDescription())%>
+                            <%=themeLocalizer.getString(matchingTemplates[i].getDescription())%>
                         </p>
                         <div class="visible-xs left">
                             <a class="templateButton" href="<%= matchingTemplates[i].getAnonymousUrl()%>">
-                                <i class="fa fa-share"></i><%=ThemeLocalizer.getString(packageResourceBundle, "Request")%>
+                                <i class="fa fa-share"></i><%=themeLocalizer.getString("Request")%>
                             </a>
                         </div>
                         <% if (templateDescriptions.get(matchingTemplates[i].getId()) != null ) { %>
                             <a class="read-more" href="<%= bundle.applicationPath()%>DisplayPage?srv=<%= templateDescriptions.get(matchingTemplates[i].getId()) %>">
-                                <%=ThemeLocalizer.getString(packageResourceBundle, "Read More")%>
+                                <%=themeLocalizer.getString("Read More")%>
                             </a>
                         <% }%>
                         <ul class="keywords unstyled clearfix hidden-xs">
@@ -113,13 +113,13 @@
                                     <li class="keyword">
                                         <div class="keyword-name">
                                             <strong>
-                                                <%=ThemeLocalizer.getString(packageResourceBundle, attributeName)%>:
+                                                <%=themeLocalizer.getString(attributeName)%>:
                                             </strong>
                                         </div>
                                         <ul class="keyword-values unstyled">
                                             <% for (String attributeValue : matchingTemplates[i].getTemplateAttributeValues(attributeName)) {%>
                                                 <li class="keyword-value">
-                                                    <%=ThemeLocalizer.getString(packageResourceBundle, attributeValue)%>
+                                                    <%=themeLocalizer.getString(attributeValue)%>
                                                 </li>
                                             <% }%>
                                         </ul>
@@ -134,14 +134,14 @@
                             <% for (String attributeDescriptionName : attributeDescriptionNames) {%>
                                 <% if (matchingTemplates[i].hasTemplateAttribute(attributeDescriptionName)) { %>
                                     <p>
-                                        <strong><%=ThemeLocalizer.getString(packageResourceBundle, attributeDescriptionName)%>:</strong> <%= matchingTemplates[i].getTemplateAttributeValue(attributeDescriptionName) %>
+                                        <strong><%=themeLocalizer.getString(attributeDescriptionName)%>:</strong> <%= themeLocalizer.getString(matchingTemplates[i].getTemplateAttributeValue(attributeDescriptionName)) %>
                                     </p>
                                 <% }%>
                             <%}%>
                         </div>
                         <div class="hidden-xs">
                             <a class="templateButton" href="<%= matchingTemplates[i].getAnonymousUrl()%>">
-                                <i class="fa fa-share"></i><%=ThemeLocalizer.getString(packageResourceBundle, "Request") %>
+                                <i class="fa fa-share"></i><%=themeLocalizer.getString("Request") %>
                             </a>
                         </div>
                     </div>

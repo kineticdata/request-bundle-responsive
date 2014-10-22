@@ -12,29 +12,29 @@
                 <li class="worklog <%= zebraCycle.cycle()%>" data-id="<%= incidentWorkLog.getId()%>">
                     <% if (!incidentWorkLog.getSubmitDate().equals("")) {%>
                         <div class="wrap">
-                            <div class="label">Date &amp; Time:</div>
+                            <div class="label"> <%=themeLocalizer.getString("Date")%> &amp;  <%=themeLocalizer.getString("Time")%>:</div>
                             <div class="value"><%= incidentWorkLog.getSubmitDate()%></div>
                         </div>
                     <% }%>
                     <% if (!incidentWorkLog.getSubmitter().equals("")) {%>
                         <div class="wrap">
-                            <div class="label">Submitter:</div>
+                            <div class="label"><%=themeLocalizer.getString("Submitter")%>:</div>
                             <div class="value"><%= incidentWorkLog.getSubmitter()%></div>
                         </div>
                     <% }%>
                     <% if (!incidentWorkLog.getSummary().equals("")) {%>
                         <div class="wrap">
-                            <div class="label">Summary:</div>
+                            <div class="label"><%=themeLocalizer.getString("Summary")%>:</div>
                             <div class="value"><%= incidentWorkLog.getSummary()%></div>
                         </div>
                     <% }%>
                     <% if (!incidentWorkLog.getNotes().equals("")) {%>
                         <div class="wrap">
-                            <div class="label">Notes:</div>
+                            <div class="label"><%=themeLocalizer.getString("Notes")%>:</div>
                             <div class="value"><%= incidentWorkLog.getNotes()%></div>
                         </div>
                     <% }%>
-                    <div class="label">Attachment(s)</div>
+                    <div class="label"><%=themeLocalizer.getString("Attachments")%></div>
                     <br />
                     <% if (!incidentWorkLog.getAttachment1().equals("")) {%>
                         <a href="<%=bundle.applicationPath() + incidentWorkLog.getAttachment1Url(bundle)%>">

@@ -7,16 +7,16 @@
 <link rel="stylesheet" href="<%= bundle.packagePath()%>assets/css/displayPackage.css" type="text/css" />
 <header class="container">
     <h2>
-        <%= customerRequest.getTemplateName()%>
+        <%= themeLocalizer.getString(customerRequest.getTemplateName()) %>
     </h2>
     <hr class="soften">
 </header>
 <section class="container display-page">
     <p>
-        <b>Thank you for submitting a request for <%= customerRequest.getTemplateName()%>. Your Request ID is <%= customerRequest.getKsr()%>.
+        <b><%= themeLocalizer.getString("Thank you for submitting a request for")%> <%= themeLocalizer.getString(customerRequest.getTemplateName()) %>. <%= themeLocalizer.getString("Your Request ID is")%> <%= customerRequest.getKsr()%>.
         </b>
     </p>
     <p>
-        To track the status of your request, click the <a href="<%= bundle.getProperty("catalogUrl")%>&view=submissions">My Request</a> link.
+        <%= themeLocalizer.getString("To track the status of your request, click the")%> <a href="<%= bundle.getProperty("catalogUrl")%>&view=submissions"><%= themeLocalizer.getString("My Request")%></a> <%= themeLocalizer.getString("link")%>.
     </p>
 </section>

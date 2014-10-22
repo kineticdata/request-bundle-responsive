@@ -32,13 +32,13 @@
             "content": "interface/views/description/description.jsp"
         },
         "approval": {
-            "content": "interface/views/approval/approval.jsp",
+            "content": "interface/views/approval/approval.jsp"
         },
         "confirmation": {
-            "content": "interface/views/confirmation/confirmation.jsp",
+            "content": "interface/views/confirmation/confirmation.jsp"
         },
         "review": {
-            "content": "interface/views/review/review.jsp",
+            "content": "interface/views/review/review.jsp"
         },
         "reviewFrame": {
             "content": "interface/views/review/reviewFrame.jsp",

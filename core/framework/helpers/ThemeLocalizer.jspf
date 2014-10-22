@@ -111,7 +111,12 @@
                     result = propertiesCombined.get(formatKey);
                 }  
             }
-            return result;
+            // Added check because result was getting set to null above
+            if(result != null){
+                return result;
+            } else {
+                return key;
+            }
         }
         
         /**

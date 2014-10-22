@@ -59,12 +59,12 @@
             <div class="wrap">
         <% }%>
             <div class="category-description hide" data-description-id="<%= categoryDescriptions.get(currentCategory.getId()) %>">
-                <%= ThemeLocalizer.getString(packageResourceBundle,currentCategory.getDescription())%>
+                <%= themeLocalizer.getString(currentCategory.getDescription())%>
             </div>
             <div id="loader" class="hide">
                 <img alt="Please Wait." src="<%=bundle.bundlePath()%>common/assets/images/spinner.gif" />
                 <br />
-                <%=ThemeLocalizer.getString(packageResourceBundle, "Loading Results")%>
+                <%=themeLocalizer.getString("Loading Results")%>
             </div>
         </div>
         <div class="clearfix"></div>
@@ -79,26 +79,26 @@
                     <div class="content-wrap">
                         <% if (template.hasTemplateAttribute("ServiceItemImage")) { %>
                             <div class="image">
-                                <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(template.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" alt="<%= ThemeLocalizer.getString(packageResourceBundle,template.getName())%>" />
+                                <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(template.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" alt="<%= themeLocalizer.getString(template.getName())%>" />
                             </div>
                             <div class="col-md-6 description-small">
                         <% } else {%>
                             <div class="col-md-6 description-wide">
                         <% }%>
                         <h3>
-                            <%= ThemeLocalizer.getString(packageResourceBundle,template.getName())%>
+                            <%= themeLocalizer.getString(template.getName())%>
                         </h3>
                         <p>
-                            <%= ThemeLocalizer.getString(packageResourceBundle,template.getDescription())%>
+                            <%= themeLocalizer.getString(template.getDescription())%>
                         </p>
                         <div class="visible-xs visible-sm left">
                             <a class="templateButton" href="<%= template.getAnonymousUrl() %>">
-                                <i class="fa fa-share"></i><%= ThemeLocalizer.getString(packageResourceBundle,"Request")%>
+                                <i class="fa fa-share"></i><%= themeLocalizer.getString("Request")%>
                             </a>
                         </div>
                         <% if (templateDescriptions.get(template.getId()) != null ) { %>
                             <a class="" href="<%= bundle.applicationPath()%>DisplayPage?srv=<%= templateDescriptions.get(template.getId()) %>&category=<%= URLEncoder.encode(currentCategory.getFullName(), "UTF-8")%>">
-                                <%= ThemeLocalizer.getString(packageResourceBundle,"Read More")%>
+                                <%= themeLocalizer.getString("Read More")%>
                             </a>
                         <% }%>                                           
                     </div>
@@ -108,14 +108,14 @@
                             <% for (String attributeDescriptionName : attributeDescriptionNames) {%>
                                 <% if (template.hasTemplateAttribute(attributeDescriptionName)) { %>
                                     <p>
-                                        <strong><%= ThemeLocalizer.getString(packageResourceBundle,attributeDescriptionName)%>:</strong> <%= ThemeLocalizer.getString(packageResourceBundle,template.getTemplateAttributeValue(attributeDescriptionName)) %>
+                                        <strong><%= themeLocalizer.getString(attributeDescriptionName)%>:</strong> <%= themeLocalizer.getString(template.getTemplateAttributeValue(attributeDescriptionName)) %>
                                     </p>
                                 <% }%>
                             <%}%>
                         </div>
                         <div class="hidden-xs hidden-sm">
                             <a class="templateButton" href="<%= template.getAnonymousUrl() %>&category=<%= URLEncoder.encode(currentCategory.getFullName(), "UTF-8")%>">
-                                <i class="fa fa-share"></i><%= ThemeLocalizer.getString(packageResourceBundle,"Request")%>
+                                <i class="fa fa-share"></i><%= themeLocalizer.getString("Request")%>
                             </a>
                         </div>
                     </div>
@@ -125,14 +125,14 @@
         <% if (currentCategory.hasNonEmptySubcategories()) {%>
             <div class="subcategories background-tertiary">
                 <h5 class="color-white color-hover-white">
-                    <%= ThemeLocalizer.getString(packageResourceBundle,"Subcategories")%>
+                    <%= themeLocalizer.getString("Subcategories")%>
                 </h5>
                 <ul class="unstyled">
                     <% for (Category subcategory : currentCategory.getSubcategories()) { %>
                         <% if (subcategory.hasTemplates()) { %>
                         <li class="subcategory" data-id="<%= subcategory.getId()%>" data-name="<%= subcategory.getName()%>">
                             <a href="<%= bundle.getProperty("catalogUrl") %>&view=category&category=<%= URLEncoder.encode(subcategory.getFullName(), "UTF-8")%>" class="name background-tertiary-compliment color-white color-hover-white">
-                                <%= ThemeLocalizer.getString(packageResourceBundle,subcategory.getName())%>
+                                <%= themeLocalizer.getString(subcategory.getName())%>
                             </a>
                         </li>
                         <% }%>

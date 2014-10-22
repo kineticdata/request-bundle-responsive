@@ -122,7 +122,7 @@
                     widget.select.append($('<option>').val(value).text(value));
                 }
             });
-            widget.refresh = $('<a>').addClass('refresh').attr('href', 'javascript:void(0)').text('Refresh');
+            widget.refresh = $('<a>').addClass('refresh').attr('href', 'javascript:void(0)').text('Refresh'.localize);
             widget.table = $('<table>').addClass('table kd-table');
             widget.information = $('<div>').addClass('information');
             widget.pagination = $('<nav>').addClass('pagination');
@@ -131,9 +131,9 @@
                 .append(widget.header.append(widget.refresh));
             if(widget.options.entries) {
                 widget.entriesSelection = $('<div>').addClass('entries-selection')
-                    .prepend($('<span>').append('Show'))
+                    .prepend($('<span>').append('Show'.localize))
                     .append(widget.select)
-                    .append($('<span>').append('entries'));
+                    .append($('<span>').append('entries'.localize));
                 widget.header.prepend(widget.entriesSelection);
                     
             }
@@ -265,7 +265,7 @@
                 var th = $('<th>');
                 // Set column label based on column label field or default column label to metaData field
                 var columnLabel = (metaData.columnLabel === undefined) ? metaData : metaData.columnLabel;
-                th.append(columnLabel)
+                th.append(columnLabel.localize)
                     .attr('data-sorting', false) // Data not working for th
                     .attr('data-field', fieldname)
                     .attr('data-sort-order', widget.options.sortOrder);
@@ -344,13 +344,13 @@
             }
             // Append information
             if(widget.options.info) {
-                widget.information.append('Showing&nbsp;')
+                widget.information.append('Showing'.localize + '&nbsp;')
                     .append(widget._getIndex() + 1)
-                    .append('&nbsp;to&nbsp;')
+                    .append('&nbsp;' + 'to'.localize + '&nbsp;')
                     .append(widget._getIndex() + tbody.find('tr').length)
-                    .append('&nbsp;of&nbsp;')
+                    .append('&nbsp;' + 'of'.localize + '&nbsp;')
                     .append(widget.options.total)
-                    .append('&nbsp;entries');
+                    .append('&nbsp;'+ 'entries'.localize);
             }
             // Append table data
             widget.table.append(thead)
