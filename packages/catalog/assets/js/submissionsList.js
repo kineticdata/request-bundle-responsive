@@ -28,7 +28,7 @@
         li.addClass('border border-gray-light rounded')
           .append(
                 $('<h4>').addClass('color-gray-darkest originating-name border-bottom border-gray-light')
-                .text(record['Originating Name'].localize)
+                .text(record['Originating Name'].localize())
                 .append(
                     $('<span>').addClass('request-id pull-right')
                         .append(record['Originating Request Id'])
@@ -41,7 +41,7 @@
         if(record['Requested For'] !== null) {
             leftColumn.append(
                 $('<div>').addClass('requested-for-label color-gray')
-                    .append(displayFields['Requested For'].localize + '&nbsp;')
+                    .append(displayFields['Requested For'].localize() + '&nbsp;')
             ).append(
                 $('<div>').addClass('requested-for-value color-black')
                     .append(record['Requested For'])
@@ -51,25 +51,25 @@
         // Draft date
         if(record['Customer Survey Status'] === 'In Progress') {
             var submissionDateLabel = $('<div>').addClass('submitted-label color-gray')
-                .append(displayFields['Modified'].localize);
+                .append(displayFields['Modified'].localize());
             var submissionDateValue = $('<div>').addClass('submitted-value color-black')
                 .append(((record['Modified'] !== null) ? moment(record['Modified'], 'MM/DD/YYYY H:mm:ss').format('MMMM DD, YYYY') : ""));
         // Closed date including completed approvals
         } else if(record['Request Status'] === 'Closed') {
             var submissionDateLabel = $('<div>').addClass('submitted-label color-gray')
-                .append(displayFields['Closed'].localize);
+                .append(displayFields['Closed'].localize());
             var submissionDateValue = $('<div>').addClass('submitted-value color-black')
                 .append(((record['Closed'] !== null) ? moment(record['Closed'], 'MM/DD/YYYY H:mm:ss').format('MMMM DD, YYYY') : ""));
         // Pending approval date
         } else if(record['Display Status'] === 'Awaiting Approval') {
             var submissionDateLabel = $('<div>').addClass('submitted-label color-gray')
-                .append(displayFields['Sent'].localize);
+                .append(displayFields['Sent'].localize());
             var submissionDateValue = $('<div>').addClass('submitted-value')
                 .append(((record['Sent'] !== null) ? moment(record['Sent'], 'MM/DD/YYYY H:mm:ss').format('MMMM DD, YYYY') : ""));
         // Submitted date
         } else {
             var submissionDateLabel = $('<div>').addClass('submitted-label color-gray')
-                .append(displayFields['Submitted'].localize);
+                .append(displayFields['Submitted'].localize());
             var submissionDateValue = $('<div>').addClass('submitted-value')
                 .append(((record['Submitted'] !== null) ? moment(record['Submitted'], 'MM/DD/YYYY H:mm:ss').format('MMMM DD, YYYY') : ""));
         }
@@ -78,7 +78,7 @@
                 $('<a>')
                     .attr('href', encodeURI(BUNDLE.applicationPath + 'ReviewRequest?csrv=' + record['Originating Id'] + '&excludeByName=Review Page&reviewPage=' + BUNDLE.config.reviewJsp))
                     .attr('target', '_self')
-                    .append('View Submitted Form'.localize)
+                    .append('View Submitted Form'.localize())
             );
 
         // Cannot open auto created requests
@@ -106,7 +106,7 @@
                 .append(
                     $('<img>').attr('width', '40')
                         .attr('src', imagePath)
-                        .attr('alt', record['Originating Name'].localize)
+                        .attr('alt', record['Originating Name'].localize())
                 );
             contentWrap.prepend(image);
         }
@@ -115,7 +115,7 @@
         rightColumn.append(
             wrap.append(
                 $('<div>').addClass('display-status color-tertiary-compliment')
-                .append(record['Display Status'].localize)
+                .append(record['Display Status'].localize())
             ).append(contentWrap)
         );
 
@@ -128,7 +128,7 @@
             innerRightColumn.append(
                 $('<a>').addClass('complete-request templateButton')
                     .attr('href', encodeURI(BUNDLE.applicationPath + 'DisplayPage?csrv=' + instanceId + '&return=yes'))
-                    .append('Complete Form'.localize)
+                    .append('Complete Form'.localize())
             );
         }
         // View activity details button
@@ -138,7 +138,7 @@
                     $('<a>').addClass('view-activity templateButton')
                         .attr('href', encodeURI(BUNDLE.config.catalogUrl + '&view=submissionActivity&id=' + instanceId))
                         .attr('target', '_self')
-                        .append('View Activity Details'.localize)
+                        .append('View Activity Details'.localize())
                 );
         }
         // Complete approval button
@@ -148,7 +148,7 @@
                     $('<a>').addClass('view-activity templateButton')
                         .attr('href', encodeURI(BUNDLE.applicationPath + 'DisplayPage?csrv=' + record['Id']))
                         .attr('target', '_self')
-                        .append('Complete Approval'.localize)
+                        .append('Complete Approval'.localize())
                 );
         }
         rightColumn.append(innerRightColumn);

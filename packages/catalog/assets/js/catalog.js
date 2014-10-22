@@ -32,7 +32,7 @@
             $(breadcrumbs).append(
                 $('<li>').attr('data-id', $(this).data('id'))
                     .attr('data-name', $(this).data('name'))
-                    .append($(this).data('name').localize)
+                    .append($(this).data('name').localize())
                     .append(
                         $('<i>').addClass('fa fa-chevron-circle-left')
                     )
@@ -50,7 +50,7 @@
             $(breadcrumbs).append(
                 $('<li>').attr('data-id', $(this).data('id'))
                     .attr('data-name', $(this).data('name'))
-                    .append($(this).data('name').localize)
+                    .append($(this).data('name').localize())
                     .append(
                         $('<i>').addClass('fa fa-chevron-circle-left')
                     )

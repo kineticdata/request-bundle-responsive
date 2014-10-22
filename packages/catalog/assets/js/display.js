@@ -69,7 +69,7 @@
         serviceitems.Helper = new function() {
             
             this.displ_confirm = function(){
-                var name = confirm("Click OK to accept transaction".localize);
+                var name = confirm("Click OK to accept transaction".localize());
                 if (name == true){
                     document.pageQuestionsForm.submit();
                     return true;
@@ -79,7 +79,7 @@
             };
 
             this.confirmCancel = function(validationStatus, reqStatus){
-                var name=confirm("Click OK to Cancel Request".localize);
+                var name=confirm("Click OK to Cancel Request".localize());
                 if (name==true){
                     if (clientManager.customerSurveyId == "null" || clientManager.customerSurveyId == null){
                         window.location = BUNDLE.config['catalogUrl'];
@@ -141,7 +141,7 @@
                     var myButton;
                     for (var i = 0; i <= qstns.length; i++){
                         if (qstns[i]){
-                            if(qstns[i].getAttribute("value")=="Back".localize){
+                            if(qstns[i].getAttribute("value")=="Back".localize()){
                                 myButton=qstns[i];
                             }
                         }
@@ -200,7 +200,7 @@
 
                 // Finally, the dates are compared  
                 if (numDays == 0 && requestStartDateFinal < nowDate) {
-                    alert('Date Entered Error'.localize);
+                    alert('Date Entered Error'.localize());
                     return false; 
                 } else {
                     return true;

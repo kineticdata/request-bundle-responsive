@@ -9,7 +9,7 @@
         // Determine if q exists
         if(params['q']) {
             // Update page title
-            $('title').append("for".localize + " '" + $.trim(params['q']) + "'");
+            $('title').append("for".localize() + " '" + $.trim(params['q']) + "'");
         }
     });
 })(jQuery, _);

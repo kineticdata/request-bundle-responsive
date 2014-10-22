@@ -1,10 +1,10 @@
-<a class="main-menus color-white color-hover-secondary" href="javascript:void(0)" data-target="div.main-menus" data-description="Navigate">
+<a class="main-menus color-white color-hover-secondary" href="javascript:void(0)" data-target="div.main-menus" data-description="<%=ThemeLocalizer.getString(commonResourceBundle,"Navigate")%>">
     <i class="fa fa-th"></i>
 </a>
 <div class="main-menus background-white hide" aria-hidden="true">
     <ul class="list-unstyled clearfix"></ul>
     <a class="more background-gray-lightest color-gray-dark color-hover-gray-darkest border-top border-gray-light">
-        More
+        <%=ThemeLocalizer.getString(commonResourceBundle,"More")%>
     </a>
     <ul class="list-unstyled clearfix">
         <li class="osc">
@@ -86,9 +86,9 @@
                                 var li = $('<li>').addClass(property['class']).append(
                                     $('<a>').addClass('color-gray-darkest color-hover-secondary').attr({
                                         'href': url,
-                                        'aria-label': property.description
+                                        'aria-label': property.description.localize()
                                     }).append(property.icon).append(
-                                        $('<div>').text(property.label)
+                                        $('<div>').text(property.label.localize())
                                     )
                                 );
                                 if(i > 3) {

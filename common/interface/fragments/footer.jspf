@@ -30,8 +30,8 @@
                 var span = $('<span>').addClass(property['class']).append(
                     $('<a>').addClass('color-white color-hover-white').attr({
                         'href': url,
-                        'aria-label': property.description
-                    }).text(property.label.localize)
+                        'aria-label': property.description.localize()
+                    }).text(property.label.localize()))
                 );
                 // Add links to main menus
                 $('footer.footer').find('div.container').append(span);

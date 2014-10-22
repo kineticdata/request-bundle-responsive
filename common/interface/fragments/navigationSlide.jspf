@@ -32,8 +32,8 @@
                         var li = $('<li>').addClass(property['class']).append(
                             $('<a>').addClass('color-white color-hover-secondary').attr({
                                 'href': url,
-                                'aria-label': property.description
-                            }).append(property.icon).append(property.label)
+                                'aria-label': property.description.localize()
+                            }).append(property.icon).append(property.label.localize())
                         );
                         // Add links to main menus
                         $('div.navigation-slide').find('ul').first().prepend(li);
