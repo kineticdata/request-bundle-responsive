@@ -57,6 +57,18 @@
         var s = BUNDLE.config.localization[key];
         return ( s ) ? s : this;
     };
+    // Create a BUNDLE localize function that can be
+    // used to pass a value if we don't know it's a String
+    BUNDLE.localize = function(key) {
+        // Define result and default to current value
+        var result = key;
+        // Determine if key is string
+        if(typeof key === 'string') {
+            // Update result to translation
+            result = key.localize();
+        }
+        return result;
+    };
 </script>
 
 <!-- Common JavaScript Libraries -->
