@@ -35,7 +35,7 @@
                     // Define package directory
                     String packageDirectory = file.getAbsolutePath();
                     // Define package JSON config
-                    String packageConfigurationFile = packageDirectory + File.separator + "config" + File.separator + "config.json";
+                    String packageConfigurationFile = packageDirectory + "/" + "config" + "/" + "config.json";
                     try {
                         JSONParser parser = new JSONParser();
                         JSONObject jsonConfiguration = (JSONObject) parser.parse(new FileReader(packageConfigurationFile));
@@ -266,7 +266,7 @@
         
         public void processView(HttpServletRequest request, HttpServletResponse response) {
             // Define absolute application context path to current package
-            String currentPackagePath = File.separator + this.bundle.relativePackagePath;
+            String currentPackagePath = "/" + this.bundle.relativePackagePath;
             // Determine if callback defined
             if(StringUtils.isNotBlank(request.getParameter("callback"))) {
                 this.processCallback(request, response, request.getParameter("callback"));
@@ -281,7 +281,7 @@
         
         public void processView(HttpServletRequest request, HttpServletResponse response, String view) {
             // Define absolute application context path to current package
-            String currentPackagePath = File.separator + this.bundle.relativePackagePath;
+            String currentPackagePath = "/" + this.bundle.relativePackagePath;
             // Set head attribute
             request.setAttribute("head", currentPackagePath + this.getCurrentViewHead(view));
             // Set content attribute
@@ -294,7 +294,7 @@
             String callbackName
         ) {
             // Define absolute application context path to current package
-            String currentPackagePath = File.separator + this.bundle.relativePackagePath;
+            String currentPackagePath = "/" + this.bundle.relativePackagePath;
             // Forward to callback
             RequestDispatcher dispatcher = request.getRequestDispatcher(
                 currentPackagePath + this.getCurrentCallback(callbackName)
