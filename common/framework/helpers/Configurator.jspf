@@ -8,8 +8,8 @@
      * 
      * Used to load the current and all the package's JSON configuration files located under
      * packages/package/config/config.json. These configurations are used to determine what
-     * package view to process for a Bundle layout.  These configurations also contain data
-     * for links and are UI settings for the current theme which can be leveraged by the layout.
+     * package view to process for a Bundle layout.  These configurations also contain UI
+     * related data for the current theme, which can be leveraged by the layout.
      */
     public class Configurator {
         
