@@ -10,7 +10,7 @@
         
         private JsonBase configuration;
         private Map<String,JsonBase> configurationsByPackage;
-        private String currentPackage = "base";
+        private String currentPackage = "catalog";
         private Bundle bundle;
 
         public Configurator(Bundle bundle) {
@@ -35,7 +35,7 @@
                     // Define package directory
                     String packageDirectory = file.getAbsolutePath();
                     // Define package JSON config
-                    String packageConfigurationFile = packageDirectory + "/" + "config" + "/" + "config.json";
+                    String packageConfigurationFile = packageDirectory + File.separator + "config" + File.separator + "config.json";
                     try {
                         JSONParser parser = new JSONParser();
                         JSONObject jsonConfiguration = (JSONObject) parser.parse(new FileReader(packageConfigurationFile));
