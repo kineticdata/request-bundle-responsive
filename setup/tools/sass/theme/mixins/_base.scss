@@ -2,6 +2,24 @@
 // Variables and mixins
 
 // Theme Colors
+// Primary
+$primary: #007AC3;
+$primary-lightest: #7FF9FF;
+$primary-light: #33ADF6;
+$primary-dark: #004790;
+$primary-darkest: #000044;
+
+// Secondary
+$secondary: #E16B1E;
+$secondary-light: 3F89F55;
+$secondary-compliment: #F89F55;
+
+// Tertiary
+$tertiary: #A0B13A;
+$tertiary-dark: #546500;
+$tertiary-compliment: #546500;
+
+// Extra colors
 // Blues
 $blue-light: #27a9e3;
 $blue-dark: #198ec3;
@@ -36,12 +54,13 @@ $linkColorHover: #D95900;
 $base_color: #676464;
 
 // Grays
-$black:             #000;
-$grayDark:          lighten($black, 25%);
-$gray:              lighten($black, 50%);
-$grayLight:         lighten($black, 75%);
-$grayLighter:       lighten($black, 90%);
-$white:             #fff;
+$black:             #000000;
+$gray-darkest:      lighten($black, 16%);
+$gray-dark:         lighten($black, 36%);
+$gray:              lighten($black, 56%);
+$gray-light:        lighten($black, 76%);
+$gray-lightest:     lighten($black, 96%);
+$white:             #ffffff;
 
 // Accent Colors
 $blue:              #00427E;
