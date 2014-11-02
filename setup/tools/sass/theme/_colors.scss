@@ -1,5 +1,10 @@
 /****** COLORS **********/
 
+/* anchors */
+a { color: $primary; }
+a:hover, a:focus, a:active { color: $primary-dark; }
+.active a, .active a:hover { color: $secondary; }
+
 /* backgrounds */
 .background-white { background: $white; }
 .background-black { background: $black; }
@@ -83,86 +88,85 @@
 .border-gray-dark { border-color: $gray-dark; }
 .border-gray-darkest { border-color: $gray-darkest; }
 
-
 /* gradients */
 .background-gradient-primary {
-    @include gradient(#33ADF6, #007AC3, 0%, 100%);
+  @include gradient($primary-light, $primary, 0%, 100%);
 }
 .background-gradient-primary:hover {
-    background: #007ac3;
+  background: $primary;
 }
-
 .background-hover-gradient-primary:hover {
-    @include gradient(#33ADF6, #007AC3, 0%, 100%);
+  color: $white;
+  @include gradient($primary-light, $primary, 0%, 100%);
 }
-
 .background-gradient-secondary {
-    @include gradient(#F89F55, #E16B1E, 0%, 100%);
+  @include gradient($secondary-light, $secondary, 0%, 100%);
 }
 .background-gradient-secondary:hover {
-    background: #e16b1e;
+  background: $secondary;
 }
 .background-gradient-tertiary {
-    @include gradient(#A0B13A, #546500, 0%, 100%);
+  @include gradient($tertiary, $tertiary-dark, 0%, 100%);
 }
 .background-gradient-tertiary:hover {
-  background: #546500;
+  background: $tertiary-dark;
 }
 .background-gradient-gray {
-    @include gradient(#F5F5F5, #C2C2C2, 0%, 100%);
+  @include gradient($gray-lightest, $gray-light, 0%, 100%);
 }
 .background-gradient-gray:hover {
-  background: #c2c2c2;
+  background: $gray-light;
 }
+
+/* buttons */
 .btn-default {
-    background: transparent;
+  background: transparent;
 }
 .btn-primary {
   color: $white;
   font-weight: bold;
+  border: none;
   @include box-shadow(0 1px 2px rgba(0,0,0,.2));
   @include text-shadow(0 -1px 1px rgba(0,0,0,0.5));
-  border: none;
-  @include gradient(#33ADF6, #007AC3, 0%, 100%);
+  @include gradient($primary-light, $primary, 0%, 100%);
 }
 .btn-primary:hover, .btn-primary:focus, 
 .btn-primary:active, .btn-primary.active, 
 .btn-primary.disabled, .btn-primary[disabled] {
-  background: #007ac3; /* Old browsers */
+  background: $primary; /* Old browsers */
 }
 .btn-secondary, .templateButton {
   color: $white;
   font-weight: bold;
+  border: none;
   @include box-shadow(0 1px 2px rgba(0,0,0,.2));
   @include text-shadow(0 -1px 1px rgba(0,0,0,0.5));
-  color: white;
-  border: none;
-  @include gradient(#F89F55, #E16B1E, 0%, 100%);
+  @include gradient($secondary-light, $secondary, 0%, 100%);
 }
 .btn-secondary:hover, .btn-secondary:focus, 
 .btn-secondary:active, .btn-secondary.active, 
 .btn-secondary.disabled, .btn-secondary[disabled] {
-  background: #E16B1E; /* Old browsers */
+  background: $secondary; /* Old browsers */
 }
 .templateButton:hover, .templateButton:focus, 
 .templateButton:active, .templateButton.active, 
 .templateButton.disabled, .templateButton[disabled] {
-  background: #E16B1E; /* Old browsers */
+  background: $secondary; /* Old browsers */
   color: $white;
   text-decoration: none;
 }
 .btn-tertiary {
   color: $white;
   font-weight: bold;
+  border: none;
   @include box-shadow(0 1px 2px rgba(0,0,0,.2));
   @include text-shadow(0 -1px 1px rgba(0,0,0,0.5));
-  border: none;
-  @include gradient(#A0B13A, #546500, 0%, 100%);
+  @include gradient($tertiary, $tertiary-dark, 0%, 100%);
 }
 .btn-tertiary:hover, .btn-tertiary:focus, 
 .btn-tertiary:active, .btn-tertiary.active, 
 .btn-tertiary.disabled, .btn-tertiary[disabled] {
-  background: #546500; /* Old browsers */
+  background: $tertiary-dark; /* Old browsers */
 }
 select, textarea,
 input, .uneditable-input {
@@ -171,13 +175,52 @@ input, .uneditable-input {
 textarea:focus, 
 input:focus, 
 .uneditable-input:focus {
-  border-color: #007AC3;
+  border-color: $primary;
 }
 .well {
   background-color: $gray-lightest;
 }
 .dropdown-menu li a .description {
     color: $gray;
+}
+
+select, textarea,
+input, .uneditable-input {
+  border: 1px solid $gray;
+}
+textarea:focus, 
+input:focus, 
+.uneditable-input:focus {
+  border: 1px solid $primary;
+}
+.well {
+  background-color: $gray-lightest;
+}
+.dropdown-menu li a .description {
+    color: $gray;
+}
+.dropdown-menu {
+  background-color: $white;
+}
+div.navigation-slide ul > li > div.arrow-left {
+  border-right: $white;
+}
+.breadcrumb {
+    background-color: $white;
+}
+.breadcrumb .active {
+    color: $gray-dark;
+}
+.templateSection .sectionHeader {
+    color: $tertiary;
+    background-color: $gray-lightest;
+}
+.templateSection.border {
+    border-color: $gray-light;
+}
+.display-page form#pageQuestionsForm,
+.display-page div#pageQuestionsForm {
+    background-color: $gray-lightest;
 }
 
 /****** END COLORS **********/
