@@ -47,6 +47,22 @@
             }
             return results;
         }
+        
+        public static TemplateAttribute[] findByTemplate(HelperContext context, String catalogName, String templateName) {
+            // Initialize the result list.
+            List<TemplateAttribute> result = new ArrayList<TemplateAttribute>();
+            // Build the qualification string.
+            String qualification = "'" + FIELD_CATALOG_NAME + "' = \"" + catalogName +
+                    "\" AND '" + FIELD_TEMPLATE_NAME + "' = \"" + templateName + "\"";
+            // Make the query.
+            SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS);
+            // Add the resulting TemplateAttribute instances to the result list.
+            for (SimpleEntry entry : entries) {
+                result.add(new TemplateAttribute(entry));
+            }
+            // Return the result (converting the list to an array).
+            return result.toArray(new TemplateAttribute[0]);
+        }
 
         public String getCatalogName() {return entry.getEntryFieldValue(FIELD_CATALOG_NAME);}
         public String getName() {return entry.getEntryFieldValue(FIELD_ATTRIBUTE_NAME);}
