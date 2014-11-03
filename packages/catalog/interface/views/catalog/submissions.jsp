@@ -42,7 +42,7 @@
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
                                 <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=requests#<%=groupName%>">
-                                    <%=count%>
+                                    <%=count%>&nbsp;
                                     <% if (count != 1) { %>
                                         <%=groupName%>s
                                     <% } else {%>
@@ -59,7 +59,7 @@
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
                                 <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=approvals#<%=groupName%>">
-                                    <%=count%>
+                                    <%=count%>&nbsp;
                                     <% if (count != 1) { %>
                                         <%=groupName%>s
                                     <% } else {%>
