@@ -2,75 +2,35 @@
 // Variables and mixins
 
 // Theme Colors
-// Blues
-$blue-light: #27a9e3;
-$blue-dark: #198ec3;
-// Greens
-$forest-green-light: #28b779;
-$forest-green-dark: #1f8d5e;
-// Grays
-$gray-light: #707a83;
-$gray-dark: #4f575e;
-// Oranges
-$orange-light: #db9a24;
-$orange-dark: #c1861c;
-// Reds
-$red-light: #c22655;
-$red-dark: #ae214b;
-// Greens
-$green-light: #98cb52;
-$green-dark: #6d933a;
-// Purples
-$purple-light: #bd7de6;
-$purple-dark: #61317f;
-// Violet
-$violet-light: #f73298;
-$violet-dark: #911b58;
-// Charcoal
-$charcoal-light: #707a83;
-$charcoal-dark: #555d65;
+// Primary
+$primary: #007AC3;
+$primary-lightest: #7FF9FF;
+$primary-light: #33ADF6;
+$primary-dark: #004790;
+$primary-darkest: #000044;
 
-// Links
-$linkColor:         #333;
-$linkColorHover: #D95900;
-$base_color: #676464;
+// Secondary
+$secondary: #E16B1E;
+$secondary-light: #F89F55;
+$secondary-compliment: #F89F55;
+
+// Tertiary
+$tertiary: #A0B13A;
+$tertiary-dark: #546500;
+$tertiary-compliment: #546500;
 
 // Grays
-$black:             #000;
-$grayDark:          lighten($black, 25%);
-$gray:              lighten($black, 50%);
-$grayLight:         lighten($black, 75%);
-$grayLighter:       lighten($black, 90%);
-$white:             #fff;
-
-// Accent Colors
-$blue:              #00427E;
-$blueDark:          #00027e;
-$green:             #46a546;
-$red:               #9d261d;
-$yellow:            #ffc40d;
-$orange:            #f89406;
-$pink:              #c3325f;
-$purple:            #7a43b6;
-
-// Baseline grid
-$basefont:          13px;
-$baseline:          18px;
-
-// Griditude
-$gridColumns:       12;
-$gridColumnWidth:   60px;
-$gridGutterWidth:   20px;
-$extraSpace:        ($gridGutterWidth * 2); // For our grid calculations
-$siteWidth:         ($gridColumns * $gridColumnWidth) + ($gridGutterWidth * ($gridColumns - 1));
-
-// Fluid grid
-$fluidGridColumnWidth:    6.382978723% !default;
-$fluidGridGutterWidth:    2.127659574% !default;
+$black:             #000000;
+$gray-darkest:      lighten($black, 16%);
+$gray-dark:         lighten($black, 36%);
+$gray:              lighten($black, 56%);
+$gray-light:        lighten($black, 76%);
+$gray-lightest:     lighten($black, 96%);
+$white:             #ffffff;
 
 // Color Scheme
-// Use this to roll your own color schemes if you like (unused by Bootstrap by default)
-$baseColor:         $blue;                        // Set a base color
+// Use this to roll your own color schemes if you like
+$baseColor:         $primary;                        // Set a base color
 $complement:        complement($baseColor);       // Determine a complementary color
 $split1:            adjust-hue($baseColor, 158);  // Split complements
 $split2:            adjust-hue($baseColor, -158);
@@ -80,9 +40,6 @@ $tetra1:            adjust-hue($baseColor, 90);   // Tetra colors
 $tetra2:            adjust-hue($baseColor, -90);
 $analog1:           adjust-hue($baseColor, 22);   // Analogs colors
 $analog2:           adjust-hue($baseColor, -22);
-
-//Whole color backgrounds are primarily used.
-//Gradient backgrounds in gray vary from:  E8E8E8 to white
 
 // Font Stacks
 @mixin shorthand-font($weight: normal, $size: 14px, $lineHeight: 20px) {

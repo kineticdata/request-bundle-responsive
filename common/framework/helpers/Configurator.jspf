@@ -4,15 +4,29 @@
 <%@page import="java.io.FileReader"%>
 <%!
     /**
-     * Configurator Helper
+     * The Configurator Helper.
+     * 
+     * Used to load the current and all the package's JSON configuration files located under
+     * packages/package/config/config.json. These configurations are used to determine what
+     * package view to process for a Bundle layout.  These configurations also contain UI
+     * related data for the current theme, which can be leveraged by the layout.
      */
     public class Configurator {
         
         private JsonBase configuration;
         private Map<String,JsonBase> configurationsByPackage;
-        private String currentPackage = "base";
+        private String currentPackage = "catalog";
         private Bundle bundle;
-
+        
+        /**
+         * This constructor will use the Bundle object to parse through each of the packages
+         * under the package's directory to find a config.json file located in 
+         * packages/package/config.  The constructor will set this json configuration by package
+         * name under configurations by package.
+         * No errors are thrown if a configuration is not found.
+         * 
+         * @param Bundle
+         */
         public Configurator(Bundle bundle) {
             // Set bundle
             this.bundle = bundle;
@@ -35,7 +49,7 @@
                     // Define package directory
                     String packageDirectory = file.getAbsolutePath();
                     // Define package JSON config
-                    String packageConfigurationFile = packageDirectory + "/" + "config" + "/" + "config.json";
+                    String packageConfigurationFile = packageDirectory + File.separator + "config" + File.separator + "config.json";
                     try {
                         JSONParser parser = new JSONParser();
                         JSONObject jsonConfiguration = (JSONObject) parser.parse(new FileReader(packageConfigurationFile));
@@ -47,14 +61,30 @@
             this.configurationsByPackage = configurationsByPackage;   
         }
         
+        /**
+         * Returns the map of JSON configurations by package folder name
+         * @return Map<String,JsonBase>
+         */
         public String getPackagesConfiguration() {
             return JSONValue.toJSONString(this.configurationsByPackage);
         }
         
+        /**
+         * Returns the current package's JSON configuration
+         * as a real JSON string.
+         * 
+         * @return String
+         */
         public String getCurrentPackageConfiguration() {
             return JSONValue.toJSONString(this.configurationsByPackage.get(this.currentPackage));
         }
         
+        /**
+         * Returns the current package's JSON configuration as a JsonBase object
+         * to be traversed.
+         * 
+         * @return JsonBase
+         */
         public JsonBase getCurrentPackageConfig() {
             // Define result
             JsonBase packageConfig = null;
@@ -68,6 +98,13 @@
             return packageConfig;
         }
         
+        /**
+         * Returns the current package view from the package JSON configuration based
+         * on the view name.  This view provides information like the title of the view or
+         * JSP that should dynamically included as the content.
+         * 
+         * @return JsonBase
+         */
         public JsonBase getPackageViewByName(String packageViewName) {
             // Define result
             JsonBase view = null;
@@ -87,6 +124,13 @@
             return view;
         }
         
+        /**
+         * Returns the default package view (if configured) from the package JSON configuration 
+         * based on the "default" view name.  This view provides information like the title of 
+         * the view or JSP that should dynamically included as the content.
+         * 
+         * @return JsonBase
+         */
         public JsonBase getDefaultPackageView() {
             // Define result
             JsonBase view = null;
@@ -102,6 +146,12 @@
             return view;
         }
         
+        /**
+         * Returns the default package view configuration's content JSP path for dynamic
+         * includes.
+         * 
+         * @return String
+         */
         public String getDefaultViewContent() {
             // Define result
             String content = null;
@@ -115,6 +165,12 @@
             return content;
         }
         
+        /**
+         * Returns the default package view configuration's head JSP path for dynamic
+         * includes of head content.
+         * 
+         * @return String
+         */
         public String getDefaultViewHead() {
             // Define result
             String head = null;
@@ -128,19 +184,13 @@
             return head;
         }
         
-        public String getDefaultViewType() {
-            // Define result
-            String head = null;
-            // Define default view
-            JsonBase view = this.getDefaultPackageView();
-            // Determine null
-            if(view != null) {
-                // Update page content
-                head = view.getString("type");
-            }
-            return head;
-        }
-        
+        /**
+         * Returns the current package view configuration's content JSP path for dynamic
+         * includes based on the current package's view name.
+         * 
+         * @param packageViewName
+         * @return String
+         */
         public String getCurrentViewContent(String packageViewName) { 
             // Define result
             String content = null;
@@ -166,6 +216,13 @@
             return content;
         }
         
+        /**
+         * Returns the package callback JSP path for the current package's
+         * callback name.
+         * 
+         * @param packageCallbackName
+         * @return String
+         */
         public String getCurrentCallback(String packageCallbackName) { 
             // Define result
             String content = null;
@@ -191,6 +248,13 @@
             return content;
         }
         
+        /**
+         * Returns the current package view configuration's head JSP path for dynamic
+         * includes of head content based on the current package's view name.
+         * 
+         * @param packageViewName
+         * @return String
+         */
         public String getCurrentViewHead(String packageViewName) {
             // Define result
             String head = null;
@@ -216,6 +280,14 @@
             return head;
         }
         
+        /**
+         * Returns the current package view configuration's title (null if it does not exist).
+         * The current view head is determined first if a request attribute has been set.
+         * Otherwise, request get parameter view is used to get the current view and it's title.
+         * 
+         * @param HttpServletRequest
+         * @return String
+         */
         public String getCurrentViewTitle(HttpServletRequest request) {
             // Define result
             String title = null;
@@ -264,6 +336,17 @@
             return title;
         }
         
+        /**
+         * Used to process the correct view for a layout based on the package JSON configuration
+         * and request attributes or parameters (depending on which is set). Ultimately, this
+         * method will set the current view content JSP and head JSP (if exists) as request
+         * attributes to be used by the layout for dynamic includes.  If it's determined there 
+         * is a callback, then the request forwards to the callback skipping the layout.
+         * 
+         * @param HttpServletRequest
+         * @param HttpServletResponse
+         * @return void
+         */
         public void processView(HttpServletRequest request, HttpServletResponse response) {
             // Define absolute application context path to current package
             String currentPackagePath = "/" + this.bundle.relativePackagePath;
@@ -279,6 +362,17 @@
             request.setAttribute("content", currentPackagePath + this.getCurrentViewContent(view));
         }
         
+        /**
+         * Used to process the correct view for a layout based on the package JSON configuration
+         * and the view name supplied. Ultimately, this method will set the current view 
+         * content JSP and head JSP (if exists) as request attributes to be used by the layout
+         * for dynamic includes.
+         * 
+         * @param HttpServletRequest
+         * @param HttpServletResponse
+         * @param String view
+         * @return void
+         */
         public void processView(HttpServletRequest request, HttpServletResponse response, String view) {
             // Define absolute application context path to current package
             String currentPackagePath = "/" + this.bundle.relativePackagePath;
@@ -288,6 +382,15 @@
             request.setAttribute("content", currentPackagePath + this.getCurrentViewContent(view));
         }
         
+        /**
+         * Used to process a callback from the current package's JSON confguration based on
+         * the callback name.
+         * 
+         * @param HttpServletRequest
+         * @param HttpServletResponse
+         * @param String
+         * @return void
+         */
         public void processCallback(
             HttpServletRequest request,
             HttpServletResponse response,

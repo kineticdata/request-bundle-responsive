@@ -42,7 +42,7 @@
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
                                 <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=requests#<%=groupName%>">
-                                     <%=themeLocalizer.getString(groupName)%> (<%=count%>)
+                                    <%=themeLocalizer.getString(groupName)%>&nbsp;(<%=count%>)
                                 </a>
                             </li>
                         <%}%>
@@ -54,7 +54,7 @@
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
                                 <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=approvals#<%=groupName%>">
-                                    <%=themeLocalizer.getString(groupName)%> (<%=count%>)
+                                    <%=themeLocalizer.getString(groupName)%>&nbsp;(<%=count%>)
                                 </a>
                             </li>
                         <%}%>
@@ -71,7 +71,7 @@
     <div class="results-message hide"></div>
     <%-- LOADER --%>
     <div id="loader">
-        <img alt="<%= themeLocalizer.getString("Please Wait")%>." src="<%=bundle.bundlePath()%>common/resources/images/spinner.gif" />
+        <img alt="<%= themeLocalizer.getString("Please Wait")%>." src="<%=bundle.bundlePath()%>common/assets/images/spinner.gif" />
         <br />
         <%= themeLocalizer.getString("Loading Results")%>
     </div>
