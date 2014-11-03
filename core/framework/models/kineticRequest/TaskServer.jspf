@@ -1,0 +1,42 @@
+<%!
+    public static class TaskServer {
+        // Define fields present on the form.
+        public static final String FORM_NAME = "KS_RQT_TaskServer";
+        public static final String FIELD_NAME = "700000000";
+        public static final String FIELD_URL = "700000002";
+        public static final String FIELD_AUTH_TOKEN = "700000001";
+        
+        // Define an array that specifies which fields should be retrieved from
+        // the database.
+        public static final String[] FIELD_IDS = new String[]{
+            FIELD_NAME, FIELD_URL, FIELD_AUTH_TOKEN
+        };
+        
+        // Instance variables
+        private SimpleEntry entry = null;
+        
+        // Constructor
+        public TaskServer(SimpleEntry entry) {
+            this.entry = entry;
+        }
+
+        public static TaskServer findByName(HelperContext context, String name) {
+            // Initialize the result.
+            TaskServer result = null;
+            // Build the qualification string.
+            String qualification = "'" + FIELD_NAME + "' = \"" + name + "\"";
+            // Query for the matching task server record.
+            SimpleEntry entry = ArsBase.findSingle(context, FORM_NAME, qualification, FIELD_IDS);
+            if (entry != null) {
+                result = new TaskServer(entry);
+            }
+            // Return the result.
+            return result;
+        }
+
+        // Field accessors
+        public String getName() {return entry.getEntryFieldValue(FIELD_NAME);}
+        public String getUrl() {return entry.getEntryFieldValue(FIELD_URL);}
+        public String getAuthToken() {return entry.getEntryFieldValue(FIELD_AUTH_TOKEN);}
+    }
+%>

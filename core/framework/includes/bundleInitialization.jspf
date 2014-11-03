@@ -84,8 +84,10 @@
 <%@include file="../models/kineticRequest/CatalogAttribute.jspf" %>
 <%@include file="../models/kineticRequest/Category.jspf" %>
 <%@include file="../models/kineticRequest/Submission.jspf" %>
+<%@include file="../models/kineticRequest/TaskServer.jspf" %>
 <%@include file="../models/kineticRequest/Template.jspf" %>
 <%@include file="../models/kineticRequest/TemplateAttribute.jspf" %>
+<%@include file="../models/kineticTask/Run.jspf" %>
 <%@include file="../models/kineticTask/Task.jspf" %>
 <%@include file="../models/kineticTask/TaskMessage.jspf" %>
 
