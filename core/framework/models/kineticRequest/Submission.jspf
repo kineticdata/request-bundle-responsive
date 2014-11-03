@@ -31,8 +31,16 @@
             FIELD_NOTES, FIELD_SUBMIT_TYPE, FIELD_SUBMITTER, FIELD_TEMPLATE_ID,
             FIELD_TEMPLATE_NAME, FIELD_STATUS, FIELD_REQUEST_STATUS, FIELD_REQUEST_CLOSED_DATE, FIELD_VALIDATION_STATUS};
 
+        private SimpleEntry entry;
+        private HelperContext context;
+        private Template template;
         private Task[] tasks;
+        private Run[] runs;
         private Map<String,List<Task>> taskTreeExecutions;
+
+        /***********************************************************************
+         * Static Retrieval Methods
+         **********************************************************************/
 
         public static Submission[] find(HelperContext context, String qualification) {
             Submission[] results = new Submission[0];
@@ -41,7 +49,7 @@
             if (entries != null && entries.length > 0) {
                 results = new Submission[entries.length];
                 for(int i=0;i<results.length;i++) {
-                    results[i] = new Submission(entries[i]);
+                    results[i] = new Submission(entries[i], context);
                 }
             }
 
@@ -55,7 +63,7 @@
             if (entries != null && entries.length > 0) {
                 results = new Submission[entries.length];
                 for(int i=0;i<results.length;i++) {
-                    results[i] = new Submission(entries[i]);
+                    results[i] = new Submission(entries[i], context);
                 }
             }
 
@@ -67,7 +75,7 @@
 
             SimpleEntry entry = ArsBase.findByInstanceId(context, FORM_NAME, id, FIELD_IDS);
             if (entry != null) {
-                result = new Submission(entry);
+                result = new Submission(entry, context);
             }
 
             return result;
@@ -84,7 +92,7 @@
             if (entries != null && entries.length > 0) {
                 results = new Submission[entries.length];
                 for(int i=0;i<results.length;i++) {
-                    results[i] = new Submission(entries[i]);
+                    results[i] = new Submission(entries[i], context);
                 }
             }
 
@@ -120,12 +128,25 @@
             if (entries != null && entries.length > 0) {
                 results = new Submission[entries.length];
                 for(int i=0;i<results.length;i++) {
-                    results[i] = new Submission(entries[i]);
+                    results[i] = new Submission(entries[i], context);
                 }
             }
 
             return results;
         }
+        
+        /***********************************************************************
+         * Constructors
+         **********************************************************************/
+        
+        public Submission(SimpleEntry entry, HelperContext context) {
+            this.entry = entry;
+            this.context = context;
+        }
+        
+        /***********************************************************************
+         * Related Item Accessors
+         **********************************************************************/
         
         public Submission[] getChildren(HelperContext context) {
             String qualification = "'"+FIELD_LOOKUP_ID+"' = \""+getId()+"\" AND '"+FIELD_ID+"' != '"+FIELD_LOOKUP_ID+"'";
@@ -137,6 +158,13 @@
             String qualification = "'"+FIELD_ORIGINATING_ID+"' = \""+getId()+"\" AND '"+FIELD_ID+"' != '"+FIELD_ORIGINATING_ID+"'";
             Submission[] results = Submission.find(context, qualification);
             return results;
+        }
+        
+        public Template getTemplate() {
+            if (this.template == null) {
+                this.template = Template.findById(context, getTemplateId());
+            }
+            return this.template;
         }
 
         public Task[] getTasks(HelperContext context) {
@@ -162,12 +190,21 @@
             }
             return taskTreeExecutions;
         }
-
-        private SimpleEntry entry = null;
-
-        public Submission(SimpleEntry entry) {
-            this.entry = entry;
+        
+        public Run[] getRuns() {
+            if (runs == null) {
+                if(getTemplate().getTaskEngine().equals("Kinetic Task 2/3")) {
+                    runs = Run.findBySourceId(context, "Kinetic Request", getId());
+                } else if(getTemplate().getTaskEngine().equals("Kinetic Task 4+")) {
+                    runs = Run.findFromTask4(context, this);
+                }
+            }
+            return runs;
         }
+
+        /***********************************************************************
+         * Submission Property Accessors
+         **********************************************************************/
 
         public String getCatalogName() {return entry.getEntryFieldValue(FIELD_CATALOG_NAME);}
         public String getCreateDate() {return entry.getEntryFieldValue(FIELD_CREATE_DATE);}

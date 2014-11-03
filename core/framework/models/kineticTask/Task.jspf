@@ -1,11 +1,22 @@
+<%@page import="javax.xml.parsers.DocumentBuilderFactory"%>
+<%@page import="javax.xml.parsers.DocumentBuilder"%>
+<%@page import="javax.xml.xpath.XPath"%>
+<%@page import="javax.xml.xpath.XPathConstants"%>
+<%@page import="javax.xml.xpath.XPathFactory"%>
+<%@page import="javax.xml.xpath.XPathExpression"%>
+<%@page import="javax.xml.xpath.XPathExpressionException"%>
+<%@page import="org.w3c.dom.Document"%>
+<%@page import="org.w3c.dom.Node"%>
+<%@page import="org.w3c.dom.NodeList"%>
+<%@page import="org.xml.sax.InputSource"%>
 <%!
-    public static class Task {
+    public static class Task implements Comparable<Task> {
         public static final String FORM_NAME = "KS_TSK_Instance";
         public static final String FIELD_CREATE_DATE = "3";
-        public static final String FIELD_REQUEST_ID = "1";
         public static final String FIELD_ID = "179";
         public static final String FIELD_MODIFIED_DATE = "6";
         public static final String FIELD_NAME = "700000810";
+        public static final String FIELD_NODE_ID = "700000900";
         public static final String FIELD_SOURCE = "700000840";
         public static final String FIELD_SOURCE_ID = "700000830";
         public static final String FIELD_STATUS = "7";
@@ -17,7 +28,15 @@
         public static final String[] FIELD_IDS = new String[] {
             FIELD_CREATE_DATE, FIELD_ID, FIELD_MODIFIED_DATE, FIELD_NAME,
             FIELD_SOURCE_ID, FIELD_STATUS, FIELD_TREE_NAME, FIELD_TOKEN,
-            FIELD_DEF_NAME, FIELD_RESULTS, FIELD_VISIBLE, FIELD_REQUEST_ID};
+            FIELD_DEF_NAME, FIELD_RESULTS, FIELD_VISIBLE, FIELD_NODE_ID
+        };
+        // Define a simple date format for parsing the create date value which
+        // is used in the compareTo method for sorting.
+        private static final SimpleDateFormat dateFormat = new SimpleDateFormat(DateHelper.DATE_FORMAT_SIMPLE);
+        
+        /***********************************************************************
+         * Static Retrieval Methods
+         **********************************************************************/
 
         public static Task[] findBySource(HelperContext context, String source, String sourceId) {
             Task[] results = new Task[0];
@@ -32,52 +51,91 @@
             if (entries != null && entries.length > 0) {
                 results = new Task[entries.length];
                 for(int i=0;i<results.length;i++) {
-                    results[i] = new Task(entries[i]);
+                    results[i] = new Task(entries[i], context);
                 }
             }
 
             return results;
         }
+        
+        /***********************************************************************
+         * Member Variables
+         **********************************************************************/
 
-        public static Task[] findBySource(HelperContext context, String source, String sourceId, boolean includeSubtreeNodes) {
-            Task[] results = new Task[0];
-            if(includeSubtreeNodes) {
-                String qualification =
-               "'"+FIELD_SOURCE+"' = \""+source+"\" AND "+
-               "'"+FIELD_SOURCE_ID+"' = \""+sourceId+"\" AND"+
-               "'"+FIELD_STATUS+"' != \"New\" AND"+ // Exclude tasks that have not completed their actions
-               "('"+FIELD_VISIBLE+"' = \"Yes\" OR '"+FIELD_DEF_NAME+"' LIKE \"tree_%\")";
-
-               SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS, new String[] {FIELD_CREATE_DATE}, 0, 0, 1);
-               if (entries != null && entries.length > 0) {
-                   results = new Task[entries.length];
-                   for(int i=0;i<results.length;i++) {
-                       results[i] = new Task(entries[i]);
-                   }
-               }
-            } else {
-                results = Task.findBySource(context, source, sourceId);
-            }
-            return results;
-       }
-
-        public static Task findByToken(HelperContext context, String source, String token) {
-            Task result = null;
-            String qualification =
-                "'"+FIELD_SOURCE+"' = \""+source+"\" AND "+
-                "'"+FIELD_TOKEN+"' = \""+token+"\"";
-
-            SimpleEntry entry = ArsBase.findSingle(context, FORM_NAME, qualification, FIELD_IDS);
-            if (entry != null) { result = new Task(entry); }
-            return result;
-        }
-
+        private HelperContext context = null;
         private TaskMessage[] messages = null;
+        private Map<String,String> resultsMap = null;
+        private String createDate;
+        private String id;
+        private String modifiedDate;
+        private String name;
+        private String nodeId;
+        private String sourceId;
+        private String status;
+        private String treeName;
+        private String token;
+        private String defName;
+        private String results;
+        private String visible;
+        private String runId;
+        private String originatingRunId;
+        private String originatingTreeName;
+        
+        /***********************************************************************
+         * Constructors
+         **********************************************************************/
 
-        private SimpleEntry entry;
-        public Task(SimpleEntry entry) {
-            this.entry = entry;
+        /**
+         * Constructor that takes a SimpleEntry instance that should be used
+         * when retrieving Task records from the local remedy instance.
+         */
+        public Task(SimpleEntry entry, HelperContext context) {
+            this.context = context;
+            this.createDate = entry.getEntryFieldValue(FIELD_CREATE_DATE);
+            this.id = entry.getEntryFieldValue(FIELD_ID);
+            this.modifiedDate = entry.getEntryFieldValue(FIELD_MODIFIED_DATE);
+            this.name = entry.getEntryFieldValue(FIELD_NAME);
+            this.nodeId = entry.getEntryFieldValue(FIELD_NODE_ID);
+            this.sourceId = entry.getEntryFieldValue(FIELD_SOURCE_ID);
+            this.status = entry.getEntryFieldValue(FIELD_STATUS);
+            this.treeName = entry.getEntryFieldValue(FIELD_TREE_NAME);
+            this.token = entry.getEntryFieldValue(FIELD_TOKEN);
+            this.defName = entry.getEntryFieldValue(FIELD_DEF_NAME);
+            this.results = entry.getEntryFieldValue(FIELD_RESULTS);
+            this.visible = entry.getEntryFieldValue(FIELD_VISIBLE);
         }
+        
+        /**
+         * Constructor that takes a Map (parsed from JSON object) that should be
+         * used when retrieving Task records from the task api.
+         */
+        public Task(Map<String,Object> taskObject) {
+            this.createDate = DateHelper.convertDate((String)taskObject.get("createdAt"));
+            this.id = Long.toString((Long)taskObject.get("id"));
+            this.modifiedDate = DateHelper.convertDate((String)taskObject.get("updatedAt"));
+            this.name = (String)taskObject.get("nodeName");
+            this.nodeId = (String)taskObject.get("nodeId");
+            this.status = (String)taskObject.get("status");
+            this.token = (String)taskObject.get("token");
+            this.defName = (String)taskObject.get("definitionId");
+            this.results = (String)taskObject.get("results");
+            // Visible is always set to "Yes" because v1 of the task api only
+            // retrieves visible tasks, there is no option to include tasks that
+            // are not marked as visible.
+            this.visible = "Yes";
+            // Get the related task messages and add them to the array of
+            // messages for this instance.
+            List<Map<String,Object>> taskMessageObjects = (List)taskObject.get("messages");
+            this.messages = new TaskMessage[taskMessageObjects.size()];
+            for(int i=0; i<taskMessageObjects.size(); i++) {
+                this.messages[i] = new TaskMessage(taskMessageObjects.get(i));
+                this.messages[i].setTaskId(((Long)taskObject.get("id")).toString());
+            }
+        }
+        
+        /***********************************************************************
+         * Accessors
+         **********************************************************************/
 
         public TaskMessage[] getMessages(HelperContext context) {
             if (messages == null) {
@@ -85,33 +143,81 @@
             }
             return messages;
         }
+        public TaskMessage[] getMessages() {
+            if (messages == null) {
+                messages = TaskMessage.findByTaskId(context, getId());
+            }
+            return messages;
+        }
 
         public String getResult(String name) {
-            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(".*<result name=\"" + name + "\">(.*?)<\\/result>.*", java.util.regex.Pattern.DOTALL);
-            java.util.regex.Matcher matcher = pattern.matcher(getResults());
-            
-            if (matcher.matches()) {
-                return matcher.group(1);
-            } else {
-                return null;
+            return getResultsMap().get(name);
+        }
+        
+        public Map<String,String> getResultsMap() {
+            if (this.resultsMap == null) {
+                try {
+                    // Do the gross xml parsing stuff.  We need to create an xml
+                    // document using the results data.  Then we create an xpath
+                    // expression to get the result nodes from the xml.
+                    DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                    Document document = db.parse(new InputSource(new StringReader(getResults())));
+                    XPath xpath = XPathFactory.newInstance().newXPath();
+                    XPathExpression expression = xpath.compile("/results/result");
+                    // Get the matching nodes.
+                    NodeList nodes = (NodeList)expression.evaluate(document, XPathConstants.NODESET);
+                    // Iterate through each of the matching nodes, creating an
+                    // entry in the hash for each node.
+                    this.resultsMap = new LinkedHashMap<String, String>();
+                    for (int i=0; i<nodes.getLength(); i++) {
+                        Node node = nodes.item(i);
+                        String name = node.getAttributes().getNamedItem("name").getNodeValue();
+                        String value = node.getTextContent();
+                        this.resultsMap.put(name, value);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException("Unable to parse task results xml", e);
+                } 
             }
+            return this.resultsMap;
         }
 
         public boolean hasMessages() {
             return messages.length > 0;
         }
 
-        public String getCreateDate() {return entry.getEntryFieldValue(FIELD_CREATE_DATE);}
-        public String getRequestId() {return entry.getEntryFieldValue(FIELD_REQUEST_ID);}
-        public String getId() {return entry.getEntryFieldValue(FIELD_ID);}
-        public String getModifiedDate() {return entry.getEntryFieldValue(FIELD_MODIFIED_DATE);}
-        public String getName() {return entry.getEntryFieldValue(FIELD_NAME);}
-        public String getSourceId() {return entry.getEntryFieldValue(FIELD_SOURCE_ID);}
-        public String getStatus() {return entry.getEntryFieldValue(FIELD_STATUS);}
-        public String getTreeName() {return entry.getEntryFieldValue(FIELD_TREE_NAME);}
-        public String getToken() {return entry.getEntryFieldValue(FIELD_TOKEN);}
-        public String getDefName() {return entry.getEntryFieldValue(FIELD_DEF_NAME);}
-        public String getResults() {return entry.getEntryFieldValue(FIELD_RESULTS);}
-        public String getVisible() {return entry.getEntryFieldValue(FIELD_VISIBLE);}
+        public String getCreateDate() { return this.createDate; }
+        public String getId() { return this.id; }
+        public String getModifiedDate() { return this.modifiedDate; }
+        public String getName() { return this.name; }
+        public String getNodeId() { return this.nodeId; }
+        public String getSourceId() { return this.sourceId; }
+        public String getStatus() { return this.status; }
+        public String getTreeName() { return this.treeName; }
+        public String getToken() { return this.token; }
+        public String getDefName() { return this.defName; }
+        public String getResults() { return this.results; }
+        public String getVisible() { return this.visible; }
+        public String getRunId() { return this.runId; }
+        public String getOriginatingRunId() { return this.originatingRunId; }
+        public String getOriginatingTreeName()  { return this.originatingTreeName; }
+        
+        public void setSourceId(String sourceId) { this.sourceId = sourceId; }
+        public void setTreeName(String treeName) { this.treeName = treeName; }
+        public void setRunId(String runId) { this.runId = runId; }
+        public void setOriginatingRunId(String originatingRunId) { this.originatingRunId = originatingRunId; }
+        public void setOriginatingTreeName(String originatingTreeName) { this.originatingTreeName = originatingTreeName; }
+        
+        /***********************************************************************
+         * Comparable
+         **********************************************************************/
+        
+        public int compareTo(Task task) {
+            try {
+                return dateFormat.parse(getCreateDate()).compareTo(dateFormat.parse(task.getCreateDate()));
+            } catch (java.text.ParseException e) {
+                throw new RuntimeException("Error parsing task create date", e);
+            }
+        }
     }
 %>

@@ -9,7 +9,10 @@
     
         // popular US date format
         public static final String DATE_FORMAT_SIMPLE = "MM/dd/yyyy HH:mm:ss";
-
+        
+        // iso8601 date format
+        public static final String DATE_FORMAT_ISO8601 = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+        
         // English month abbreviations
         public static final String[] MONTH_ABBREVIATIONS = new String[] {
             "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"
@@ -95,6 +98,28 @@
             Date date = new Date();
             DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM, locale);
             result = dateFormat.format(date);
+            return result;
+        }
+        
+        /**
+         * Returns a date string formatted like the default date format of ars
+         * helpers given an iso8601 date.  This is necessary because models that
+         * use both ars helpers and the task api need to return the same exact
+         * date string regardless of the source of the data.
+         */
+        public static String convertDate(String dateString) {
+            String result = null;
+            if (dateString != null) {
+                try {
+                    SimpleDateFormat iso8601Format = new SimpleDateFormat(DATE_FORMAT_ISO8601);
+                    iso8601Format.setTimeZone(java.util.TimeZone.getTimeZone("UTC"));
+                    Date date = iso8601Format.parse(dateString);
+                    SimpleDateFormat simpleFormat = new SimpleDateFormat(DATE_FORMAT_SIMPLE);
+                    result = simpleFormat.format(date);
+                } catch (Exception e) {
+                    throw new RuntimeException("Unable to convert date: " + dateString, e);
+                }
+            }
             return result;
         }
     }
