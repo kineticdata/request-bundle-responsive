@@ -60,5 +60,21 @@
             }
             return preferredLocale;
         }
+        
+        public static void setPreferredLocale(HelperContext context, HttpSession session, String preferredLocale) {
+            // Retrieve the user's preferences from helper using the preference model
+            Map<String,List<LocalePreference>> preferences = LocalePreference.findByUser(context, context.getUserName());
+            // If no language preference record is found, create one for the user.
+            if (preferences.containsKey("Language")) {
+                // Create preference for user
+                LocalePreference.update(context, context.getUserName(), preferredLocale);
+            } else {
+                LocalePreference.create(context, context.getUserName(), preferredLocale);
+            }
+            // Store locale in session
+            session.setAttribute("preferredLocale", preferredLocale);
+        }
     }
+    
+    
 %>

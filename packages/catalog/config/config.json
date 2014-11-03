@@ -1,5 +1,9 @@
 {
     "package": "catalog",
+    "languages": {
+      "en_US" : "English",
+      "en_FR" : "French"
+    },
     "views": {
         "about": {
             "content": "interface/views/catalog/about.jsp",
@@ -108,7 +112,7 @@
         },
         "userProfile": {
             "type": "main-menu",
-            "label": "View Profile",
+            "label": "Update Profile",
             "class": "profile",
             "description": "My Profile",
             "icon": "<i class=\"gravatar-icon\"></i>",

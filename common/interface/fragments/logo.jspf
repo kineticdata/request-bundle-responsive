@@ -26,7 +26,7 @@
             // Define user profile anchor tag attributes
             var logoAttributes = {
                 'href': url,
-                'aria-label': home.description.localize()
+                'aria-label': BUNDLE.localize(home.description)
             };
             // Add attributes to logo
             $('a.logo').attr(logoAttributes);

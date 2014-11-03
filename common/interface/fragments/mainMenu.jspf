@@ -86,9 +86,9 @@
                                 var li = $('<li>').addClass(property['class']).append(
                                     $('<a>').addClass('color-gray-darkest color-hover-secondary').attr({
                                         'href': url,
-                                        'aria-label': property.description.localize()
+                                        'aria-label': BUNDLE.localize(property.description)
                                     }).append(property.icon).append(
-                                        $('<div>').text(property.label.localize())
+                                        $('<div>').text(BUNDLE.localize(property.label))
                                     )
                                 );
                                 if(i > 3) {

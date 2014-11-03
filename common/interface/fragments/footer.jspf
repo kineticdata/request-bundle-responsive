@@ -1,4 +1,4 @@
-<!-- Footer -->
+<!-- Footer foot foot foot -->
 <footer class="footer background-primary-darkest">
     <span style="display:none">
         &nbsp;
@@ -30,8 +30,8 @@
                 var span = $('<span>').addClass(property['class']).append(
                     $('<a>').addClass('color-white color-hover-white').attr({
                         'href': url,
-                        'aria-label': property.description.localize()
-                    }).text(property.label.localize()))
+                        'aria-label': BUNDLE.localize(property.description)
+                    }).text(BUNDLE.localize(property.label))
                 );
                 // Add links to main menus
                 $('footer.footer').find('div.container').append(span);
