@@ -37,6 +37,7 @@
 <%@page import="com.kineticdata.bridges.Count"%>
 <%@page import="com.kineticdata.bridges.Record"%>
 <%@page import="com.kineticdata.bridges.RecordList"%>
+<%@page import="com.kineticdata.core.v1.web.Encoder"%>
 <%@page import="java.io.IOException"%>
 <%@page import="java.lang.reflect.Method"%>
 <%@page import="java.lang.reflect.Array"%>
