@@ -29,10 +29,12 @@
         public static final String[] FIELD_IDS = new String[] {
             FIELD_CATALOG_NAME, FIELD_CREATE_DATE, FIELD_ID, FIELD_REQUEST_ID,
             FIELD_NOTES, FIELD_SUBMIT_TYPE, FIELD_SUBMITTER, FIELD_TEMPLATE_ID,
-            FIELD_TEMPLATE_NAME, FIELD_STATUS, FIELD_REQUEST_STATUS, FIELD_REQUEST_CLOSED_DATE, FIELD_VALIDATION_STATUS};
+            FIELD_TEMPLATE_NAME, FIELD_STATUS, FIELD_REQUEST_STATUS, 
+            FIELD_REQUEST_CLOSED_DATE, FIELD_VALIDATION_STATUS};
 
         private SimpleEntry entry;
         private HelperContext context;
+        private Map<String,String> additionalFieldValues;
         private Template template;
         private Task[] tasks;
         private Run[] runs;
@@ -42,77 +44,166 @@
          * Static Retrieval Methods
          **********************************************************************/
 
+        /*
+         * Retrieval methods that simply take a qualification.  Note that one of them takes an
+         * additional fields map while the other will pass no additional fields.
+         */
         public static Submission[] find(HelperContext context, String qualification) {
+            return find(context, qualification, new String[0], 0, 0, 1, new HashMap<String,String>());
+        }
+        public static Submission[] find(HelperContext context, String qualification, Map<String,String> additionalFields) {
+            return find(context, qualification, new String[0], 0, 0, 1, additionalFields);
+        }
+        
+        /*
+         * Retrieval methods that take a qualification and a limit of records to return.  Note that
+         * one of them takes an additional fields map while the other will pass no additional fields.
+         */
+        public static Submission[] find(HelperContext context, String qualification, Integer number) {
+            return find(context, qualification, new String[0], number, 0, 1, new HashMap<String,String>());
+        }
+        public static Submission[] find(HelperContext context, String qualification, Integer number, Map<String,String> additionalFields) {
+            return find(context, qualification, new String[0], number, 0, 1, additionalFields);
+        }
+        
+        /*
+         * Retrieval methods that take all of the parameters (limit, offset, sort fields, and sort
+         * order).  Note that one of them takes an additional fields map while the other will pass
+         * no additional fields.
+         */
+        public static Submission[] find(HelperContext context, String qualification, String[] sortFields,
+                Integer chunkSize, Integer recordOffset, Integer sortOrder) {
+            return find(context, qualification, sortFields, chunkSize, recordOffset, sortOrder, new HashMap<String,String>());
+        }
+        public static Submission[] find(HelperContext context, String qualification, String[] sortFields,
+                Integer chunkSize, Integer recordOffset, Integer sortOrder, Map<String,String> additionalFields) {
+            // Initialize the result array.
             Submission[] results = new Submission[0];
-
-            SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS);
+            
+            // Combine the FIELD_IDS constant with the field ids defined in the additionalFields map
+            // to determine the fields to retrieve with this query.
+            Set<String> includeFields = new HashSet<String>();
+            for (String fieldId : FIELD_IDS) {
+                includeFields.add(fieldId);
+            }
+            for (String fieldId : additionalFields.values()) {
+                includeFields.add(fieldId);
+            }
+            
+            // Make the API call.
+            SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, includeFields.toArray(new String[0]),
+                    sortFields, chunkSize, recordOffset, sortOrder);
+            
+            // Populate the results array.
             if (entries != null && entries.length > 0) {
                 results = new Submission[entries.length];
                 for(int i=0;i<results.length;i++) {
-                    results[i] = new Submission(entries[i], context);
+                    results[i] = new Submission(entries[i], context, additionalFields);
                 }
             }
 
+            // Return the result.
             return results;
         }
 
-        public static Submission[] find(HelperContext context, String qualification, String[] sortFields, Integer chunkSize, Integer recordOffset, Integer sortOrder) {
-            Submission[] results = new Submission[0];
-
-            SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS, sortFields, chunkSize, recordOffset, sortOrder);
-            if (entries != null && entries.length > 0) {
-                results = new Submission[entries.length];
-                for(int i=0;i<results.length;i++) {
-                    results[i] = new Submission(entries[i], context);
-                }
-            }
-
-            return results;
-        }
-
+        /*
+         * Retrieval methods that retrieve a submission by its instance id.  Note that one of them
+         * takes an additional fields map while the other will pass no additional fields.
+         */
         public static Submission findByInstanceId(HelperContext context, String id) {
+            return findByInstanceId(context, id, new HashMap<String,String>());
+        }
+        public static Submission findByInstanceId(HelperContext context, String id, Map<String,String> additionalFields) {
+            // Initialize the result.
             Submission result = null;
 
-            SimpleEntry entry = ArsBase.findByInstanceId(context, FORM_NAME, id, FIELD_IDS);
+            // Combine the FIELD_IDS constant with the field ids defined in the additionalFields map
+            // to determine the fields to retrieve with this query.
+            Set<String> includeFields = new HashSet<String>();
+            for (String fieldId : FIELD_IDS) {
+                includeFields.add(fieldId);
+            }
+            for (String fieldId : additionalFields.values()) {
+                includeFields.add(fieldId);
+            }
+            
+            // Make the API call.
+            SimpleEntry entry = ArsBase.findByInstanceId(context, FORM_NAME, id, includeFields.toArray(new String[0]));
+            
+            // If a record was returned instantiate a new submission instance.
             if (entry != null) {
-                result = new Submission(entry, context);
+                result = new Submission(entry, context, additionalFields);
             }
 
+            // Return the result.
             return result;
         }
 
-        public static Submission[] findRecentByCatalogName(HelperContext context, String catalogName, Integer number) {
-            Submission[] results = new Submission[0];
-
+        /*
+         * Retrieval methods that retrieve submissions by catalog name with a limit.  Note that the
+         * default sort order is specified resulting in the more recent submissions being retrieved
+         * first.
+         */
+        public static Submission[] findRecentByCatalogName(HelperContext context, String catalogName,
+                Integer number) {
+            return findRecentByCatalogName(context, catalogName, number, new HashMap<String,String>());
+        }
+        public static Submission[] findRecentByCatalogName(HelperContext context, String catalogName,
+                Integer number, Map<String,String> additionalFields) {
             String qualification =
                 "'"+FIELD_CATALOG_NAME+"' = \""+catalogName+"\" AND "+
                 "'"+FIELD_SUBMITTER+"' = \""+context.getUserName()+"\"";
 
-            SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS, number);
-            if (entries != null && entries.length > 0) {
-                results = new Submission[entries.length];
-                for(int i=0;i<results.length;i++) {
-                    results[i] = new Submission(entries[i], context);
-                }
-            }
-
-            return results;
+            return find(context, qualification, new String[0], number, 0, 1, additionalFields);
         }
 
-        public static Submission[] findRecentApprovalsByCatalogName(HelperContext context, String catalogName, Integer number) {
-            return findRecentByCatalogNameAndSubmitType(context, catalogName, "Approval", number);
+        /*
+         * Retrieves recent approval records (by passing "Approval" as submit type).
+         */
+        public static Submission[] findRecentApprovalsByCatalogName(HelperContext context, String catalogName,
+                Integer number) {
+            return findRecentByCatalogNameAndSubmitType(context, catalogName, "Approval", number, new HashMap<String,String>());
+        }
+        public static Submission[] findRecentApprovalsByCatalogName(HelperContext context, String catalogName,
+                Integer number, Map<String,String> additionalFields) {
+            return findRecentByCatalogNameAndSubmitType(context, catalogName, "Approval", number, additionalFields);
         } 
 
-        public static Submission[] findRecentRequestsByCatalogName(HelperContext context, String catalogName, Integer number) {
-            return findRecentByCatalogNameAndSubmitType(context, catalogName, null, number);
+        /*
+         * Retrieves recent request submission records (by passing null as submit type).
+         */
+        public static Submission[] findRecentRequestsByCatalogName(HelperContext context, String catalogName,
+                Integer number) {
+            return findRecentByCatalogNameAndSubmitType(context, catalogName, null, number, new HashMap<String,String>());
+        }
+        public static Submission[] findRecentRequestsByCatalogName(HelperContext context, String catalogName,
+                Integer number, Map<String,String> additionalFields) {
+            return findRecentByCatalogNameAndSubmitType(context, catalogName, null, number, additionalFields);
         }
 
-        public static Submission[] findRecentWorkOrdersByCatalogName(HelperContext context, String catalogName, Integer number) {
-            return findRecentByCatalogNameAndSubmitType(context, catalogName, "WorkOrder", number);
+        /*
+         * Retrieves recent work order records (by passing "WorkOrder" as submit type).
+         */
+        public static Submission[] findRecentWorkOrdersByCatalogName(HelperContext context, String catalogName,
+                Integer number) {
+            return findRecentByCatalogNameAndSubmitType(context, catalogName, "WorkOrder", number, new HashMap<String,String>());
+        }
+        public static Submission[] findRecentWorkOrdersByCatalogName(HelperContext context, String catalogName,
+                Integer number, Map<String,String> additionalFields) {
+            return findRecentByCatalogNameAndSubmitType(context, catalogName, "WorkOrder", number, additionalFields);
         }
 
-        public static Submission[] findRecentByCatalogNameAndSubmitType(HelperContext context, String catalogName, String submitType, Integer number) {
-            Submission[] results = new Submission[0];
+        /*
+         * Retrieval methods that retrieve submissions by catalog name and submit type with a limit.
+         * Note that the default sort order is specified resulting in the more recent submissions
+         * being retrieved first.
+         */
+        public static Submission[] findRecentByCatalogNameAndSubmitType(HelperContext context, String catalogName,
+                String submitType, Integer number) {
+            return findRecentByCatalogNameAndSubmitType(context, catalogName, submitType, number, new HashMap<String,String>());
+        }
+        public static Submission[] findRecentByCatalogNameAndSubmitType(HelperContext context, String catalogName,
+                String submitType, Integer number, Map<String,String> additionalFields) {
             String qualification = null;
             if (submitType != null) {
                 qualification = "'"+FIELD_CATALOG_NAME+"' = \""+catalogName+"\" AND "+
@@ -123,25 +214,26 @@
                                 "'"+FIELD_SUBMITTER+"' = \""+context.getUserName()+"\" AND "+
                                 "'"+FIELD_SUBMIT_TYPE+"' = $NULL$";
             }
-
-            SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS, number);
-            if (entries != null && entries.length > 0) {
-                results = new Submission[entries.length];
-                for(int i=0;i<results.length;i++) {
-                    results[i] = new Submission(entries[i], context);
-                }
-            }
-
-            return results;
+            
+            return find(context, qualification, new String[0], number, 0, 1, additionalFields);
         }
         
         /***********************************************************************
          * Constructors
          **********************************************************************/
         
-        public Submission(SimpleEntry entry, HelperContext context) {
+        public Submission(SimpleEntry entry, HelperContext context, Map<String,String> additionalFields) {
             this.entry = entry;
             this.context = context;
+            
+            // Iterate through the additional field definitions populating the additionalFieldValues
+            // map which maps the field label to the value retrieved from the simple entry object.
+            this.additionalFieldValues = new HashMap<String,String>();
+            for (Map.Entry<String,String> mapEntry : additionalFields.entrySet()) {
+                String fieldLabel = mapEntry.getKey();
+                String fieldId = mapEntry.getValue();
+                this.additionalFieldValues.put(fieldLabel, entry.getEntryFieldValue(fieldId));
+            }
         }
         
         /***********************************************************************
@@ -218,5 +310,18 @@
         public String getRequestStatus() {return entry.getEntryFieldValue(FIELD_REQUEST_STATUS);}
         public String getRequestClosedDate() {return entry.getEntryFieldValue(FIELD_REQUEST_CLOSED_DATE);}
         public String getValiationStatus() {return entry.getEntryFieldValue(FIELD_VALIDATION_STATUS);}
+        
+        /*
+         * Returns the value of the specified additional field.  Note that if the field label passed
+         * was not defined as an additional field on the query an error will be raised.
+         */
+        public String get(String additionalFieldLabel) {
+            if (additionalFieldValues.containsKey(additionalFieldLabel)) {
+                return additionalFieldValues.get(additionalFieldLabel);
+            } else {
+                throw new RuntimeException("The field '" + additionalFieldLabel + "' was not specified" + 
+                        " as an additional field on the query for the submission record(s).");
+            }
+        }
     }
 %>
