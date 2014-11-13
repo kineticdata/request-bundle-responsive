@@ -114,11 +114,8 @@
                 // Get the configured task server for the submission/template.
                 TaskServer taskServer = submission.getTemplate().getTaskServer();
                 String sourceName = submission.getTemplate().getTaskSourceName();
-                //String encodedSourceName = Encoder.encodePathSegment(sourceName);
-                //String encodedSourceId = Encoder.encodeQueryParameter(submission.getRequestId());
-                
-                String encodedSourceName = sourceName;
-                String encodedSourceId = submission.getRequestId();
+                String encodedSourceName = Encoder.encodePathSegment(sourceName);
+                String encodedSourceId = Encoder.encodeQueryParameter(submission.getRequestId());
 
                 String path = taskServer.getUrl() + "/app/api/v1/sources/" + encodedSourceName + 
                         "/runs?include=tasks,tasks.messages&sourceId=" + encodedSourceId;
