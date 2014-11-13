@@ -93,7 +93,6 @@
             this.template = catalog.getTemplateById(this.entry.getEntryFieldValue(FIELD_TEMPLATE_ID));
         }
 
-        // Not called.
         public Task[] getTasks(HelperContext context) {
             if (tasks == null) {
                 // Retrieve the associated tasks
@@ -102,7 +101,6 @@
             return tasks;
         }
 
-        
         public Map<String,List<Task>> getTaskTreeExecutions(HelperContext context) {
             if (taskTreeExecutions == null) {
                 taskTreeExecutions = new LinkedHashMap();
