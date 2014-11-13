@@ -1,0 +1,166 @@
+<%@page import="java.net.URLEncoder"%>
+<%@page import="java.io.UnsupportedEncodingException"%>
+<%!
+    /**
+     * The Encoder class is used to encode various parts of URLs.
+     * <p>
+     * It is an extension of the <code>java.net.URLEncoder</code> class in that it correctly encodes the input
+     * specifically for how the value will be used in the URL.
+     * <p>
+     * Since the rules for encoding path segments is different than the rules for encoding query parameters,
+     * the <code>java.net.URLEncoder</code> class cannot be used directly to encode values for all parts of
+     * the URL.  This class provides methods specifically to individually handle path segments and query
+     * parameters.
+     * <p>
+     */
+    public static class Encoder {
+
+        /**
+         * The default character set is UTF-8.
+         * <p>
+         */
+        public static final String DEFAULT_CHARSET = "UTF-8";
+
+
+        /**
+         * Use this method to encode a path segment using the specified character encoding.
+         * <p>
+         * This ensures that all space characters are encoded as <code>"%20"</code> and all <code>"+"</code> 
+         * characters are left unencoded.
+         * <p>
+         * The following example can be used to illustrate what part of the URL constitutes a path segment. 
+         * <code>http://example.com/path1/path2/path3;pParameter1=pValue1?qParameter1=qValue1&qParameter2=qValue2#fragment</code>
+         * <ul>
+         * <li>Scheme: http</li>
+         * <li>Host: example.com</li>
+         * <li>Path: /path1/path2/path3</li>
+         * <li>Path segment 1: path1</li>
+         * <li>Path segment 2: path2</li>
+         * <li>Path segment 3: path3</li>
+         * <li>Path parameter name: pParameter1</li>
+         * <li>Path parameter value: pValue1</li>
+         * <li>Query parameter name: qParameter1</li>
+         * <li>Query parameter value: qValue1</li>
+         * <li>Query parameter name: qParameter2</li>
+         * <li>Query parameter value: qValue2</li>
+         * <li>Fragment: fragment</li>
+         * </ul>
+         * <p>
+         * @param segment The raw path fragment
+         * @param charset The character set to use for encoding
+         * @return The encoded path fragment
+         */
+        public static String encodePathSegment(String segment, String charset) {
+            String encodedPathSegment;
+            try {
+                encodedPathSegment = URLEncoder.encode(segment, charset).replace("+", "%20").replace("%2B", "+");
+            }
+            catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("Unsupported encoding: "+charset, e);
+            }
+            return encodedPathSegment;
+        }
+
+        /**
+         * Use this method to encode a path segment using the default character encoding (UTF-8).
+         * <p>
+         * This ensures that all space characters are encoded as <code>"%20"</code> and all <code>"+"</code> 
+         * characters are left unencoded.
+         * <p>
+         * The following example can be used to illustrate what part of the URL constitutes a path segment. 
+         * <code>http://example.com/path1/path2/path3;pParameter1=pValue1?qParameter1=qValue1&qParameter2=qValue2#fragment</code>
+         * <ul>
+         * <li>Scheme: http</li>
+         * <li>Host: example.com</li>
+         * <li>Path: /path1/path2/path3</li>
+         * <li>Path segment 1: path1</li>
+         * <li>Path segment 2: path2</li>
+         * <li>Path segment 3: path3</li>
+         * <li>Path parameter name: pParameter1</li>
+         * <li>Path parameter value: pValue1</li>
+         * <li>Query parameter name: qParameter1</li>
+         * <li>Query parameter value: qValue1</li>
+         * <li>Query parameter name: qParameter2</li>
+         * <li>Query parameter value: qValue2</li>
+         * <li>Fragment: fragment</li>
+         * </ul>
+         * <p>
+         * @param segment The raw path fragment
+         * @return The encoded path fragment
+         */
+        public static String encodePathSegment(String segment) {
+            return Encoder.encodePathSegment(segment, DEFAULT_CHARSET);
+        }
+
+
+        /**
+         * Use this method to encode a query parameter using the specified character encoding.
+         * <p>
+         * This ensures that all space characters are encoded as <code>"%20"</code> and all <code>"+"</code>
+         * characters are encoded as <code>"%2B"</code>.
+         * <p>
+         * The following example can be used to illustrate what part of the URL constitutes a query parameter. 
+         * <code>http://example.com/path1/path2/path3;pParameter1=pValue1?qParameter1=qValue1&qParameter2=qValue2#fragment</code>
+         * <ul>
+         * <li>Scheme: http</li>
+         * <li>Host: example.com</li>
+         * <li>Path: /path1/path2/path3</li>
+         * <li>Path segment 1: path1</li>
+         * <li>Path segment 2: path2</li>
+         * <li>Path segment 3: path3</li>
+         * <li>Path parameter name: pParameter1</li>
+         * <li>Path parameter value: pValue1</li>
+         * <li>Query parameter name: qParameter1</li>
+         * <li>Query parameter value: qValue1</li>
+         * <li>Query parameter name: qParameter2</li>
+         * <li>Query parameter value: qValue2</li>
+         * <li>Fragment: fragment</li>
+         * </ul>
+         * <p>
+         * @param parameter The raw query parameter
+         * @param charset The character set to use for encoding
+         * @return The encoded query parameter
+         */
+        public static String encodeQueryParameter(String parameter, String charset) {
+            String encodedQueryParameter;
+            try {
+                encodedQueryParameter = URLEncoder.encode(parameter, charset).replace("+", "%20");
+            }
+            catch (UnsupportedEncodingException e) {
+                throw new RuntimeException("Unsupported encoding: "+charset, e);
+            }
+            return encodedQueryParameter;
+        }
+
+        /**
+         * Use this method to encode a query parameter using the default character encoding (UTF-8).
+         * <p>
+         * This ensures that all space characters are encoded as <code>"%20"</code> and all <code>"+"</code>
+         * characters are encoded as <code>"%2B"</code>.
+         * <p>
+         * The following example can be used to illustrate what part of the URL constitutes a query parameter. 
+         * <code>http://example.com/path1/path2/path3;pParameter1=pValue1?qParameter1=qValue1&qParameter2=qValue2#fragment</code>
+         * <ul>
+         * <li>Scheme: http</li>
+         * <li>Host: example.com</li>
+         * <li>Path: /path1/path2/path3</li>
+         * <li>Path segment 1: path1</li>
+         * <li>Path segment 2: path2</li>
+         * <li>Path segment 3: path3</li>
+         * <li>Path parameter name: pParameter1</li>
+         * <li>Path parameter value: pValue1</li>
+         * <li>Query parameter name: qParameter1</li>
+         * <li>Query parameter value: qValue1</li>
+         * <li>Query parameter name: qParameter2</li>
+         * <li>Query parameter value: qValue2</li>
+         * <li>Fragment: fragment</li>
+         * </ul>
+         * <p>
+         * @param parameter The raw query parameter
+         * @return The encoded query parameter
+         */
+        public static String encodeQueryParameter(String parameter) {
+            return Encoder.encodeQueryParameter(parameter, DEFAULT_CHARSET);
+        }
+    }
+%>

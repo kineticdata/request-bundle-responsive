@@ -73,6 +73,7 @@
 <%@include file="../helpers/BundleHelper.jspf" %>
 <%@include file="../helpers/CycleHelper.jspf" %>
 <%@include file="../helpers/DateHelper.jspf" %>
+<%@include file="../helpers/Encoder.jspf" %>
 <%@include file="../helpers/ResponseHelper.jspf" %>
 <%@include file="../helpers/escape_method.jspf" %>
 <%@include file="../helpers/ThemeLocalizer.jspf" %>
