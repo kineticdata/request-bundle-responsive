@@ -115,7 +115,7 @@ if(context != null) {
         // Bind local preference update to language selection
         $(languageSelector).on('change',function(){
             var locale = $(this).val();
-            var url = BUNDLE.relativeBundlePath + "common/interface/callbacks/locale.json.jsp";
+            var url = BUNDLE.config['displayPageUrlSlug'] + 'Common&callback=updateLocale';
             BUNDLE.ajax({
                 cache: false,
                 type: "get",
