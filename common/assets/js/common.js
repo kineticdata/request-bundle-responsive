@@ -462,5 +462,66 @@
         // Set callback
         window.onbeforeunload = callback;
     };
+    
+    /**
+     * Define function for sorting options.
+     * This function will determine if there is a
+     * selected option by attribute and empty value.
+     * This selected option will be excluded from the sorting
+     * and pushed to the top of the options list.
+     * If the selected option has a value, 
+     * it is sorted with the rest of the option items.
+     * This function can sort multiple selects in one call.
+     *
+     * @param {String|jQueryObject} selector
+     * @example: 
+     *  BUNDLE.common.sortOptions('select');
+     * @example:
+     *  var jquerySelectObject = $('select');
+     *  BUNDLE.common.sortOptions(jquerySelectObject);
+     */
+    common.sortOptions = function(selector) {
+        // Define jquery object
+        var jqueryObject = $(selector);
+        jqueryObject.each(function(index, value) {
+            var jquerySelectOption = $(value);
+            // Define selected option
+            var selectedOption = jquerySelectOption.find('option:selected');
+            // Define options
+            var options = new Array();
+            // Define value attribute
+            // Jquery will default to option text value if the attribute doesn't exist
+            // when using .val
+            var valueAttribute = selectedOption.attr('value');
+            // Determine if the selected element is a top level option element
+            // Based on if the value is empty
+            if(selectedOption.length > 0 &&
+                (valueAttribute === undefined || valueAttribute === '')) {
+                // We don't know the selected option order
+                // So we grab all it's siblings
+                options = selectedOption.siblings();
+            } else {
+                // Grab all the options
+                options = jquerySelectOption.find('option');
+            }
+            // Sort options
+            options.sort(function(a, b) {
+                return a.text > b.text ? 1 : -1;
+            });
+            // Empty current select
+            jquerySelectOption.empty();
+            // Append top level selected element if it exists
+            if(selectedOption.length > 0 &&
+                (valueAttribute === undefined || valueAttribute === '')) {
+                    jquerySelectOption.append(selectedOption);
+                    // Must force remove selected attribute for ie8
+                    // Jquery option object continues to take the option
+                    // from the top and make it selected if there isn't a selected object
+                    options.removeAttr('selected');
+            }
+            // Append the sorted options back to the list
+            jquerySelectOption.append(options);
+        });
+    };
 
 })(jQuery, _);
