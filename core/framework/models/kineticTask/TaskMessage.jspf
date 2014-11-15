@@ -9,6 +9,10 @@
         public static final String FIELD_TYPE = "700000302";
         public static final String[] FIELD_IDS = new String[] {
             FIELD_CREATE_DATE, FIELD_ID, FIELD_TASK_ID, FIELD_MESSAGE};
+        
+        /***********************************************************************
+         * Static Retrieval Methods
+         **********************************************************************/
 
         public static TaskMessage[] findByTaskId(HelperContext context, String taskId) {
             TaskMessage[] results = new TaskMessage[0];
@@ -27,15 +31,51 @@
 
             return results;
         }
+        
+        /***********************************************************************
+         * Member Variables
+         **********************************************************************/
 
-        private SimpleEntry entry;
+        private String date;
+        private String id;
+        private String taskId;
+        private String message;
+        
+        /***********************************************************************
+         * Constructors
+         **********************************************************************/
+        
+        /**
+         * Constructor that takes a SimpleEntry instance that should be used
+         * when retrieving task message records from the local remedy instance.
+         */
         public TaskMessage(SimpleEntry entry) {
-            this.entry = entry;
+            this.date = entry.getEntryFieldValue(FIELD_CREATE_DATE);
+            this.id = entry.getEntryFieldValue(FIELD_ID);
+            this.taskId = entry.getEntryFieldValue(FIELD_TASK_ID);
+            this.message = entry.getEntryFieldValue(FIELD_MESSAGE);
         }
+        
+        /**
+         * Constructor that takes a Map (parsed from JSON object) that should be
+         * used when retrieving task message records from the task api.
+         */
+        public TaskMessage(Map<String,Object> taskMessageObject) {
+            // Set the member variables
+            this.date = DateHelper.convertDate((String)taskMessageObject.get("createdAt"));
+            this.id = Long.toString((Long)taskMessageObject.get("id"));
+            this.message = (String)taskMessageObject.get("text");
+        }
+        
+        /***********************************************************************
+         * Accessors
+         **********************************************************************/
 
-        public String getDate() {return entry.getEntryFieldValue(FIELD_CREATE_DATE);}
-        public String getId() {return entry.getEntryFieldValue(FIELD_ID);}
-        public String getTaskId() {return entry.getEntryFieldValue(FIELD_TASK_ID);}
-        public String getMessage() {return entry.getEntryFieldValue(FIELD_MESSAGE);}
+        public String getDate() { return this.date; }
+        public String getId() { return this.id; }
+        public String getTaskId() { return this.taskId; }
+        public String getMessage() { return this.message; }
+        
+        public void setTaskId(String taskId) { this.taskId = taskId; }
     }
 %>

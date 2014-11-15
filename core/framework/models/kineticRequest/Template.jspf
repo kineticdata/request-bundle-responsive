@@ -9,13 +9,16 @@
         public static final String FIELD_NAME = "700001000";
         public static final String FIELD_STATUS = "7";
         public static final String FIELD_DISPLAY_NAME = "700002298";
+        public static final String FIELD_TASK_ENGINE = "700073501";
         public static final String[] FIELD_IDS = new String[]{
             FIELD_ID, FIELD_DESCRIPTION, FIELD_NAME, FIELD_ANONYMOUS_URL,
-            FIELD_DISPLAY_NAME, FIELD_CATALOG};
+            FIELD_DISPLAY_NAME, FIELD_CATALOG, FIELD_TASK_ENGINE};
 
         private SimpleEntry entry = null;
+        private HelperContext context;
+        private Catalog catalog = null;
         private List<Category> categories = new ArrayList();
-        private Map<String, List<TemplateAttribute>> templateAttributesMap = new LinkedHashMap();
+        private Map<String, List<TemplateAttribute>> templateAttributesMap = null;
 
         public static Template findByDisplayName(HelperContext context, String catalogName, String displayName) {
             Template result = null;
@@ -26,7 +29,7 @@
 
             SimpleEntry entry = ArsBase.findSingle(context, FORM_NAME, qualification, FIELD_IDS);
             if (entry != null) {
-                result = new Template(entry);
+                result = new Template(entry, context);
             }
 
             return result;
@@ -42,30 +45,49 @@
             if (entries != null && entries.length > 0) {
                 results = new Template[entries.length];
                 for(int i=0;i<results.length;i++) {
-                    results[i] = new Template(entries[i]);
+                    results[i] = new Template(entries[i], context);
                 }
             }
             
             return results;
         }
 
-        public static Template findById(HelperContext context, String catalogName, String id) {
+        /**
+         * Returns a template matching the given id.  If no template matches the
+         * id null will be returned.  Note that an error will be raised if
+         * multiple records match the qualification somehow.
+         */
+        public static Template findById(HelperContext context, String id) {
+            // Initialize the result to null.  Null is returned if no matching
+            // record is found.
             Template result = null;
-
-            String qualification =
-                "'"+FIELD_CATALOG+"' = \""+catalogName+"\" AND "+
-                "'"+FIELD_ID+"' = \""+id+"\"";
-
+            // Build the qualification string.
+            String qualification = "'" + FIELD_ID + "' = \"" + id + "\"";
+            // Query for the matching record.
             SimpleEntry entry = ArsBase.findSingle(context, FORM_NAME, qualification, FIELD_IDS);
             if (entry != null) {
-                result = new Template(entry);
+                result = new Template(entry, context);
             }
-
+            // Return the result.
             return result;
         }
 
-        public Template(SimpleEntry entry) {
+        public Template(SimpleEntry entry, HelperContext context) {
             this.entry = entry;
+            this.context = context;
+        }
+        
+        /**
+         * Returns the parent catalog of the template.  Note that if the catalog
+         * is not already related it retrieves it from the database and stores
+         * the result so if it is called multiple times the retrieval is only
+         * done once.
+         */
+        public Catalog getCatalog() {
+            if (this.catalog == null) {
+                this.catalog = Catalog.findByName(context, getCatalogName());
+            }
+            return this.catalog;
         }
 
         public void addCategory(Category category) {
@@ -93,25 +115,37 @@
         }
 
         public void addTemplateAttribute(TemplateAttribute templateAttribute) {
-            List<TemplateAttribute> templateAttributeList = templateAttributesMap.get(templateAttribute.getName());
-            if (templateAttributeList == null) {
-                templateAttributeList = new ArrayList();
-                templateAttributesMap.put(templateAttribute.getName(), templateAttributeList);
+            String attributeName = templateAttribute.getName();
+            if (templateAttributesMap == null) {
+                templateAttributesMap = new LinkedHashMap<String,List<TemplateAttribute>>();
             }
-            templateAttributeList.add(templateAttribute);
+            if (!templateAttributesMap.containsKey(attributeName)) {
+                templateAttributesMap.put(attributeName, new ArrayList<TemplateAttribute>());
+            }
+            templateAttributesMap.get(attributeName).add(templateAttribute);
         }
 
         public Map<String,List<TemplateAttribute>> getTemplateAttributesMap() {
+            if (templateAttributesMap == null) {
+                // Retrieve all of the template attributes for this template.
+                TemplateAttribute[] attributes = TemplateAttribute.findByTemplate(
+                        context, getCatalogName(), getName());
+                // Iterate through the attributes, populating the template
+                // attribute map.
+                for (TemplateAttribute attribute : attributes) {
+                    addTemplateAttribute(attribute);
+                }
+            }
             return templateAttributesMap;
         }
 
         public String[] getTemplateAttributeNames() {
-            return templateAttributesMap.keySet().toArray(new String[templateAttributesMap.size()]);
+            return getTemplateAttributesMap().keySet().toArray(new String[0]);
         }
 
         public String[] getTemplateAttributeValues(String attributeName) {
             String[] results = new String[0];
-            List<TemplateAttribute> attributes = templateAttributesMap.get(attributeName);
+            List<TemplateAttribute> attributes = getTemplateAttributesMap().get(attributeName);
             if (attributes != null) {
                 results = new String[attributes.size()];
                 for (int i=0;i<results.length;i++) {
@@ -168,17 +202,77 @@
 
             return anonymousUrl;
         }
-        public String getCatalog() {return entry.getEntryFieldValue(FIELD_CATALOG);}
+        
+        /**
+         * Helper function that retrieves the TaskServer instance that this
+         * template is configured to use.  To get the task server we need to
+         * check the template/catalog attribute 'Task Server Name'.  If that is
+         * defined we then atttempt to retreive the task server record from the
+         * database.
+         */
+        public TaskServer getTaskServer() {
+            // Initialize the result.
+            TaskServer result = null;
+            // If the 'Task Server Name' attribute is configured for the
+            // template use that.  Otherwise check to see if the catalog has the
+            // attribute defined.
+            String taskServerName = null;
+            if (hasTemplateAttribute("Task Server Name")) {
+                taskServerName = getTemplateAttributeValue("Task Server Name");
+            } else if (getCatalog().hasAttribute("Task Server Name")) {
+                taskServerName = getCatalog().getAttributeValue("Task Server Name");
+            }
+            // If the task server name attribute was configured on either we
+            // attempt to retrieve the task server record.
+            if (taskServerName != null) {
+                TaskServer taskServer = TaskServer.findByName(context, taskServerName);
+                // Raise an exception if a task server record with a matching
+                // name could not be found.
+                if (taskServer == null) {
+                    throw new RuntimeException("Could not find Task Server record with name '" + 
+                            taskServerName + "' for template '" + getName() + "' in catalog '" +
+                            getCatalogName() + "'");
+                } else {
+                    result = taskServer;
+                }
+            }
+            // Return the result.
+            return result;
+        }
+        
+        /**
+         * Helper function that retrieves the task source name configuration of
+         * the template.  To get the proper value we first check the template
+         * and then check the catalog if its not defined on the template.  If
+         * the value is not configured for either null is returned.
+         */
+        public String getTaskSourceName() {
+            // Initialize the result.
+            String result = null;
+            // If the 'Task Source Name' attribute is configured for the
+            // template use that.  Otherwise check to see if the catalog has the
+            // attribute defined.
+            if (hasTemplateAttribute("Task Source Name")) {
+                result = getTemplateAttributeValue("Task Source Name");
+            } else if (getCatalog().hasAttribute("Task Source Name")) {
+                result = getCatalog().getAttributeValue("Task Source Name");
+            }
+            // Return the result.
+            return result;
+        }
+        
+        public String getCatalogName() {return entry.getEntryFieldValue(FIELD_CATALOG);}
         public String getDescription() {return entry.getEntryFieldValue(FIELD_DESCRIPTION);}
         public String getDisplayName() {return entry.getEntryFieldValue(FIELD_DISPLAY_NAME);}
         public String getId() {return entry.getEntryFieldValue(FIELD_ID);}
         public String getName() {return entry.getEntryFieldValue(FIELD_NAME);}
+        public String getTaskEngine() {return entry.getEntryFieldValue(FIELD_TASK_ENGINE);}
 
         public String toJson() {
             StringBuilder builder = new StringBuilder();
             builder.append("{");
             builder.append("anonymousUrl: '").append(getAnonymousUrl()).append("'").append(",");
-            builder.append("catalog: '").append(getCatalog()).append("'").append(",");
+            builder.append("catalog: '").append(getCatalogName()).append("'").append(",");
             builder.append("description: '").append(getDescription()).append("'").append(",");
             builder.append("id: '").append(getId()).append("'").append(",");
             builder.append("name: '").append(getName()).append("'");

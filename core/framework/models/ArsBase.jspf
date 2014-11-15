@@ -3,6 +3,18 @@
 <%@page import="java.util.*"%>
 <%!
     public abstract static class ArsBase {
+        // This is a map that defines optional fields.  It maps the form name to
+        // a set of optional fields.  Optional fields are those that are used in
+        // models but may not be found on all servers (due to earlier versions
+        // of request).  For example the 'Task Engine' field was added in the
+        // 5.2 release but we do not want this bundle to break for versions
+        // earlier than that.
+        private static final Map<String,Set<String>> OPTIONAL_FIELDS = new HashMap<String,Set<String>>() {{
+            put("KS_SRV_SurveyTemplate", new HashSet<String>() {{
+                add("700073501");
+            }});
+        }};
+
         public static SimpleEntry[] find(HelperContext context, String formName, String qualification, String[] fieldIds) {
             return find(context, formName, qualification, fieldIds, new String[0], 0, 0, 1);
         }
@@ -35,7 +47,43 @@
             // Retrieve the entry records
             SimpleEntry[] entries = new SimpleEntry[0];
             try {
-                entries = helper.getSimpleEntryList(formName, qualification, fieldIds, sortFieldIds, chunkSize, recordOffset, order);
+                // Create a hash set of the field ids that are present on the
+                // form definition.  We use a hash set specifically for its fast
+                // access when checking for presence of a value.
+                Set<String> existingFieldIds = new HashSet<String>();
+                for (String fieldId : helper.getCache().getForm(formName).getFieldIds()) {
+                    existingFieldIds.add(fieldId);
+                }
+
+                // Instantiate a list of fields that will be included in the
+                // query.  This list may be different than the fields speicifed
+                // if optional fields are omitted because they are not found on
+                // the form definition.
+                List<String> includeFieldIds = new ArrayList<String>();
+
+                // Iterate through all of the specified field ids, checking for
+                // their existence on the form definition.
+                for (String fieldId : fieldIds) {
+                    // If the field exists on the form add it to the include
+                    // fields list.
+                    if (existingFieldIds.contains(fieldId)) {
+                        includeFieldIds.add(fieldId);
+                    } else {
+                        // If the field does not exist on the form, check to see
+                        // if it is an optional field.  If it is not an optional
+                        // field we raise an error, otherwise we simply continue
+                        // and the field will be omitted from the query.
+                        if (!OPTIONAL_FIELDS.get(formName).contains(fieldId)) {
+                            throw new RuntimeException("The field " + fieldId +
+                                    " does not exist on the form " + formName);
+                        }
+                    }
+                }
+
+                // Make the ars helpers api call.
+                entries = helper.getSimpleEntryList(formName, qualification, 
+                        includeFieldIds.toArray(new String[0]), sortFieldIds, 
+                        chunkSize, recordOffset, order);
             } catch (Exception e) {
                 throw new RuntimeException("There was a problem retrieving the "+formName+" records.", e);
             }

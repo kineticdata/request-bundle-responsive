@@ -1,0 +1,211 @@
+<%@page import="java.io.IOException"%>
+<%@page import="java.io.BufferedReader"%>
+<%@page import="java.io.InputStreamReader"%>
+<%@page import="java.io.InputStream"%>
+<%@page import="org.apache.http.impl.client.DefaultHttpClient"%>
+<%@page import="org.apache.http.client.methods.HttpGet"%>
+<%@page import="org.apache.http.client.HttpClient"%>
+<%!
+    public static class Run {
+
+        /***********************************************************************
+         * Static Retrieval Methods
+         **********************************************************************/
+
+        /**
+         * Retrieves all tasks given a source id.  Note that this method also
+         * retrieves tasks from related subtree executions.
+         */
+        public static Task[] findTasksRecursively(HelperContext context, String source,
+                String sourceId) {
+            Task[] taskArray = findTasksRecursively(context, source, sourceId, null, null);
+            List<Task> tasks = new ArrayList<Task>();
+            Collections.addAll(tasks, taskArray);
+            Collections.sort(tasks);
+            return tasks.toArray(new Task[tasks.size()]);
+        }
+        public static Task[] findTasksRecursively(HelperContext context, String source,
+                String sourceId, String originatingSourceId, String originatingTreeName) {
+            // This qualification will match any visible tasks for the given
+            // source id, but it also includes subtree tasks whether they are
+            // visible or not (they will be used to make a recursive call that
+            // retrieves the tasks for that subtree execution).
+            String qualification =
+                "'" + Task.FIELD_SOURCE + "' = \"" + source + "\" AND " +
+                "'" + Task.FIELD_SOURCE_ID + "' = \"" + sourceId + "\" AND" +
+                "'" + Task.FIELD_STATUS + "' != \"New\" AND " + 
+                "('" + Task.FIELD_VISIBLE + "' = \"Yes\" OR '" + Task.FIELD_DEF_NAME + "' LIKE \"tree_%\")";
+            
+            // Make the query to the remedy database to retrieve task records.
+            SimpleEntry[] entries = ArsBase.find(context, Task.FORM_NAME, qualification,
+                    Task.FIELD_IDS, new String[0], 0, 0, 1);
+
+            // Initialize the result.
+            List<Task> tasks = new ArrayList<Task>();
+            
+            // Iterate through the resulting task records adding them to the
+            // result and making recursive calls if necessary.
+            for (SimpleEntry entry : entries) {
+                // Instantiate a Task with the current simple entry object.
+                Task task = new Task(entry, context);
+                task.setRunId(sourceId);
+                task.setOriginatingRunId((originatingSourceId == null) ? 
+                        sourceId : originatingSourceId);
+                task.setOriginatingTreeName((originatingTreeName == null) ? 
+                        task.getTreeName() : originatingTreeName);
+                
+                // If the task is visible add it to the results list.
+                if ("Yes".equals(task.getVisible())) {
+                    tasks.add(task);
+                }
+                // If the task is a subtree task query for the related tasks by
+                // making a recursive call and add the resulting subtasks to the
+                // result list.
+                if (task.getDefName().startsWith("tree_")) {
+                    Task[] subtasks = findTasksRecursively(context, source,
+                            task.getResult("Source Id"), task.getOriginatingRunId(),
+                            task.getOriginatingTreeName());
+                    for (Task subtask : subtasks) { tasks.add(subtask); }
+                }
+            }
+            
+            // Return the result (converting it to an array).
+            return tasks.toArray(new Task[tasks.size()]);
+        }
+
+        public static Run[] findBySourceId(HelperContext context, String source, String sourceId) {
+            // Retrieve all of the tasks related to the given source id.
+            Task[] allTasks = findTasksRecursively(context, source, sourceId);
+
+            // Sort the tasks into their corresponding originating runs.  An
+            // originating run in task 2/3 is defined by the unique combination
+            // of tree name and source id.
+            Map<String,Map<String,List<Task>>> treeRunTasksMap = new HashMap<String,Map<String,List<Task>>>();
+            for (Task task : allTasks) {
+                String treeName = task.getOriginatingTreeName();
+                String runId = task.getOriginatingRunId();
+                if (!treeRunTasksMap.containsKey(treeName)) {
+                    treeRunTasksMap.put(treeName, new HashMap<String,List<Task>>());
+                }
+                if (!treeRunTasksMap.get(treeName).containsKey(runId)) {
+                    treeRunTasksMap.get(treeName).put(runId, new ArrayList<Task>());
+                }
+                treeRunTasksMap.get(treeName).get(runId).add(task);
+            }
+            
+            // Iterate through the nested map and instantiate run objects for
+            // each of the tree/id combinations.
+            List<Run> runs = new ArrayList<Run>();
+            for (Map.Entry<String,Map<String,List<Task>>> treeEntry : treeRunTasksMap.entrySet()) {
+                String treeName = treeEntry.getKey();
+                for (Map.Entry<String,List<Task>> idEntry : treeEntry.getValue().entrySet()) {
+                    String runId = idEntry.getKey();
+                    List<Task> tasks = idEntry.getValue();
+                    runs.add(new Run(runId, treeName, tasks));
+                }
+            }
+            
+            // Return the resulting array of runs.
+            return runs.toArray(new Run[runs.size()]);
+        }
+
+        public static Run[] findFromTask4(HelperContext context, Submission submission) {
+            try {
+                // Get the configured task server for the submission/template.
+                TaskServer taskServer = submission.getTemplate().getTaskServer();
+                String sourceName = submission.getTemplate().getTaskSourceName();
+                String encodedSourceName = Encoder.encodePathSegment(sourceName);
+                String encodedSourceId = Encoder.encodeQueryParameter(submission.getRequestId());
+
+                String path = taskServer.getUrl() + "/app/api/v1/sources/" + encodedSourceName + 
+                        "/runs?include=tasks,tasks.messages&sourceId=" + encodedSourceId;
+
+                // Make the get API call to the tasks route.
+                HttpClient client = new DefaultHttpClient();
+                HttpGet request = new HttpGet(path);
+                org.apache.http.HttpResponse response = client.execute(request);
+
+                // Gross code for getting the response body as a string.
+                StringBuilder builder = new StringBuilder();
+                InputStream inputStream = response.getEntity().getContent();
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    builder.append(line);
+                }
+                String body = builder.toString();
+                
+                // Raise an error if the response was not a 200.
+                int statusCode = response.getStatusLine().getStatusCode();
+                if (statusCode != 200) {
+                    throw new RuntimeException("Received " + statusCode + " response" + 
+                    " retrieving runs from task 4: " + body);
+                }
+
+                // Parse the JSON data and instantiate run objects.
+                Map<String,Object> jsonObject = (Map)JSONValue.parse(body);
+                List<Map<String,Object>> runList = (List)jsonObject.get("runs");
+                Run[] result = new Run[runList.size()];
+                for (int i=0; i<runList.size(); i++) {
+                    result[i] = new Run(runList.get(i));
+                }
+                return result;
+            } catch (IOException e) {
+                throw new RuntimeException("Caught error retrieving runs from Task API", e);
+            }
+        }
+
+        /***********************************************************************
+         * Member Variables
+         **********************************************************************/
+
+        private String id;
+        private String sourceId;
+        private String treeName;
+        private Task[] tasks;
+
+        /***********************************************************************
+         * Constructors
+         **********************************************************************/
+
+        public Run(String runId, String treeName, List<Task> tasks) {
+            this.id = runId;
+            this.sourceId = runId;
+            this.treeName = treeName;
+            this.tasks = tasks.toArray(new Task[tasks.size()]);
+        }
+
+        public Run(Map<String,Object> jsonObject) {
+            this.id = ((Long)jsonObject.get("id")).toString();
+            this.sourceId = (String)jsonObject.get("sourceId");
+            Map<String,Object> treeObject = (Map)jsonObject.get("tree");
+            this.treeName = (String)treeObject.get("name");
+            List<Map<String,Object>> taskArray = (List)jsonObject.get("tasks");
+            this.tasks = new Task[taskArray.size()];
+            for (int i=0; i<taskArray.size(); i++) {
+                // Here we set some of the attributes of task that refer to
+                // parent values.  Note that we set originatingRunId and
+                // originatingTreeName to runId and treeName respectively
+                // because there currently is no way to distinguish tasks that
+                // executed in routines vs the parent tree.
+                Task task = new Task(taskArray.get(i));
+                task.setRunId(((Long)jsonObject.get("id")).toString());
+                task.setOriginatingRunId(((Long)jsonObject.get("id")).toString());
+                task.setSourceId((String)jsonObject.get("sourceId"));
+                task.setTreeName((String)treeObject.get("name"));
+                task.setOriginatingTreeName((String)treeObject.get("name"));
+                this.tasks[i] = task;
+            }
+        }
+
+        /***********************************************************************
+         * Accessors
+         **********************************************************************/
+
+        public String getId() { return this.id; }
+        public String getSourceId() { return this.sourceId; }
+        public String getTreeName() { return this.treeName; }
+        public Task[] getTasks() { return this.tasks; }
+    }
+%>

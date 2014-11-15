@@ -5,7 +5,7 @@
     public static class Catalog {
         public static final String FORM_NAME = "KS_RQT_ServiceCatalog_base";
         public static final String FIELD_DESCRIPTION = "702020006";
-        public static final String FIELD_ID = "179";
+        public static final String FIELD_ID = "700001923";
         public static final String FIELD_LOGOUT_ACTION = "700073100";
         public static final String FIELD_LOGOUT_DESTINATION = "700073102";
         public static final String FIELD_NAME = "600000500";
@@ -37,6 +37,7 @@
         };
 
         private SimpleEntry entry = null;
+        private HelperContext context = null;
 
         private Map<String,Category> categoryMap = new LinkedHashMap();
         private Map<String,Category> sortedCategoryMap = new LinkedHashMap();
@@ -47,9 +48,11 @@
         private Map<String,Template> templateTranslatedNameMap = new LinkedHashMap();
         private Template[] templates = null;
         private TemplateAttribute[] templateAttributes = null;
+        private Map<String, List<CatalogAttribute>> attributeMap = null;
 
-        public Catalog(SimpleEntry entry) {
+        public Catalog(SimpleEntry entry, HelperContext context) {
             this.entry = entry;
+            this.context = context;
         }
 
         public Category getCategoryByName(String name) {
@@ -73,7 +76,7 @@
 
             SimpleEntry entry = ArsBase.findSingle(context, FORM_NAME, qualification, FIELD_IDS);
             if (entry != null) {
-                catalog = new Catalog(entry);
+                catalog = new Catalog(entry, context);
             }
 
             return catalog;
@@ -190,7 +193,7 @@
             // If the catalog has a Template default logout destination
             if ("Go to Template".equals(getLogoutAction())) {
                 // Retrieve the template
-                Template template = Template.findById(context, getName(), getLogoutDestination());
+                Template template = Template.findById(context, getLogoutDestination());
                 // If the template was not found
                 if (template == null) {
                     // Throw an error
@@ -204,6 +207,93 @@
                 }
             }
             // Return the result
+            return result;
+        }
+        
+        /**
+         * Accessor for the catalog attribute map.  We use this to access the
+         * map because it is responsible for retrieving and building the map
+         * upon first access.
+         */
+        private Map<String, List<CatalogAttribute>> getAttributeMap() {
+            if (attributeMap == null) {
+                attributeMap = new HashMap<String, List<CatalogAttribute>>();
+                CatalogAttribute[] attributes = CatalogAttribute.findByCategoryInstanceId(context, getId());
+                for (CatalogAttribute attribute : attributes) {
+                    if (!attributeMap.containsKey(attribute.getName())) {
+                        attributeMap.put(attribute.getName(), new ArrayList<CatalogAttribute>());
+                    }
+                    attributeMap.get(attribute.getName()).add(attribute);
+                }
+            }
+            return attributeMap;
+        }
+        
+        /**
+         * Returns boolean whether or not the catalog has a value configured for
+         * the specified attribute.
+         */
+        public boolean hasAttribute(String attributeName) {
+            return getAttributeMap().containsKey(attributeName);
+        }
+        
+        /**
+         * Returns a list of the attribute names that are configured for the
+         * catalog.
+         */
+        public List<String> getAttributeNames() {
+            return new ArrayList<String>(getAttributeMap().keySet());
+        }
+        
+        /**
+         * Returns a list of configured attribute values for the specified
+         * attribute.  This method should be used when the attribute is expected
+         * to allow multiple values.  If the attribute is not configured for the
+         * catalog an empty list will be returned.
+         */
+        public List<String> getAttributeValues(String attributeName) {
+            // Initialize the result to an empty list.  If the specified
+            // attribute is not configured for this catalog the empty list will
+            // be returned.
+            List<String> result = new ArrayList<String>();
+            List<CatalogAttribute> attributes = getAttributeMap().get(attributeName);
+            // Iterate through the matching attributes adding their values to
+            // the result list.
+            if (attributes != null) {
+                for (CatalogAttribute attribute : attributes) {
+                    result.add(attribute.getValue());
+                }
+            }
+            // Return the result.
+            return result;
+        }
+
+        /**
+         * Returns the attribute value for the specified attribute.  This method
+         * should be used when the attribute is expected to allow one value.  If
+         * the attribute is not configured for the catalog null will be returned
+         * and if there are more than one configured values an error will be
+         * raised.
+         */
+        public String getAttributeValue(String attributeName) {
+            // Initialize the result to null.  If the specified attribute is not
+            // configured for this catalog null will be returned.
+            String result = null;
+            List<CatalogAttribute> attributes = getAttributeMap().get(attributeName);
+            // Raise an error if the attribute was configured multiple times
+            // because things using this method should only use it for
+            // attributes that can be configured once.
+            if (attributes != null) {
+                if (attributes.size() > 1) {
+                    throw new RuntimeException("Multiple results matched the attribute " +
+                        attributeName + " in catalog " + getName() + " when one was expected.");
+                }
+                // If the attribute was found set the result to its value.
+                if (attributes.size() == 1) {
+                    result = attributes.get(0).getValue();
+                }
+            }
+            // Return the result.
             return result;
         }
 
