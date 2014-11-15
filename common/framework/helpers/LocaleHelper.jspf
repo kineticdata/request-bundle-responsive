@@ -5,10 +5,12 @@
             // Returns the preferred Locale that the client will accept content in, based on the Accept-Language header. 
             // If the client request doesn't provide an Accept-Language header, this method returns the default locale for the server.
             String preferredLocale = request.getLocale().toString();
-            // Determine if the perferredLocale is stored in session
-            if (session.getAttribute("preferredLocale") != null) {
-                // Get preferredLocale from session
-                preferredLocale = (String) session.getAttribute("preferredLocale");
+            // Define session locale
+            String sessionLocale = (String) session.getAttribute("preferredLocale");
+            // Determine if there is a value
+            if (StringUtils.isNotBlank(sessionLocale)) {
+                // Update preferredLocale from session
+                preferredLocale = sessionLocale;
             }
             // Set preferred locale from preference
             else {
@@ -22,7 +24,11 @@
                         preferences = LocalePreference.create(context, context.getUserName(), request.getLocale().toString());
                     }
                     // Get locale from the top of the list
-                    preferredLocale = preferences.get("Language").get(0).getValue();
+                    String databaseLocale = preferences.get("Language").get(0).getValue();
+                    // Determine if there is a value
+                    if(StringUtils.isNotBlank(databaseLocale)) {
+                        preferredLocale = databaseLocale;
+                    }
                 }
                 // Store locale in session
                 session.setAttribute("preferredLocale", preferredLocale);
@@ -75,6 +81,4 @@
             session.setAttribute("preferredLocale", preferredLocale);
         }
     }
-    
-    
 %>
