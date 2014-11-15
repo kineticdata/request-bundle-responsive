@@ -1,3 +1,4 @@
+<%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.HashSet"%>
@@ -184,6 +185,9 @@
             String locale,
             String absolutePropertyFilesPath
         ) {
+            if(!StringUtils.isNotBlank(locale)) {
+                throw new RuntimeException("The locale is empty or null");
+            }
             // Establish var
             ResourceBundle resourceBundle = null;
             // Check if the locale contains any characters
