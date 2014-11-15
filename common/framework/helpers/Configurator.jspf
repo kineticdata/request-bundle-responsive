@@ -30,10 +30,13 @@
         public Configurator(Bundle bundle) {
             // Set bundle
             this.bundle = bundle;
-            // Define package path
-            String packagePath = getServletContext().getRealPath(bundle.packagePath());
-            // Update current package
-            this.currentPackage = new File(packagePath).getName();
+            // Check if current package path is not null
+            if(bundle.packagePath() != null) {
+                // Define package path
+                String packagePath = getServletContext().getRealPath(bundle.packagePath());
+                // Update current package
+                this.currentPackage = new File(packagePath).getName();
+            }
             // Define packages path
             String packagesDirectory = getServletContext().getRealPath(bundle.relativeBundlePath() + "packages");
             // Define configurations by package
@@ -77,6 +80,32 @@
          */
         public String getCurrentPackageConfiguration() {
             return JSONValue.toJSONString(this.configurationsByPackage.get(this.currentPackage));
+        }
+        
+        /**
+         * Returns the locales from the packages into a map
+         * 
+         * @return Map<String,String>
+         */
+        public Map<String,String> getLocales() {
+            Map<String,String> results = new LinkedHashMap<String,String>();
+            for(Map.Entry<String,JsonBase> element : this.configurationsByPackage.entrySet()) {
+                JsonBase jsonBase = element.getValue();
+                // Determine if langauges exist
+                if(jsonBase.getMap("languages") != null) {
+                    // Update results
+                    Map<String,String> packageLanguages = jsonBase.getMap("languages");
+                    // Loop through package languages
+                    for(Map.Entry<String,String> entry : packageLanguages.entrySet()) {
+                        // Define key and value from each element
+                        String key = entry.getKey();
+                        String value = entry.getValue();
+                        // Update results
+                        results.put(key, value);
+                    }
+                }
+            }
+            return results;
         }
         
         /**
