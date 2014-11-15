@@ -80,6 +80,20 @@
             }
             return result;
         }
+        
+        public Map<String,String> getMap(String propertyName) {
+            // Define result
+            Map<String,String> results = new LinkedHashMap<String,String>();
+            // Define object
+            Object object = jsonObject.get(propertyName);
+            // Determine if it's an array
+            if (object instanceof Map) {
+                results = (Map<String,String>) object;
+            } else if (object != null) {
+                throw new ClassCastException("Improper request, the '"+propertyName+"' property is not a Map.");
+            }
+            return results;
+        }
 
         public List<Map<String,Object>> getArrayOfMaps(String propertyName) {
             // Define result
