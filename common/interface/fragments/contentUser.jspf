@@ -28,9 +28,8 @@ if(context != null) {
     <div class="wrap">
         <label for="preferred-language">Preferred Language</label>
         <select name="preferred-language" id="preferred-language">
-            <option value="en_US">English</option>
         </select>
-        </div>
+    </div>
     <div class="actions background-gray-lightest">
         <div class="sign-out">
              <% if (logoutEnabled) {%>
@@ -81,21 +80,29 @@ if(context != null) {
                     $(menuSelector).find('div.information').append(profileWrap);
                     // Add attributes to image
                     $(menuSelector).find('a.user').attr(userProfileAttributes);
-                    // Pluck only the "languages" from config.packages to be added to the preferred language dropdown
-                    var newList = {};
+
+                    // Define var that will contain the locales for the select dropdown
+                    var localeList = {};
+                    // Pluck only the "languages" from config.packages
                     _.each(_.compact(_.pluck(BUNDLE.config.packages, 'languages')), function(language) {
                         // Loop through the language's properties and add to hash for uniqueness
-                        _.each(language, function(lang,locale) {
-                            newList[locale] = lang;
+                        _.each(language, function(language, locale) {
+                            localeList[locale] = language;
                         });
                     });
                     // Add unique language to select list
-                    _.each(newList, function(lang, locale){
-                        if(locale !== "en_US"){
-                            $(languageSelector).last().append(
-                                $('<option>').attr('value',locale).text(lang)
-                            );
+                    _.each(localeList, function(language, locale) {
+                        // Define option
+                        var option = $('<option>').attr('value', locale).text(language);
+                        // Match current configed locale with locale in list to
+                        // make a match for determing the selected attribute
+                        if(locale === BUNDLE.config.preferredLocale) {
+                            option.attr('selected', 'selected');
                         }
+                        // Append language option to select menus
+                        $(languageSelector).append(
+                            $('<option>').attr('value', locale).text(language)
+                        );
                     });
                     $(languageSelector).val(BUNDLE.config.preferredLocale);
                 }
@@ -113,12 +120,12 @@ if(context != null) {
         });
         
         // Bind local preference update to language selection
-        $(languageSelector).on('change',function(){
+        $(languageSelector).on('change', function() {
             var locale = $(this).val();
             var url = BUNDLE.config['displayPageUrlSlug'] + 'Common&callback=updateLocale';
             BUNDLE.ajax({
                 cache: false,
-                type: "get",
+                type: 'get',
                 url: url,
                 data: {"locale": locale},
                 success: function(data, textStatus, jqXHR) {
@@ -127,8 +134,13 @@ if(context != null) {
                 error: function(jqXHR, textStatus, errorThrown) {
                     // A 401 response will be handled by the BUNDLE.ajax function
                     // so we will not handle that response here.
-                    if (jqXHR.status !== 401) {
-                        alert("Could not update preferred language.".localize())
+                    if(jqXHR.status !== 401) {
+                        data = $.parseJSON(jqXHR.responseText);
+                        var responseMessage;
+                        $.each(data.errors, function(index, value) {
+                            responseMessage = value;
+                        });
+                        alert(responseMessage);
                     }
                 }
             });
