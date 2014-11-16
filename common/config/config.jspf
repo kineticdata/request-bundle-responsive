@@ -40,6 +40,8 @@
     bundle.setProperty("reviewJsp", bundle.relativeBundlePath() + "packages/catalog/review.jsp");
     // Service Item Image Library Path
     bundle.setProperty("serviceItemImagePath", bundle.bundlePath() + "../../surveys/kineticImageLibrary/");
+    // Define loader indicator image
+    bundle.setProperty("loaderImageUrl", bundle.bundlePath + "common/assets/images/spinner.gif");
     
     // Loop through attributes and store them as bundle properties, which overrides any properties assigned above
     for (Map.Entry<String,String> attribute : catalogAttributes.entrySet()) {

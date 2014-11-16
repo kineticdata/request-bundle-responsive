@@ -121,6 +121,7 @@ if(context != null) {
         
         // Bind local preference update to language selection
         $(languageSelector).on('change', function() {
+            var objectContext = $(this);
             var locale = $(this).val();
             var url = BUNDLE.config['displayPageUrlSlug'] + 'Common&callback=updateLocale';
             BUNDLE.ajax({
@@ -128,10 +129,17 @@ if(context != null) {
                 type: 'get',
                 url: url,
                 data: {"locale": locale},
+                beforeSend: function(jqXHR, settings) {
+                    // Show indicator
+                    objectContext.parents('div.wrap').append(BUNDLE.common.loaderHandler());
+                },
                 success: function(data, textStatus, jqXHR) {
+                    // Reload page
                     location.reload();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
+                    // Remove loader
+                    objectContext.parents('div.wrap').find('div.loader');
                     // A 401 response will be handled by the BUNDLE.ajax function
                     // so we will not handle that response here.
                     if(jqXHR.status !== 401) {
