@@ -36,22 +36,22 @@
             throw new Exception("Unable to parse offset as integer.");
         }
         // Set order field.  Currently only sorting for one field
-        String sortOrderField = SubmissionConsole.getSortFieldId(request.getParameter("orderField"));
+        String sortOrderField = Submission.getSortFieldId(request.getParameter("orderField"));
         String[] sortFieldIds = new String[]{sortOrderField};
         // Retrieve the sortOrder parameter to determine integer value of sort order
         // 1 is ascending order and 2 is descending order
         int sortOrder = request.getParameter("order").equals("DESC") ? 2 : 1;
         // Retrieve the entries with the parameters gathered above
-        SubmissionConsole[] submissions = SubmissionConsole.find(context, catalog, qualification, sortFieldIds, pageSize, pageOffset, sortOrder);
+        Submission[] submissions = Submission.find(context, qualification, sortFieldIds, pageSize, pageOffset, sortOrder);
         // Retrieve count of the total number of entries that match the qualification.
-        int count = ArsBase.count(context, SubmissionConsole.FORM_NAME, qualification);
+        int count = ArsBase.count(context, Submission.FORM_NAME, qualification);
         // Build result map
         Map<String,Object> results = new LinkedHashMap<String,Object>();
         results.put("count", count);
         results.put("limit", pageSize);
         results.put("offset", pageOffset);
         // Build submission array
-        List<SubmissionConsole> submissionData = new LinkedList<SubmissionConsole>();
+        List<Submission> submissionData = new LinkedList<Submission>();
         for (int i = 0; i < submissions.length; i++) {
             submissionData.add(submissions[i]);
         }

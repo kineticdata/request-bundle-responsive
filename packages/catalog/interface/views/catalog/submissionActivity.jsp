@@ -8,14 +8,14 @@
 
     // Define vairables we are working with
     String templateId = null;
-    SubmissionConsole submission = null;
+    Submission submission = null;
     Template submissionTemplate = null;
     CycleHelper zebraCycle = new CycleHelper(new String[]{"odd", "even"});
     if (context == null) {
         ResponseHelper.sendUnauthorizedResponse(response);
     } else {
         templateId =  customerSurvey.getSurveyTemplateInstanceID();
-        submission = SubmissionConsole.findByInstanceId(context, catalog, request.getParameter("id"));
+        submission = Submission.findByInstanceId(context, request.getParameter("id"));
         submissionTemplate = submission.getTemplate();
         if (submissionTemplate == null) {
             throw new Exception("Either the template no longer exists or bundle not configured to correct catalog");
@@ -59,8 +59,9 @@
                     <div class="requested-for-label color-gray">
                         <%= themeLocalizer.getString("Requested For")%>&nbsp;
                     </div>
+                    <!-- @TODO: needs to be updated to do a people query for the user based on survey's new requested for field -->
                     <div class="requested-for-value">
-                        <%=submission.getFirstName()%>&nbsp;<%=submission.getLastName()%>
+                        First Name&nbsp;Last Name
                     </div>
                 </div>
             </div>

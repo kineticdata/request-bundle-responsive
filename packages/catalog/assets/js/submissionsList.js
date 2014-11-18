@@ -94,8 +94,8 @@
         // Template name
         var contentWrap = $('<div>').addClass('content-wrap');
         
-        // Service item image
-        if(record['Service Item Image'] !== null) {
+        // Determine if service item image is defined and not null
+        if(record['Service Item Image'] && record['Service Item Image'] !== null) {
             var imagePath;
             if(record['Service Item Image'].startsWith('http://')) {
                 imagePath = record['Service Item Image'];
