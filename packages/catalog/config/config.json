@@ -2,7 +2,7 @@
     "package": "catalog",
     "languages": {
       "en_US" : "English",
-      "en_FR" : "French"
+      "de_DE" : "German"
     },
     "views": {
         "about": {
