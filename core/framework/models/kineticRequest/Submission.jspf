@@ -3,6 +3,7 @@
         public static final String FORM_NAME = "KS_SRV_CustomerSurvey";
         public static final String FIELD_CATALOG_NAME = "600000500";
         public static final String FIELD_CREATE_DATE = "3";
+        public static final String FIELD_MODIFIED_DATE = "6";
         public static final String FIELD_ID = "179";
         public static final String FIELD_NOTES = "600003021";
         public static final String FIELD_REQUEST_ID = "536870913";
@@ -13,6 +14,13 @@
         public static final String FIELD_REQUEST_CLOSED_DATE = "700088489";
         public static final String FIELD_LOOKUP_ID = "700002450";
         public static final String FIELD_ORIGINATING_ID = "600000310";
+        public static final String FIELD_SURVEY_SENT_DATE = "700001282";
+        public static final String FIELD_SURVEY_COMPLETED_DATE = "700001285";
+        public static final String FIELD_ORIGINATING_REQUEST_ID = "700088607";
+        public static final String FIELD_ORIGINATING_FORM = "600000300";
+        public static final String FIELD_TYPE = "600000600";
+        // Typically contains the cancellation notes
+        public static final String FIELD_NOTES_FOR_CUSTOMER = "600003021";
 
         // Represents the status of the Submission.
         public static final String FIELD_STATUS = "7";
@@ -30,7 +38,10 @@
             FIELD_CATALOG_NAME, FIELD_CREATE_DATE, FIELD_ID, FIELD_REQUEST_ID,
             FIELD_NOTES, FIELD_SUBMIT_TYPE, FIELD_SUBMITTER, FIELD_TEMPLATE_ID,
             FIELD_TEMPLATE_NAME, FIELD_STATUS, FIELD_REQUEST_STATUS, 
-            FIELD_REQUEST_CLOSED_DATE, FIELD_VALIDATION_STATUS};
+            FIELD_REQUEST_CLOSED_DATE, FIELD_VALIDATION_STATUS,FIELD_SURVEY_SENT_DATE,
+            FIELD_SURVEY_COMPLETED_DATE,FIELD_ORIGINATING_REQUEST_ID,FIELD_ORIGINATING_FORM,
+            FIELD_MODIFIED_DATE,FIELD_ORIGINATING_ID
+        };
 
         private SimpleEntry entry;
         private HelperContext context;
@@ -309,7 +320,16 @@
         public String getStatus() {return entry.getEntryFieldValue(FIELD_STATUS);}
         public String getRequestStatus() {return entry.getEntryFieldValue(FIELD_REQUEST_STATUS);}
         public String getRequestClosedDate() {return entry.getEntryFieldValue(FIELD_REQUEST_CLOSED_DATE);}
-        public String getValiationStatus() {return entry.getEntryFieldValue(FIELD_VALIDATION_STATUS);}
+        public String getValiationStatus() {return entry.getEntryFieldValue(FIELD_VALIDATION_STATUS);}   
+        public String getOriginatingForm() {return entry.getEntryFieldValue(FIELD_ORIGINATING_FORM);}
+        public String getOriginatingId() {return entry.getEntryFieldValue(FIELD_ORIGINATING_ID);}
+        public String getOriginatingRequestId() {return entry.getEntryFieldValue(FIELD_ORIGINATING_REQUEST_ID);}
+        public String getCompletedDate() {return entry.getEntryFieldValue(FIELD_SURVEY_COMPLETED_DATE);}
+        public String getCustomerSurveyStatus() {return entry.getEntryFieldValue(FIELD_STATUS);}
+        public String getSentDate() {return entry.getEntryFieldValue(FIELD_SURVEY_SENT_DATE);}
+        public String getModifiedDate() {return entry.getEntryFieldValue(FIELD_MODIFIED_DATE);}
+        public String getType() {return entry.getEntryFieldValue(FIELD_TYPE);}
+        public String getNotesForCustomer() {return entry.getEntryFieldValue(FIELD_NOTES_FOR_CUSTOMER);}
         
         /*
          * Returns the value of the specified additional field.  Note that if the field label passed
@@ -322,6 +342,81 @@
                 throw new RuntimeException("The field '" + additionalFieldLabel + "' was not specified" + 
                         " as an additional field on the query for the submission record(s).");
             }
+        }
+        
+        /**
+         * Store map of field ids by field alias
+         * Used to build up the json definition for the model
+         * 
+         * @var Map<String,String>
+         */
+        private static Map<String,String> JSON_FIELDMAP = new HashMap<String,String>() {{
+            put("Closed", FIELD_REQUEST_CLOSED_DATE);
+            put("Display Status", FIELD_VALIDATION_STATUS);
+            put("Customer Survey Status", FIELD_STATUS);
+            put("Id", FIELD_ID);
+            put("Modified", FIELD_MODIFIED_DATE);
+            put("Originating Id", FIELD_ORIGINATING_ID);
+            put("Originating Name", FIELD_ORIGINATING_FORM);
+            put("Originating Request Id", FIELD_ORIGINATING_REQUEST_ID);
+            put("Request Id", FIELD_REQUEST_ID);
+            put("Request Status", FIELD_REQUEST_STATUS);
+            put("Sent", FIELD_SURVEY_SENT_DATE);
+            put("Submit Type", FIELD_SUBMIT_TYPE);
+            put("Submitted", FIELD_SURVEY_COMPLETED_DATE);
+            put("Template Name", FIELD_TEMPLATE_NAME);
+        }};
+        
+        /**
+         * Returns the field id based on the field alias from the static fields
+         * Defaults to create date if nothing found.
+         * 
+         * @param String fieldName
+         * @return String
+         */
+        public static String getSortFieldId(String fieldName) { 
+            return (JSON_FIELDMAP.get(fieldName) != null) ? JSON_FIELDMAP.get(fieldName) : FIELD_CREATE_DATE; 
+        }
+        
+        /**
+         * Returns the field id based on the field alias by checking the static fields
+         * and additional fields.
+         * Defaults to create date if nothing found.
+         * 
+         * @param String fieldName
+         * @return String
+         */
+        public static String getSortFieldId(String fieldName, Map<String,String> additionalFieldValues) {
+            String result = FIELD_CREATE_DATE;
+            if(JSON_FIELDMAP.get(fieldName) != null) {
+                result = JSON_FIELDMAP.get(fieldName);
+            } else if(additionalFieldValues.get(fieldName) != null) {
+                result = additionalFieldValues.get(fieldName);
+            }
+            return result;
+        }
+        
+        @Override
+        public String toString() {
+            // Build linked hash map for JSON conversion
+            Map<String, String> result = new TreeMap<String,String>();
+            // Loop through properties defined in field map and build up result map
+            for (Map.Entry<String,String> element : JSON_FIELDMAP.entrySet()) {
+                String fieldAlias = element.getKey();
+                String fieldId = element.getValue();
+                String fieldValue = null;
+                if(!entry.getEntryFieldValue(fieldId).equals("")) { fieldValue = entry.getEntryFieldValue(fieldId); }
+                result.put(fieldAlias, fieldValue);
+            }
+            // Loop through additional field values and add to result map
+            for(Map.Entry<String,String> element : this.additionalFieldValues.entrySet()) {
+                String fieldAlias = element.getKey();
+                String fieldId = element.getValue();
+                String fieldValue = null;
+                if(!entry.getEntryFieldValue(fieldId).equals("")) { fieldValue = entry.getEntryFieldValue(fieldId); }
+                result.put(fieldAlias, fieldValue);
+            }
+            return JSONValue.toJSONString(result);
         }
     }
 %>
