@@ -13,6 +13,7 @@ CONFIRMATION_PAGE = "#{THEMES_BASE}/packages/catalog/confirmation.jsp"
 REVIEW_PAGE = "#{THEMES_BASE}/packages/catalog/review.jsp"
 ABOUT_PAGE = "#{THEMES_BASE}/packages/catalog/catalog.jsp"
 CATALOG_PAGE = "#{THEMES_BASE}/packages/catalog/catalog.jsp"
+COMMON_PAGE = "#{THEMES_BASE}/common/common.jsp"
 
 # Used in Network Service Items - for domain name management
 COMPANY_BASE_DOMAIN_NAME = "kineticdata.com"
