@@ -16,7 +16,7 @@
     Map<String, String> templateDescriptions = DescriptionHelper.getTemplateDescriptionMap(context, catalog);
     
     for (String key : templateDescriptions.keySet()) {
-        templateDescriptions.put( key, ThemeLocalizer.getString(packageResourceBundle,templateDescriptions.get(key)));
+        templateDescriptions.put(key, themeLocalizer.getString(templateDescriptions.get(key)));
     }
 
     // Define variables
@@ -47,7 +47,7 @@
             }
             CatalogSearch catalogSearch = new CatalogSearch(context, catalog.getName(), querySegments);
             //Category[] matchingCategories = catalogSearch.getMatchingCategories();
-            matchingTemplates = catalogSearch.getMatchingTemplates(searchableAttributes, packageResourceBundle);
+            matchingTemplates = catalogSearch.getMatchingTemplates(searchableAttributes, themeLocalizer);
             combinedPattern = catalogSearch.getCombinedPattern();
             if (matchingTemplates.length == 0) {
                 responseMessage = "No results were found.";
