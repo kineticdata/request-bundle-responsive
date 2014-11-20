@@ -1,8 +1,7 @@
 {
     "package": "catalog",
     "languages": {
-      "en_US" : "English",
-      "de_DE" : "German"
+      "en_US" : "English"
     },
     "views": {
         "about": {
