@@ -1,21 +1,19 @@
 <%@include file="../../../framework/includes/packageInitialization.jspf"%>
-<%-- Retrieve the Catalog --%>
 <%
-    // Retrieve the main catalog object
-    Catalog catalog = Catalog.findByName(context, customerRequest.getCatalogName());
-    // Preload the catalog child objects (such as Categories, Templates, etc)
-    catalog.preload(context);
-
     // Define vairables we are working with
     String templateId = null;
     Submission submission = null;
     Template submissionTemplate = null;
     CycleHelper zebraCycle = new CycleHelper(new String[]{"odd", "even"});
+    Map<String,String> additionalFields = new HashMap<String,String>();
     if (context == null) {
         ResponseHelper.sendUnauthorizedResponse(response);
     } else {
-        templateId =  customerSurvey.getSurveyTemplateInstanceID();
-        submission = Submission.findByInstanceId(context, request.getParameter("id"));
+        // Set request for information as additional fields from customer survey
+        additionalFields.put("Requsted For First Name", "300299800"); // Attribute 5
+        additionalFields.put("Requsted For Last Name", "700001806"); // Attribute 6
+        templateId = customerRequest.getTemplateId();
+        submission = Submission.findByInstanceId(context, request.getParameter("id"), additionalFields);
         submissionTemplate = submission.getTemplate();
         if (submissionTemplate == null) {
             throw new Exception("Either the template no longer exists or bundle not configured to correct catalog");
@@ -55,15 +53,17 @@
                         <%= DateHelper.formatDate(submission.getRequestClosedDate(), request.getLocale())%>
                     </div>
                 <%}%>
-                <div class="wrap">
-                    <div class="requested-for-label color-gray">
-                        <%= themeLocalizer.getString("Requested For")%>&nbsp;
+                <% if (!"".equals(submission.get("Requsted For First Name")) &&
+                        !"".equals(submission.get("Requsted For Last Name"))) {%>
+                    <div class="wrap">
+                        <div class="requested-for-label color-gray">
+                            <%= themeLocalizer.getString("Requested For")%>&nbsp;
+                        </div>
+                        <div class="requested-for-value">
+                            <%= submission.get("Requsted For First Name")%>&nbsp;<%= submission.get("Requsted For Last Name")%>
+                        </div>
                     </div>
-                    <!-- @TODO: needs to be updated to do a people query for the user based on survey's new requested for field -->
-                    <div class="requested-for-value">
-                        First Name&nbsp;Last Name
-                    </div>
-                </div>
+                <%}%>
             </div>
             <div class="col-md-4 middle">
                 <h4 class="color-tertiary-compliment">
