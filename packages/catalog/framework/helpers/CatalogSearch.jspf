@@ -84,7 +84,7 @@
             return matchingAttributeNames != null && matchingAttributeNames.size() > 0;
         }
 
-        public Category[] getMatchingCategories(ResourceBundle resourceBundle) {
+        public Category[] getMatchingCategories(ThemeLocalizer themeLocalizer) {
             // Define a list of categories that match the pattern
             List<Category> matchingCategories = new ArrayList();
 
@@ -101,8 +101,8 @@
                     // For each of the queryPatterns
                     for (Pattern pattern : queryPatterns) {
                         // Build a matcher for each item that we are matching
-                        Matcher nameMatcher = pattern.matcher(ThemeLocalizer.getString(resourceBundle,category.getName()));
-                        Matcher descriptionMatcher = pattern.matcher(ThemeLocalizer.getString(resourceBundle,category.getDescription()));
+                        Matcher nameMatcher = pattern.matcher(themeLocalizer.getString(category.getName()));
+                        Matcher descriptionMatcher = pattern.matcher(themeLocalizer.getString(category.getDescription()));
 
                         // If the templacategoryte name, description, or category
                         // does not match the current query Item
@@ -125,7 +125,7 @@
             return matchingCategories.toArray(new Category[matchingCategories.size()]);
         }
 
-        public Template[] getMatchingTemplates(String[] searchableAttributes, ResourceBundle resourceBundle) {
+        public Template[] getMatchingTemplates(String[] searchableAttributes, ThemeLocalizer themeLocalizer) {
             // Define a list of templates that match the pattern
             List<Template> matchingTemplates = new ArrayList();
 
@@ -150,8 +150,8 @@
                     // For each of the queryPatterns
                     for (Pattern pattern : queryPatterns) {
                         // Build a matcher for each item that we are matching
-                        Matcher nameMatcher = pattern.matcher(ThemeLocalizer.getString(resourceBundle, template.getName()));
-                        Matcher descriptionMatcher = pattern.matcher(ThemeLocalizer.getString(resourceBundle,template.getDescription()));
+                        Matcher nameMatcher = pattern.matcher(themeLocalizer.getString(template.getName()));
+                        Matcher descriptionMatcher = pattern.matcher(themeLocalizer.getString(template.getDescription()));
                         Matcher categoryMatcher = pattern.matcher(template.getCategorizationString());
 
                         // Initialize the set of matching attributes and add it to the
@@ -160,7 +160,7 @@
                         // For each of the attributes configured to be searchable
                         for (String attributeName : searchableAttributes) {
                             // Retrieve the attribute values for the attribute
-                            String[] attributeValues = template.getTemplateAttributeValues(ThemeLocalizer.getString(resourceBundle, attributeName));
+                            String[] attributeValues = template.getTemplateAttributeValues(themeLocalizer.getString(attributeName));
 
                             // For each of the attribute values
                             for (String attributeValue : attributeValues) {
