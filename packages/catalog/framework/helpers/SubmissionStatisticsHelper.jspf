@@ -17,6 +17,7 @@
             public static Integer TEMPLATE_NAME = 700001000;
             public static Integer TEMPLATE_STATUS = 536870914;
             public static Integer TEMPLATE_TYPE = 600000600;
+            public static Integer FIELD_TEMPLATE_ID = 700002203;
         }
         
         /**
@@ -35,10 +36,29 @@
          *  @return List<String>, returns a list of string template names that meet the criteria based on the parameters above
          */
         public static List<String> getMostCommonTemplateNames(HelperContext context, String[] catalogNames, String[] excludedTypes, Integer maxResults) {
-            return getMostCommonTemplateNames(context, catalogNames, excludedTypes, null, maxResults);
+            return getMostCommonTemplates(context, catalogNames, excludedTypes, null, maxResults, KS_SRV_CustomerSurvey.TEMPLATE_NAME);
         }
         
-        public static List<String> getMostCommonTemplateNames(HelperContext context, String[] catalogNames, String[] excludedTypes, String submitter, Integer maxResults) {
+        /**
+         *  @param HelperContext object
+         *  @param catalogNames String[], provide an array of strings. Each string is the name of the catalog to include.
+         *  @param excludedTypes String[], provide an array of strings with what service item "Types" that should be excluded.  These are the types from Request.
+         *  @param maxResults Integer, how many results should return
+         *  @return List<String>, returns a list of string template ids that meet the criteria based on the parameters above
+         */
+        public static List<String> getMostCommonTemplateIds(HelperContext context, String[] catalogNames, String[] excludedTypes, Integer maxResults) {
+            return getMostCommonTemplates(context, catalogNames, excludedTypes, null, maxResults, KS_SRV_CustomerSurvey.FIELD_TEMPLATE_ID);
+        }
+        
+        /**
+         *  @param HelperContext object
+         *  @param catalogNames String[], provide an array of strings. Each string is the name of the catalog to include.
+         *  @param excludedTypes String[], provide an array of strings with what service item "Types" that should be excluded.  These are the types from Request.
+         *  @param maxResults Integer, how many results should return
+         *  @param retrievalFieldId, which field value to return in the list
+         *  @return List<String>, returns a list of template field values based on the retrieval field
+         */
+        public static List<String> getMostCommonTemplates(HelperContext context, String[] catalogNames, String[] excludedTypes, String submitter, Integer maxResults, Integer retrievalFieldId) {
             // Validate the parameters
             if (context == null) {
                 throw new IllegalArgumentException("The 'user' parameter can't be null.");
@@ -138,7 +158,9 @@
                     // Build the qualification
                     Object qualifierInfo = ARServerUser_parseQualification.invoke(context.getContext(), "KS_SRV_CustomerSurvey", qual.toString());
                     // Build the group by fields
-                    int[] groupBy = new int[] {KS_SRV_CustomerSurvey.TEMPLATE_NAME};
+                    int[] groupBy = new int[] {
+                        retrievalFieldId
+                    };
 
                     // Get the statistics (List<StatisticsResultInfo>)
                     List<Object> countInfos = (List<Object>)ARServerUser_getEntryStatistics.invoke(
@@ -225,7 +247,7 @@
 
                     // Build the array of InternalID objects for the getEntryStatistics call
                     Object groupIds = Array.newInstance(arsClasses.get("InternalID"), 1);
-                    Array.set(groupIds, 0, InternalID.newInstance(KS_SRV_CustomerSurvey.TEMPLATE_NAME));
+                    Array.set(groupIds, 0, InternalID.newInstance(retrievalFieldId));
                     
                     // Execute the getEntryStatistics call
                     Object[] countInfos = (Object[])Util_getEntryStatistics.invoke(arsClasses.get("Util"),

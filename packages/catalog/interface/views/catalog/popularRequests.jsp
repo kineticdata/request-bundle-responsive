@@ -8,7 +8,7 @@
     // Get map of description templates
     Map<String, String> templateDescriptions = DescriptionHelper.getTemplateDescriptionMap(context, catalog);
     // Get popular requests
-    List<String> globalTopTemplates = SubmissionStatisticsHelper.getMostCommonTemplateNames(systemContext, new String[] {customerRequest.getCatalogName()}, templateTypeFilterTopSubmissions, 5);
+    List<Template> popularTemplates = CacheHelper.getSubmissionStatistics(systemContext, catalog, templateTypeFilterTopSubmissions, popularRequestsLimit);
 %>
 <%-- Include the bundle js config initialization. --%>
 <%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
@@ -18,7 +18,7 @@
 <!-- Page Javascript -->
 <script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/popularRequests.js"></script>
 <section class="container">
-    <% if(globalTopTemplates.size() > 0){%>
+    <% if(popularTemplates.size() > 0){%>
             <header class="container">
             <h2>
                 <%=themeLocalizer.getString("Popular Requests")%>
@@ -26,9 +26,8 @@
             <hr class="soften">
         </header>
         <ul class="templates unstyled">
-            <% for(String templateName : globalTopTemplates) { %>
+            <% for(Template popularRequest : popularTemplates) { %>
                 <li class="border-top border-gray-light clearfix">
-                    <% Template popularRequest = catalog.getTemplateByName(templateName); %>
                     <div class="content-wrap"> 
                         <% if (popularRequest.hasTemplateAttribute("ServiceItemImage")) { %>
                             <div class="image">
