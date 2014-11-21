@@ -1,6 +1,83 @@
 @charset "utf-8";
 div.content-slide { padding: 0 0 40px 0 !important; }
-
+section.container div.row:first-child {
+    margin-top: 30px;
+}
+/* Tiles */
+section.container div.col-md-4 a {
+    display: block;
+    text-decoration: none;
+    color: white;
+}
+section.container div.col-md-4 a div.icon {
+    text-align: center;
+}
+section.container div.col-md-4 a div.icon i {
+    font-size: 92px;
+}
+section.container div.col-md-4 i.fa-arrow-circle-right {
+    font-size: 25px;
+    opacity: 0.8;
+}
+section.container div.col-md-4 div.request a div.icon img {
+    height: 96px;
+}
+section.container div.row:first-child {
+    margin-bottom: 20px;
+}
+/* Label */
+div.label {
+    text-transform: uppercase;
+    font-size: 30px;
+    font-style: italic;
+    text-align: justify;
+    display: block;
+    padding: 0 0 0 10px;
+    line-height: inherit;
+    font-weight: normal;
+}
+div.approvals div.label,
+div.popular-requests div.label,
+div.requests div.label {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+}
+section.container div.col-md-4 div.approvals a div.icon,
+section.container div.col-md-4 div.popular-requests a div.icon,
+section.container div.col-md-4 div.requests a div.icon {
+    float: left;
+    margin: 20px 0 0 20px;
+}
+section.container div.col-md-4 div.approvals div.count,
+section.container div.col-md-4 div.popular-requests div.count,
+section.container div.col-md-4 div.requests div.count {
+    float: right;
+    font-size: 80px;
+    margin: 0 20px 0 0;
+}
+/* Details */
+div.panel-footer {
+    text-transform: uppercase;
+}
+div.panel-footer div {
+    padding: 3px;
+}
+/* Helper title text */
+div.helper-text {
+    color: white; 
+    background: rgb(0, 0, 0); /* fallback color */
+    background: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    top: 0;
+    bottom: 40px;
+    left: 15px;
+    right: 15px;
+    text-align: center;
+    font-size: 18px;
+}
+div.helper-text div {
+    padding: 20px 10px 0 10px;
+}
 /* Navgiation small devices */
 nav.catalog ul.templates,
 nav.catalog ul.categories,
@@ -50,6 +127,7 @@ nav.catalog ul.categories li i.fa-chevron-circle-right { float: right; margin: 3
 nav.catalog ul.breadcrumbs li i.fa-chevron-circle-left { float: left; margin: 3px 5px 0 10px; }
 nav.catalog ul.breadcrumbs li:not(:last-child) { display: none; }
 
+/* Responsive */
 @media (min-width: 767px) {
     div.fixed-header-spacer { height: 90px; }
 }
@@ -57,4 +135,15 @@ nav.catalog ul.breadcrumbs li:not(:last-child) { display: none; }
     header.sub { display: none; }
     section.container { display: none; }
     div.fixed-header-spacer { height: 50px; }
+}
+@media (max-width: 991px) {
+    section.container div.col-md-4 {
+        margin-bottom: 10px;
+    }
+    div.row {
+        margin-bottom: 0 !important;
+    }
+    section.container div.row:first-child {
+        margin-top: 10px;
+    }
 }
