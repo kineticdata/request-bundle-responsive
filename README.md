@@ -39,5 +39,5 @@ java -jar kurl.jar -action=build_catalog -directory=path-to-kurl-catalog-directo
 7. Verify configuration by opening the web site in a browser:  
 
 ```url
-http://_your-web-server_/kinetic/DisplayPage?name=Responsive-_your-catalog-name_
+http://_your-web-server_/kinetic/DisplayPage?name=slug_name
 ```
