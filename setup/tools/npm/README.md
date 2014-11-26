@@ -88,9 +88,12 @@ npm install --save-dev browserify watchify uglify-js
 npm install -g browserify --save
 npm install -g watchify --save
 npm install -g uglify-js --save
-npm install install moment --save
+npm install moment --save
 npm install jquery --save
 npm install jquery-ui --save
+npm install underscore --save
+npm install jquery.cookie --save
+npm install qtip2 --save
 ```
 
 ## Build
