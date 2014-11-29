@@ -1,6 +1,6 @@
 <div class="navigation-slide background-primary-darkest">  
     <%@include file="portalSearchForm.jspf"%>
-    <ul>
+    <ul class="background-primary-darkest">
         <% if (logoutEnabled && context != null) {%>
             <li>
                 <a href="<%= bundle.getProperty("logoutUrl")%>" class="color-white color-hover-secondary">
