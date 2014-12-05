@@ -118,8 +118,7 @@
                 this.excludedTypes = excludedTypes;
                 this.maxResults = maxResults;
             }
-
-            @Override
+            
             public void run() {
                 CacheHelper.generateSubmissionStatistics(this.context, this.catalog, this.excludedTypes, this.maxResults);
                 CacheHelper.submissionStatisticsWorker = null;
