@@ -54,8 +54,8 @@
             autoFocus: true,
             // Define default input value
             defaultInputValue: '',
-            // Determines whether or not to use a custom render handler
-            useRenderHandler: false,
+            // Define option for button css class
+            buttonClass: '',
             /**
              * Sets and returns the data for autocomplete
              * 
@@ -72,7 +72,7 @@
              * @param {Object} item
              * @returns {undefined}
              */
-            renderHandler: function(ul, item) {},
+            renderHandler: undefined,
             /**
              * Triggered when focus is moved to an item (not selecting)
              * 
@@ -81,6 +81,13 @@
              * @returns {undefined}
              */
             focusHandler: function(event, ui) {},
+            /**
+             * Triggered on blur of the input 
+             * (when the user clicks outside the input, thus deselecting it)
+             * 
+             * @returns {undefined}
+             */
+            blurHandler: undefined,        
             /**
              * Triggered once an item is selected from the autocomplete list
              * 
@@ -100,7 +107,7 @@
             /**
              * This function is called after the widget has finished rendering the list
              */
-            complete: function() {}
+            completeHandler: function() {}
         },
         _create: function() {
             var widget = this;
@@ -166,12 +173,19 @@
                 }
             });
             // Determine if render hander should be used
-            if(widget.options.useRenderHandler) {
+            if(widget.options.renderHandler !== undefined) {
                 widget.input.data('ui-autocomplete')._renderItem = function(ul, item) {
                     // Call the render handler option function
                     return widget.options.renderHandler.call(this, ul, item);
                 };
-            }         
+            }
+            // Determine if a blur handler should be used
+            if(widget.options.blurHandler !== undefined) {
+                widget.input.data('ui-autocomplete').element.off('blur').on('blur', function() {
+                    // Call the blur handler function
+                    return widget.options.blurHandler.call(_.extend({}, this, widget));
+                });
+            }
         },
         /**
          * Creates the combobox button for showing all searchable options
@@ -183,7 +197,7 @@
             // Determine if the button that triggers the options is required
             if(widget.options.includeButton) {
                 // Define button
-                widget.button = $('<button>').attr('tabIndex', -1).addClass('options');
+                widget.button = $('<button>').attr('tabIndex', -1).addClass('options ' + widget.options.buttonClass);
                 // Determine if custom icon specified
                 if(widget.options.buttonIcon !== null) {
                     widget.button.append(
@@ -250,7 +264,7 @@
          * @returns {undefined}
          */
         _complete: function() {
-            this.options.complete.call(this);
+            this.options.completeHandler.call(this);
         },
         /**
          * 
