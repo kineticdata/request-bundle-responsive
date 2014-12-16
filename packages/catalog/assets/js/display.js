@@ -115,7 +115,7 @@
             };
 
             this.saveForLaterPage = function(catalogName){
-                var returnValue = KINETIC.serviceitems.Helper.getParameter("return");
+                var returnValue = serviceitems.Helper.getParameter("return");
                 if (returnValue == "yes") {
                     var qstns = document.pageQuestionsForm.elements;
                     var myButton;
@@ -135,7 +135,7 @@
             };
 
             this.clickBackButton = function(){
-                var returnValue = KINETIC.serviceitems.Helper.getParameter("return");
+                var returnValue = serviceitems.Helper.getParameter("return");
                 if (returnValue == "yes") {
                     var qstns = document.pageQuestionsForm.elements;
                     var myButton;
