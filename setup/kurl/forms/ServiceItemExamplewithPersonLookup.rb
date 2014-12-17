@@ -352,7 +352,7 @@ service_item "Service Item Example with Person Lookup" do
     :confirmation,
     :vertical_buttons,
     :submit_button_value => "Submit",
-    :display_page => "/themes/responsive/packages/base/confirmation.jsp" do
+    :display_page => CONFIRMATION_PAGE do
     section  "Details"
   end
 end

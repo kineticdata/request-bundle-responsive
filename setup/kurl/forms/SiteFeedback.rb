@@ -99,7 +99,7 @@ service_item "Site Feedback" do
     :confirmation,
     :vertical_buttons,
     :submit_button_value => "Submit",
-    :display_page => "/themes/responsive/packages/base/confirmation.jsp" do
+    :display_page => CONFIRMATION_PAGE do
     section  "Details"
   end
 end
