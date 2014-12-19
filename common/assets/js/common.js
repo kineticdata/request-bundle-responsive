@@ -281,12 +281,12 @@
        $(parentSelector).on({
            mouseenter: function() {
                if(mouseEnter !== null) {
-                   mouseEnter(this);
+                   mouseEnter.call(this);
                }
            },
            mouseleave: function() {
                if(mouseLeave !== null) {
-                   mouseLeave(this);
+                   mouseLeave.call(this);
                }
            }
        }, childSelector);
