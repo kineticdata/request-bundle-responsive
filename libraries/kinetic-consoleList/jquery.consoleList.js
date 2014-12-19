@@ -127,7 +127,7 @@
            // Append header elements
             widget.header.append(widget.refresh);
             if(widget.options.paginationControlsTop) {
-                widget.header.append(widget.pagination)
+                widget.header.append(widget.pagination);
             }
             widget.header.append(widget.information);
             // Append header and header elements
@@ -142,7 +142,7 @@
             // Append ul and footer
             widget.footer = $('<div>').addClass('footer');
             if(!widget.options.paginationControlsTop) {
-                widget.footer.append(widget.pagination)
+                widget.footer.append(widget.pagination);
             }
             widget.consoleList.append(widget.ul)
                 .append(widget.footer);
@@ -237,8 +237,8 @@
          * Used to build the results set of data into the UI
          * This includes the entry options and pagination links as well
          * 
-         * @param {Array} records, an array of record objects
-         * @param {Number} recordCount, total length of array
+         * @param {Array} records an array of record objects
+         * @param {Number} recordCount total length of array
          * @returns {undefined}
          */
         buildResultSet: function(records, recordCount) {
@@ -450,7 +450,7 @@
                                     $('<a>').attr('href', 'javascript(void)')
                                     .data('page', value.page)
                                     .text(value.label)
-                                )
+                                );
                         // Create Active class based selected page
                         if(value.page === widget.options.page) { li.addClass('active'); }
                         paginationList.append(li);
