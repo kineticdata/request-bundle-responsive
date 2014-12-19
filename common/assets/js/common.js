@@ -538,5 +538,19 @@
             jquerySelectOption.append(options);
         });
     };
+    
+    /**
+     * Replaces carriage returns with line breaks
+     * 
+     * @param {Object} jQueryObject
+     * @returns {undefined}
+     */
+    common.formatCarriageReturnToHtml = function(jQueryObject) {
+        var stringFormat = jQueryObject.text();
+        var stringFormatted = stringFormat.replace(/(\r\n|\n|\r)/gm, '<br />');
+        jQueryObject.html(stringFormatted);
+        // Remove duplicates
+        jQueryObject.html(jQueryObject.html().replace(/(<br>\s*){2,2}/gi,'<br>'));
+    };
 
 })(jQuery, _);
