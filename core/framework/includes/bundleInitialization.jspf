@@ -88,6 +88,7 @@
 <%@include file="../models/kineticRequest/TaskServer.jspf" %>
 <%@include file="../models/kineticRequest/Template.jspf" %>
 <%@include file="../models/kineticRequest/TemplateAttribute.jspf" %>
+<%@include file="../models/kineticRequest/TemplateProfile.jspf" %>
 <%@include file="../models/kineticTask/Run.jspf" %>
 <%@include file="../models/kineticTask/Task.jspf" %>
 <%@include file="../models/kineticTask/TaskMessage.jspf" %>

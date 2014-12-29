@@ -9,10 +9,18 @@
         public static final String FIELD_NAME = "700001000";
         public static final String FIELD_STATUS = "7";
         public static final String FIELD_DISPLAY_NAME = "700002298";
+        public static final String FIELD_TYPE = "600000600";
+        public static final String FIELD_ASSIGNEE_GROUP = "112";
+        public static final String FIELD_MODIFIED = "6";
+        public static final String FIELD_MODIFIED_BY = "5";
         public static final String FIELD_TASK_ENGINE = "700073501";
         public static final String[] FIELD_IDS = new String[]{
-            FIELD_ID, FIELD_DESCRIPTION, FIELD_NAME, FIELD_ANONYMOUS_URL,
-            FIELD_DISPLAY_NAME, FIELD_CATALOG, FIELD_TASK_ENGINE};
+            FIELD_ID, FIELD_DESCRIPTION, 
+            FIELD_NAME, FIELD_ANONYMOUS_URL,
+            FIELD_DISPLAY_NAME, FIELD_CATALOG, 
+            FIELD_TYPE, FIELD_ASSIGNEE_GROUP, 
+            FIELD_MODIFIED, FIELD_MODIFIED_BY,
+            FIELD_TASK_ENGINE, FIELD_STATUS};
 
         private SimpleEntry entry = null;
         private HelperContext context;
@@ -35,6 +43,10 @@
             return result;
         }
 
+
+        // TODO -- Why is this assuming New and Active?
+        // Sysadmin - should get allTemplates in a Catalog - then it can deal with all of them
+        // Catalogs - probably only care about Active Templates
         public static Template[] findByCatalogName(HelperContext context, String catalogName) {
             Template[] results = new Template[0];
             // Only return new or active templates
@@ -267,6 +279,14 @@
         public String getId() {return entry.getEntryFieldValue(FIELD_ID);}
         public String getName() {return entry.getEntryFieldValue(FIELD_NAME);}
         public String getTaskEngine() {return entry.getEntryFieldValue(FIELD_TASK_ENGINE);}
+        public String getStatus() {return entry.getEntryFieldValue(FIELD_STATUS);}
+        public String getType() {return entry.getEntryFieldValue(FIELD_TYPE);}
+        public String getAssigneeGroup() {return entry.getEntryFieldValue(FIELD_ASSIGNEE_GROUP);}
+        public String getModified() {return entry.getEntryFieldValue(FIELD_MODIFIED);}
+        public String getModifiedBy() {return entry.getEntryFieldValue(FIELD_MODIFIED_BY);}
+
+
+
 
         public String toJson() {
             StringBuilder builder = new StringBuilder();
