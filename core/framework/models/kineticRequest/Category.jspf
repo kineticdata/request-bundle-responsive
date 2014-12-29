@@ -6,7 +6,7 @@
         public static final String FIELD_IMAGE_TAG = "700401930";
         public static final String FIELD_NAME = "700401900";
         public static final String FIELD_NUMBER_OF_ITEMS = "700401940";
-
+        public static final String FIELD_MODIFIED = "6";
         public static final String FIELD_CATALOG = "600000500";
         public static final String FIELD_SORT_ORDER = "700061010";
         public static final String FIELD_STATUS = "7";
@@ -74,6 +74,9 @@
             return result;
         }
 
+
+        public String getModified() {return entry.getEntryFieldValue(FIELD_MODIFIED);}
+        public String getSortOrder() {return entry.getEntryFieldValue(FIELD_SORT_ORDER);}
         public String getDescription() { return entry.getEntryFieldValue(FIELD_DESCRIPTION); }
         public String getFullName() {return entry.getEntryFieldValue(FIELD_NAME);}
         public String getId() {return entry.getEntryFieldValue(FIELD_ID);}

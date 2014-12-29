@@ -82,6 +82,26 @@
             return catalog;
         }
 
+
+        public static Catalog[] find(HelperContext context) {
+            String[] sortFieldIds = new String[]{FIELD_NAME};
+            Catalog[] results = null;
+            
+            String qualification =
+                "'"+FIELD_STATUS+"' = \"Active\"";
+
+            SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS, sortFieldIds);
+            if (entries != null && entries.length > 0) {
+                results = new Catalog[entries.length];
+                for(int i=0;i<results.length;i++) {
+                    results[i] = new Catalog(entries[i], context);
+                }
+            }
+            return results;
+        }
+
+
+
         public void preload(HelperContext context) {
             Category[] categories = this.getAllCategories(context);
             Template[] templates = this.getTemplates(context);

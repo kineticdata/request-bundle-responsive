@@ -8,8 +8,11 @@
     // Define system context, which is required for some queries
     HelperContext systemContext = RemedyHandler.getDefaultHelperContext();
     
+    // These should be in the catalog as attributes
     // Define url friendly slug, which is used in the urls below
-    bundle.setProperty("slug", "Responsive-");
+    // bundle.setProperty("slug", "Responsive-");
+    // Define company name
+    // bundle.setProperty("companyName", "ACME");
     
     // Define catalog attributes
     Map<String,String> catalogAttributes = CatalogAttributeHelper.getCatalogAttributeConfiguration(
@@ -25,9 +28,7 @@
             break;
         }
     }
-    
-    // Define company name
-    bundle.setProperty("companyName", "ACME");
+
     // Define catalog name
     bundle.setProperty("catalogName", customerRequest.getCatalogName());
     // Define display page url with slug
