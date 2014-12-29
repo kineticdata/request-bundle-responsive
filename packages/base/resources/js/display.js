@@ -6,16 +6,16 @@
     $(function() {
         // This hack arranges the buttons to work with float right and show up in the right order
         // NOTE: tried to wrap these in a div but it causes the request events (validation, etc) to unbind for the submit/continue button
-        // NOTE: currently there is no perfect css solution with the buttons continue and submit shown on the right until a solution comes around where the 
+        // NOTE: currently there is no perfect css solution with the buttons continue and submit shown on the right until a solution comes around where the
         // client can better control the html dom structure of these buttons through request.
         $('form#pageQuestionsForm div.previousButton').insertAfter('form#pageQuestionsForm div.submitButton');
     });
-    
+
     /*----------------------------------------------------------------------------------------------
      * DISPLAY INIALIZATION
      *   This code is executed when the Javascript file is loaded
      *--------------------------------------------------------------------------------------------*/
-    
+
     // Ensure the KINETIC global object exists
     KD = KD || {};
     // Create the utils namespace
@@ -24,7 +24,7 @@
     KD.serviceitems = KD.serviceitems || {};
     // Create a scoped alias to simplify references
     var serviceitems = KD.serviceitems;
-    
+
     /**
      * Displays messages to div above template button layer
      * alert box.  This gives the benefit of displaying HTML formatted strings.
@@ -44,17 +44,17 @@
                 element: null
             };
         }
-        if($('div.warningContainer').exists()) {
+        if($('div.warningContainer').length > 0) {
             $('div.warningContainer').html(options.body);
         } else {
-            if($('div[label="Bottom of Page"]').exists()) {
+            if($('div[label="Bottom of Page"]').length > 0) {
                 $('div[label="Bottom of Page"]').before('<div class="warningContainer">' + options.body + '</div>');
             } else {
                 $('div.templateButtonLayer').before('<div class="warningContainer">' + options.body + '</div>');
             }
         }
     };
-   
+
     /**
      * The KINETIC global namespace object
      * @class KINETIC
@@ -62,12 +62,12 @@
      */
     function $Obj(o){return YAHOO.util.Dom.get(o);}
     function $Q(o){return KD.utils.Action.getQuestionValue(o);}
-    
+
     // Determine if helper is defined
     if (!serviceitems.Helper) {
         // Define helper
         serviceitems.Helper = new function() {
-            
+
             this.displ_confirm = function(){
                 var name = confirm("Click OK to accept transaction");
                 if (name == true){
@@ -84,8 +84,8 @@
                     if (clientManager.customerSurveyId == "null" || clientManager.customerSurveyId == null){
                         window.location = BUNDLE.config['catalogUrl'];
                     } else {
-                        KD.utils.Action.setQuestionValue(validationStatus, "Cancelled");    
-                        KD.utils.Action.setQuestionValue(reqStatus, "Closed");  
+                        KD.utils.Action.setQuestionValue(validationStatus, "Cancelled");
+                        KD.utils.Action.setQuestionValue(reqStatus, "Closed");
                         document.pageQuestionsForm.submit();
                         return true;
                     }
@@ -157,15 +157,15 @@
                 var regexS = "[\\?&]"+param+"=([^&]*)";
                 var regex = new RegExp( regexS );
                 var results = regex.exec( window.location.href );
-                if ( results == null ) 
+                if ( results == null )
                     return "";
                 else
                     return results[1];
             };
 
-            // Standard date validation function used to ensure that the date passed is greater than today or 
-            // today + a specified number of days  
-            this.dateValidation = function(questionIDMDY, numDays){      
+            // Standard date validation function used to ensure that the date passed is greater than today or
+            // today + a specified number of days
+            this.dateValidation = function(questionIDMDY, numDays){
                 var nowDate = new Date();
                 var nowDateArray = new Array();
                 nowDateArray[0] = nowDate.getFullYear();
@@ -179,7 +179,7 @@
                 // *** do we need to exclude weekend days when adding days here ?? ***
                 if (numDays > 0) {
                     nowDateComputed.setDate(nowDate.getDate()+numDays);
-                } 
+                }
 
                 // The document.getelementById function simpley retrieves the value from the hidden date field
                 // from the date questions on the template
@@ -196,12 +196,12 @@
                 requestStartDateInt[1] = parseInt(requestStartDateString[1],10);
                 requestStartDateInt[2] = parseInt(requestStartDateString[2],10);
                 var requestStartDateFinal = new Date();
-                requestStartDateFinal.setFullYear(requestStartDateInt[0], (requestStartDateInt[1] - 1), requestStartDateInt[2]);         
+                requestStartDateFinal.setFullYear(requestStartDateInt[0], (requestStartDateInt[1] - 1), requestStartDateInt[2]);
 
-                // Finally, the dates are compared  
+                // Finally, the dates are compared
                 if (numDays == 0 && requestStartDateFinal < nowDate) {
                     alert('The date entered cannot be less than today\'s date. Please click OK to return to the service request details page to correct the date.');
-                    return false; 
+                    return false;
                 } else {
                     return true;
                 }
@@ -225,7 +225,7 @@
                 var requestStartDate=document.getElementById("SRVQSTN_" + startDateQuestionID).value;
 
                 var endDateQuestionElm = KD.utils.Util.getElementObject(questionIDEnd);
-                var endDateQuestionID = endDateQuestionElm.id.substr(7);    
+                var endDateQuestionID = endDateQuestionElm.id.substr(7);
                 var requestEndDate=document.getElementById("SRVQSTN_" + endDateQuestionID).value;
 
                 // The date field stores the date as a string, so the following steps grab the individual
@@ -256,10 +256,10 @@
                     return false;  //the return value of false stops continued processing of the submit action
                 } else if (numDays > 0 && computedDays > numDays) {    //checks the number of days between the start and end date entered
                     alert(errorMsgDuration);
-                   return false;  
+                   return false;
                 } else {
                     return true;
-                }   
+                }
             };
         };
     };
