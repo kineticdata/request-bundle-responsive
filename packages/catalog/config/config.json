@@ -78,7 +78,7 @@
             "type": "main-menu",
             "label": "Popular Requests",
             "class": "popular-requests",
-            "description": "View My Popular Requests",
+            "description": "View popular service requests.",
             "icon": "<i class=\"fa fa-star-o\"></i>",
             "displayName": "Catalog",
             "params": {
@@ -89,7 +89,7 @@
             "type": "main-menu",
             "label": "Requests",
             "class": "requests",
-            "description": "View My Submissions",
+            "description": "View and track all requests you have submitted.",
             "icon": "<i class=\"fa fa-pencil-square-o\"></i>",
             "displayName": "Catalog",
             "params": {
@@ -101,7 +101,7 @@
             "type": "main-menu",
             "label": "Approvals",
             "class": "approvals",
-            "description": "View My Approvals",
+            "description": "View all requests that you are required to approve or reject.",
             "icon": "<i class=\"fa fa-check\"></i>",
             "displayName": "Catalog",
             "params": {

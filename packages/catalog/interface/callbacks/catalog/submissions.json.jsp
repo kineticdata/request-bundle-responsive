@@ -6,13 +6,6 @@
     if (context == null) {
         ResponseHelper.sendUnauthorizedResponse(response);
     } else {
-        // Retrieve the main catalog object
-        Catalog catalog = Catalog.findByName(context, customerRequest.getCatalogName());
-        if(catalog == null) {
-            throw new Exception("The catalog specified in your configuration is incorrect.");
-        }
-        // Preload the catalog
-        catalog.preload(context);
         // Get qualification mapping from config
         String qualification = submissionGroups.get(request.getParameter("qualification"));
         if (qualification == null) {

@@ -8,7 +8,24 @@
     // Get map of description templates
     Map<String, String> templateDescriptions = DescriptionHelper.getTemplateDescriptionMap(context, catalog);
     // Get popular requests
-    List<String> globalTopTemplates = SubmissionStatisticsHelper.getMostCommonTemplateNames(systemContext, new String[] {customerRequest.getCatalogName()}, templateTypeFilterTopSubmissions, 5);
+    List<Template> popularTemplates = CacheHelper.getSubmissionStatistics(systemContext, catalog, templateTypeFilterTopSubmissions, popularRequestsLimit);
+    // Define counts
+    Integer totalPopular = popularTemplates.size();
+    Integer totalRequests = 0;
+    Integer totalApprovals = 0;
+    if (context != null) {
+        for (String groupName : submissionGroups.keySet()) {
+            Integer count = null;
+            // Total count of Requests
+            if(groupName.equals("Open Request")) {
+                totalRequests = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName));
+            }
+            // Total Count of Approvals
+            if(groupName.equals("Pending Approval")) {
+                totalApprovals = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName));
+            }
+        }
+    }
 %>
 <%-- Include the bundle js config initialization. --%>
 <%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
@@ -20,68 +37,67 @@
 <script type="text/javascript" src="<%=bundle.packagePath()%>assets/js/catalog.js"></script> 
 <%@include file="../../fragments/flyout.jspf"%>
 <section class="container">
-    <% if(globalTopTemplates.size() > 0){%>
-        <header class="container">
-            <h2>
-                <%=themeLocalizer.getString("Popular Requests")%>
-            </h2>
-            <hr class="soften">
-        </header>
-        <ul class="templates unstyled">
-            <% for(String templateName : globalTopTemplates) { %>
-                <li class="border-top border-gray-light clearfix">
-                    <% Template popularRequest = catalog.getTemplateByName(templateName); %>
-                    <div class="content-wrap"> 
-                        <% if (popularRequest.hasTemplateAttribute("ServiceItemImage")) { %>
-                            <div class="image">
-                                <img width="40" src="<%= ServiceItemImageHelper.buildImageSource(popularRequest.getTemplateAttributeValue("ServiceItemImage"), bundle.getProperty("serviceItemImagePath"))%>" />
-                            </div>
-                            <div class="col-sm-6 description-small">
-                        <% } else {%>
-                            <div class="col-sm-6 description-wide">
-                        <% }%>
-                        <h3>
-                            <%=themeLocalizer.getString(popularRequest.getName())%>
-                        </h3>
-                        <p>
-                            <%=themeLocalizer.getString(popularRequest.getDescription())%>
-                        </p>
-                        <div class="visible-xs left">
-                            <a class="templateButton" href="<%= popularRequest.getAnonymousUrl() %>">
-                                <i class="fa fa-share"></i><%=themeLocalizer.getString("Request")%>
-                            </a>
-                        </div>
-                        <% if (templateDescriptions.get(popularRequest.getId()) != null ) { %>
-                            <a class="read-more" href="<%= bundle.applicationPath()%>DisplayPage?srv=<%= templateDescriptions.get(popularRequest.getId()) %>">
-                                <%=themeLocalizer.getString("Read More")%>
-                            </a>
-                        <% }%>                                         
+    <div class="row">
+        <div class="col-md-4">
+            <div class="popular-requests panel background-tertiary">
+                <a>
+                    <div class="helper-text hide">
                     </div>
-                    <div class="col-sm-5">
-                        <div class="hidden-xs">
-                            <!-- Load description attributes config stored in package config -->
-                            <% for (String attributeDescriptionName : attributeDescriptionNames) {%>
-                                <% if (popularRequest.hasTemplateAttribute(attributeDescriptionName)) { %>
-                                    <p>
-                                        <strong><%=themeLocalizer.getString(attributeDescriptionName) %>:</strong> <%=themeLocalizer.getString(popularRequest.getTemplateAttributeValue(attributeDescriptionName)) %>
-                                    </p>
-                                <% }%>
-                            <%}%>
-                        </div>
-                        <div class="hidden-xs">
-                            <a class="templateButton" href="<%= popularRequest.getAnonymousUrl() %>">
-                                <i class="fa fa-share"></i><%=themeLocalizer.getString("Request")%>
-                            </a>
-                        </div>
+                    <div class="icon">
                     </div>
-                </li>
-            <% } %>
-        </ul>
-    <% } else {%>
-        <h3>
-            <i><%=themeLocalizer.getString("No popular requests. Please start requesting services to see them.")%></i>
-        </h3>
-    <% } %>
+                    <div class="count">
+                        <%= totalPopular%>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="label"></div>
+                    <div class="panel-footer background-tertiary-compliment clearfix">
+                        <div class="pull-left"><%=themeLocalizer.getString("Details")%></div>
+                        <i class="pull-right fa fa-arrow-circle-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="approvals panel background-primary">
+                <a>
+                    <div class="helper-text hide">
+                    </div>
+                    <div class="icon">
+                    </div>
+                    <div class="count">
+                        <%= totalApprovals%>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="label">
+                    </div>
+                    <div class="panel-footer background-primary-dark clearfix">
+                        <div class="pull-left"><%=themeLocalizer.getString("Details")%></div>
+                        <i class="pull-right fa fa-arrow-circle-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="requests panel background-secondary">
+                <a>
+                    <div class="helper-text hide">
+                    </div>
+                    <div class="icon">
+                    </div>
+                    <div class="count">
+                        <%= totalRequests%>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="label">
+                    </div>
+                    <div class="panel-footer background-secondary-dark clearfix">
+                        <div class="pull-left"><%=themeLocalizer.getString("Details")%></div>
+                        <i class="pull-right fa fa-arrow-circle-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
 </section>
 <nav class="catalog">
     <%-- BREADCRUMBS NAV --%>

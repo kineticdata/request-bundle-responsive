@@ -28,21 +28,16 @@ java -jar kurl.jar -action=build_catalog -directory=path-to-kurl-catalog-directo
 > **Tip**: If you are executing the kurl.jar from **bundle/setup**, your path to the kurl directory is **kurl/**.
 
 
-6. When the import is complete, verify that the catalog is visible in Remedy and all the service items are imported.
+6. When the import is complete, verify that the catalog is visible in the Kinetic authoring tool and the following service items are imported:
     * About
     * Catalog (home page to browse catalog)
-    * Popular Requests
+    * Common
     * Profile
-    * Search
     * Service Item Example with Person Lookup
     * Site Feedback
-    * Submissions
-    * Submission Activity
 
-7. In the bundle directory open the your-theme-name/common/config/config.jspf file. Update each line where the word "Responsive" is with the name of your catalog then save the file.
-
-8. Verify configuration by opening the web site in a browser:  
+7. Verify configuration by opening the web site in a browser:  
 
 ```url
-http://_your-web-server_/kinetic/DisplayPage?name=_your-catalog-name_
+http://_your-web-server_/kinetic/DisplayPage?name=slug_name + Catalog
 ```

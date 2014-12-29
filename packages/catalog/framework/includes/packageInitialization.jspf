@@ -31,6 +31,7 @@
       <%@include file="../helpers/PackageHelper.jspf
 --%>
 <%@include file="../../../../common/framework/helpers/PathHelper.jspf" %>
+<%@include file="../helpers/CacheHelper.jspf" %>
 <%@include file="../helpers/SubmissionStatisticsHelper.jspf" %>
 
 <%--

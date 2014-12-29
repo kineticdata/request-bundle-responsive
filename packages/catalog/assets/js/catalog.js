@@ -81,5 +81,39 @@
                 $(this).remove();
             }
         });
+        
+        /*------------------------------------------------------------------------------------------
+         * Tile UI
+         *   Sets up links and labels for the tiles
+         *----------------------------------------------------------------------------------------*/
+        
+        // Define tile link configuration
+        var tileLinks = {
+            'div.popular-requests': BUNDLE.config.package.links['popularRequests'], 
+            'div.approvals': BUNDLE.config.package.links['approvals'],
+            'div.requests': BUNDLE.config.package.links['requests']
+        };
+        // Loop through tile links and build data
+        _.each(tileLinks, function(value, index) {
+            // Setup splash page links
+            var url = BUNDLE.config['displayPageUrlSlug'] + value['displayName'];
+            // Define params if not defined
+            var params = value.params || {};
+            // Check size and append url params
+            if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
+            // Define title
+            var tile = $(index);
+            // Append url
+            tile.find('a').attr('href', url);
+            // Append label
+            tile.find('div.label').text(BUNDLE.localize(value['label']));
+            // Append description
+            tile.find('div.helper-text').append(
+                $('<div>').text(BUNDLE.localize(value['description']))
+            );
+            // Append icon
+            tile.find('div.icon').append(value['icon']);
+        });
     });
+
 })(jQuery, _);

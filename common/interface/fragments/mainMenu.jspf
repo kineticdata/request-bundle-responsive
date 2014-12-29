@@ -47,35 +47,36 @@
                     // Define counter to determine if links go above or below
                     var i = 0;
                     // Pluck only the "links" from config.packages to be added to the main menus ui
-                    _.each(_.compact(_.pluck(BUNDLE.config.packages, 'links')), function(link) {
-                        // Loop through the link's properties
-                        _.each(link, function(property) {
-                            // Only build links that are not profile
-                            if(property['class'] !== 'profile' && property['type'] === 'main-menu') {
-                                // Define url
-                                var url = BUNDLE.config['displayPageUrlSlug'] + property['displayName'];
-                                // Define params if not defined
-                                var params = property.params || {};
-                                // Check size and append url params
-                                if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
-                                // Define list element with link
-                                var li = $('<li>').addClass(property['class']).append(
-                                    $('<a>').addClass('color-gray-darkest color-hover-secondary').attr({
-                                        'href': url,
-                                        'aria-label': BUNDLE.localize(property.description)
-                                    }).append(property.icon).append(
-                                        $('<div>').text(BUNDLE.localize(property.label))
-                                    )
-                                );
-                                if(i > 3) {
-                                    // Add links to menus lower
-                                    $(menuSelector).find('ul').last().append(li);
-                                } else {
-                                    // Add links to menus top
-                                    $(menuSelector).find('ul').first().append(li);
-                                }
-                                i++; 
+                    _.each(_.compact(_.pluck(BUNDLE.config.packages, 'links')), function(packageLinks) {
+                        // Define main menus links from the packages
+                        packageLinks = _.where(packageLinks, {type: 'main-menu'});
+                        // Filter profile links
+                        packageLinks = _.reject(packageLinks, {class: 'profile'});
+                        // Loop through the links
+                        _.each(packageLinks, function(link) {
+                            // Define url
+                            var url = BUNDLE.config['displayPageUrlSlug'] + link['displayName'];
+                            // Define params if not defined
+                            var params = link.params || {};
+                            // Check size and append url params
+                            if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
+                            // Define list element with link
+                            var li = $('<li>').addClass(link['class']).append(
+                                $('<a>').addClass('color-gray-darkest color-hover-secondary').attr({
+                                    'href': url,
+                                    'aria-label': BUNDLE.localize(link.description)
+                                }).append(link.icon).append(
+                                    $('<div>').text(BUNDLE.localize(link.label))
+                                )
+                            );
+                            if(i > 3) {
+                                // Add links to menus lower
+                                $(menuSelector).find('ul').last().append(li);
+                            } else {
+                                // Add links to menus top
+                                $(menuSelector).find('ul').first().append(li);
                             }
+                            i++;
                         });
                     });
                 }

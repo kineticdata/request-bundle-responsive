@@ -34,6 +34,12 @@ a:hover, a:focus, a:active {
 .background-secondary {
   background: #e16b1e; }
 
+.background-secondary-light {
+  background: #f89f55; }
+
+.background-secondary-dark {
+  background: #9a4600; }
+
 .background-secondary-compliment {
   background: #f89f55; }
 

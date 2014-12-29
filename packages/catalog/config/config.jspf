@@ -43,4 +43,7 @@
         // Set to default type requests
         bundle.setProperty("submissionType", "requests");
     }
+    
+    // Define popular requests limit which is used by some views
+    Integer popularRequestsLimit = 20;
 %>
