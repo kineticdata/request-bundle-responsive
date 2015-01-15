@@ -51,7 +51,16 @@
                 // form definition.  We use a hash set specifically for its fast
                 // access when checking for presence of a value.
                 Set<String> existingFieldIds = new HashSet<String>();
-                for (String fieldId : helper.getCache().getForm(formName).getFieldIds()) {
+                FormCache formCache = helper.getCache();
+                // Added check for null due to encountering strange behavior on 
+                // internal server after updating remedy forms/apps. Restart of 
+                // tomcat seems to fix the issue.
+                if(formCache == null){
+                    throw new RuntimeException("Error in ArsBase.jspf. formCache is null.");
+                }
+                Form formDef = formCache.getForm(formName);
+                String[] myFieldIds = formDef.getFieldIds();
+                for (String fieldId : myFieldIds) {
                     existingFieldIds.add(fieldId);
                 }
 
