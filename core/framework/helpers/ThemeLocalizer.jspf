@@ -1,4 +1,3 @@
-<%@page import="org.apache.commons.lang3.StringUtils"%>
 <%@page import="java.util.Map"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.HashSet"%>
@@ -58,16 +57,19 @@
                     fileName = file.getName();
                     // Split on period and add back slashes for literal dot split
                     String[] vals = fileName.split("\\.");
-                    // Determine if split has at least one result
-                    if(vals.length >= 0) {
-                        // Get first value assuming this is the name before .properties
-                        String property = vals[0];
-                        // Split
-                        String propertyVals[] = property.split("_");
+                    // Make sure it's a properties file
+                    if(fileName.indexOf("properties") > 0){
                         // Determine if split has at least one result
-                        if(propertyVals.length >= 0) {
-                            // Get resource bundle name
-                            resourceBundleNames.add(propertyVals[0]);
+                        if(vals.length >= 0) {
+                            // Get first value assuming this is the name before .properties
+                            String property = vals[0];
+                            // Split
+                            String propertyVals[] = property.split("_");
+                            // Determine if split has at least one result
+                            if(propertyVals.length >= 0) {
+                                // Get resource bundle name
+                                resourceBundleNames.add(propertyVals[0]);
+                            }
                         }
                     }
                 }
@@ -77,6 +79,8 @@
             this.propertiesCombined = new HashMap<String,String>();
             // Loop through each bundle name and get the bundle
             for(String resourceBundleName : resourceBundleNames) {
+                Logger logger = LogHelper.getLogger();
+                logger.debug("RESOURCE BUNDLE NAME: " + resourceBundleName);
                 ResourceBundle resourceBundle = ThemeLocalizer.getResourceBundle(
                     resourceBundleName,
                     locale,
@@ -112,12 +116,7 @@
                     result = propertiesCombined.get(formatKey);
                 }  
             }
-            // Added check because result was getting set to null above
-            if(result != null){
-                return result;
-            } else {
-                return key;
-            }
+            return result;
         }
         
         /**
@@ -185,9 +184,6 @@
             String locale,
             String absolutePropertyFilesPath
         ) {
-            if(!StringUtils.isNotBlank(locale)) {
-                throw new RuntimeException("The locale is empty or null");
-            }
             // Establish var
             ResourceBundle resourceBundle = null;
             // Check if the locale contains any characters
