@@ -69,3 +69,6 @@ node_modules
 
 # Ignore sass cache
 .sass-cache
+
+# Mac directory files
+.DS_STORE
