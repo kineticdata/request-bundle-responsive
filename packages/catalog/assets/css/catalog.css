@@ -58,7 +58,7 @@ section.container div.col-md-4 div.requests div.count {
 /* Details */
 div.panel-footer {
     text-transform: uppercase;
-    padding: 3px 15px;
+    padding: 10px 3px;
 }
 div.panel-footer div {
     padding: 3px;
