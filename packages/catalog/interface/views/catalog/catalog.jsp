@@ -41,14 +41,17 @@
         <div class="col-md-8" style='margin-top:-3em;'>
             <% for (Category category : catalog.getRootCategories(context)) { %>
                 <% if (category.hasTemplates()) { %>
-                    <div class='row' style='margin-bottom:2em;'>
-                      <h3><%=themeLocalizer.getString(category.getName())%></h3>
+                    <div class='row' style='margin-bottom:.75em;'>
+                      <h3>
+                        <%=themeLocalizer.getString(category.getName())%>
+                        <a style='font-size:.5em;font-weight:normal;margin:0 .5em;color:#CCCCCC;' href='http://localhost:8080/kinetic/DisplayPage?name=KD-Catalog&category=<%= URLEncoder.encode(category.getFullName(), "UTF-8")%>&view=category'>View All Services<span style='margin-left:.25em;' class='fa fa-arrow-circle-o-right'></span></a>
+                      </h3>
                       <% for (Template template : category.getTemplates()) {%>
                         <% String[] icons = template.getTemplateAttributeValues("fa-class");%>
                         
-                        <div class='panel' style='width:24%;float:left;text-align:center;margin-right:1em;border:1px solid #E8E8E8;'>
+                        <div class='panel' style='width:23%;float:left;text-align:center;margin-right:.5em;border:1px solid #E8E8E8;'>
                           <span class='fa <%= (icons.length > 0) ? icons[0] : "fa-list-alt" %>' style='margin:.25em;color:#CCC;font-size:3em;'></span>
-                          <div class='panel-footer clearfix' style='font-size:.8em;'>
+                          <div class='panel-footer clearfix' style='font-size:.7em;'>
                             <a href='<%= template.getAnonymousUrl() %>'>
                               <%= themeLocalizer.getString(template.getName())%>
                             </a>
