@@ -140,10 +140,6 @@ a:hover, a:focus, a:active { color: $primary-dark; }
 .btn-secondary, .templateButton {
   color: $white;
   font-weight: bold;
-  border: none;
-  @include box-shadow(0 1px 2px rgba(0,0,0,.2));
-  @include text-shadow(0 -1px 1px rgba(0,0,0,0.5));
-  @include gradient($secondary-light, $secondary, 0%, 100%);
 }
 .btn-secondary:hover, .btn-secondary:focus, 
 .btn-secondary:active, .btn-secondary.active, 

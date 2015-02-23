@@ -342,27 +342,7 @@ a:hover, a:focus, a:active {
 
 .btn-secondary, .templateButton {
   color: #ffffff;
-  font-weight: bold;
-  border: none;
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
-  background-color: #F89F55;
-  /* IE10 Consumer Preview */
-  background-image: -ms-linear-gradient(top left, #F89F55 0%, #E16B1E 100%);
-  /* IE9 to IE7 */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F89F55', endColorstr='#E16B1E');
-  /* Mozilla Firefox */
-  background-image: -moz-linear-gradient(top left, #F89F55 0%, #E16B1E 100%);
-  /* Opera */
-  background-image: -o-linear-gradient(top left, #F89F55 0%, #E16B1E 100%);
-  /* Webkit (Safari/Chrome 10) */
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #F89F55), color-stop(100%, #E16B1E));
-  /* Webkit (Chrome 11+) */
-  background-image: -webkit-linear-gradient(top left, #F89F55 0%, #E16B1E 100%);
-  /* W3C Markup, IE10 Release Preview */
-  background-image: linear-gradient(to bottom right, #F89F55 0%, #E16B1E 100%); }
+  font-weight: bold; }
 
 .btn-secondary:hover, .btn-secondary:focus,
 .btn-secondary:active, .btn-secondary.active,
@@ -670,22 +650,21 @@ header.jumbotron {
   padding: 2px 10px; }
 
 .templateButton {
-  text-decoration: none;
-  line-height: 20px;
+  border: none;
   display: inline-block;
+  padding: 6px 12px;
+  margin: -20px 0px 50px 20px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857;
   text-align: center;
+  white-space: nowrap;
   vertical-align: middle;
-  padding: 2px 12px;
-  margin-bottom: 0;
-  font-size: 12px;
-  font-weight: bold;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+  cursor: pointer;
+  -moz-user-select: none;
+  border: 1px solid transparent;
   border-radius: 4px;
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); }
+  background: none repeat scroll 0% 0% #E16B1E; }
 
 button.stretch,
 input.stretch {
