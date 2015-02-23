@@ -38,64 +38,30 @@
 <%@include file="../../fragments/flyout.jspf"%>
 <section class="container">
     <div class="row">
-        <div class="col-md-4">
-            <div class="popular-requests panel background-tertiary">
-                <a>
-                    <div class="helper-text hide">
+        <div class="col-md-8" style='margin-top:-3em;'>
+            <% for (Category category : catalog.getRootCategories(context)) { %>
+                <% if (category.hasTemplates()) { %>
+                    <div class='row' style='margin-bottom:2em;'>
+                      <h3><%=themeLocalizer.getString(category.getName())%></h3>
+                      <% for (Template template : category.getTemplates()) {%>
+                        <% String[] icons = template.getTemplateAttributeValues("fa-class");%>
+                        
+                        <div class='panel' style='width:24%;float:left;text-align:center;margin-right:1em;border:1px solid #E8E8E8;'>
+                          <span class='fa <%= (icons.length > 0) ? icons[0] : "fa-list-alt" %>' style='margin:.25em;color:#CCC;font-size:3em;'></span>
+                          <div class='panel-footer clearfix' style='font-size:.8em;'>
+                            <a href='<%= template.getAnonymousUrl() %>'>
+                              <%= themeLocalizer.getString(template.getName())%>
+                            </a>
+                          </div>
+                        </div>
+                      <% }%>
                     </div>
-                    <div class="icon">
-                    </div>
-                    <div class="count">
-                        <%= totalPopular%>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="label"></div>
-                    <div class="panel-footer background-tertiary-compliment clearfix">
-                        <div class="pull-left"><%=themeLocalizer.getString("Details")%></div>
-                        <i class="pull-right fa fa-arrow-circle-right"></i>
-                    </div>
-                </a>
-            </div>
+                <% } %>
+            <% }%>
         </div>
         <div class="col-md-4">
-            <div class="approvals panel background-primary">
-                <a>
-                    <div class="helper-text hide">
-                    </div>
-                    <div class="icon">
-                    </div>
-                    <div class="count">
-                        <%= totalApprovals%>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="label">
-                    </div>
-                    <div class="panel-footer background-primary-dark clearfix">
-                        <div class="pull-left"><%=themeLocalizer.getString("Details")%></div>
-                        <i class="pull-right fa fa-arrow-circle-right"></i>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="requests panel background-secondary">
-                <a>
-                    <div class="helper-text hide">
-                    </div>
-                    <div class="icon">
-                    </div>
-                    <div class="count">
-                        <%= totalRequests%>
-                    </div>
-                    <div class="clearfix"></div>
-                    <div class="label">
-                    </div>
-                    <div class="panel-footer background-secondary-dark clearfix">
-                        <div class="pull-left"><%=themeLocalizer.getString("Details")%></div>
-                        <i class="pull-right fa fa-arrow-circle-right"></i>
-                    </div>
-                </a>
-            </div>
+            <a class="twitter-timeline"  href="https://twitter.com/KineticData" data-widget-id="569678005275226112" data-chrome="nofooter">Tweets by @KineticData</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         </div>
     </div>
 </section>

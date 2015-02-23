@@ -46,7 +46,37 @@
                     <% } %>
                 <% }%>
                 </ul>
-                </li>         
+                </li> 
+                <li class="dropdown background-hover-gradient-primary border-gray-light dropdown-toggle">
+                    <span class="nav-button-inner">
+                        <span class="nav-button-title nav-button-line2">
+                            <%=themeLocalizer.getString("Requests")%>
+                        </span>
+                        <i class="hidden nav-sprite"></i>
+                    </span>     
+                    <ul class="dropdown-menu dropdown-menus unstyled" role="menu" aria-labelledby="my-requests">
+                        <li role="presentation" class="request" data-id="all-requests">
+                          <a href="http://localhost:8080/kinetic/DisplayPage?name=KD-Catalog&view=submissions&type=requests">
+                          View All
+                          </a>
+                        </li>
+                    </ul>
+                </li>  
+                <li class="dropdown background-hover-gradient-primary border-gray-light dropdown-toggle">
+                    <span class="nav-button-inner">
+                        <span class="nav-button-title nav-button-line2">
+                            <%=themeLocalizer.getString("Approvals")%>
+                        </span>
+                        <i class="hidden nav-sprite"></i>
+                    </span>     
+                    <ul class="dropdown-menu dropdown-menus unstyled" role="menu" aria-labelledby="my-approvals">
+                        <li role="presentation" class="request" data-id="all-requests">
+                          <a href="http://localhost:8080/kinetic/DisplayPage?name=KD-Catalog&view=submissions&type=approvals">
+                          View All
+                          </a>
+                        </li>
+                    </ul>
+                </li>       
             </ul>
         </nav>
     </div>

@@ -9,7 +9,7 @@
     HelperContext systemContext = RemedyHandler.getDefaultHelperContext();
     
     // Define url friendly slug, which is used in the urls below
-    bundle.setProperty("slug", "Responsive-");
+    // bundle.setProperty("slug", "Responsive-");
     
     // Define catalog attributes
     Map<String,String> catalogAttributes = CatalogAttributeHelper.getCatalogAttributeConfiguration(
@@ -27,7 +27,7 @@
     }
     
     // Define company name
-    bundle.setProperty("companyName", "ACME");
+    bundle.setProperty("companyName", bundle.getProperty("companyName"));
     // Define catalog name
     bundle.setProperty("catalogName", customerRequest.getCatalogName());
     // Define display page url with slug
