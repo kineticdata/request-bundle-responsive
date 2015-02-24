@@ -50,7 +50,9 @@
                         <% String[] icons = template.getTemplateAttributeValues("fa-class");%>
                         
                         <div class='panel' style='width:23%;float:left;text-align:center;margin-right:.5em;border:1px solid #E8E8E8;'>
-                          <span class='fa <%= (icons.length > 0) ? icons[0] : "fa-list-alt" %>' style='margin:.25em;color:#CCC;font-size:3em;'></span>
+                          <a href='<%= template.getAnonymousUrl() %>'>
+                            <span class='fa <%= (icons.length > 0) ? icons[0] : "fa-list-alt" %>' style='margin:.25em;color:#428BCA;font-size:3em;'></span>
+                          </a>
                           <div class='panel-footer clearfix' style='font-size:.7em;'>
                             <a href='<%= template.getAnonymousUrl() %>'>
                               <%= themeLocalizer.getString(template.getName())%>
