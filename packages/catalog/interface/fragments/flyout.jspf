@@ -56,7 +56,7 @@
                     </span>     
                     <ul class="dropdown-menu dropdown-menus unstyled" role="menu" aria-labelledby="my-requests">
                         <li role="presentation" class="request" data-id="all-requests">
-                          <a href="http://localhost:8080/kinetic/DisplayPage?name=KD-Catalog&view=submissions&type=requests">
+                          <a href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=requests">
                           View All
                           </a>
                         </li>
@@ -71,7 +71,7 @@
                     </span>     
                     <ul class="dropdown-menu dropdown-menus unstyled" role="menu" aria-labelledby="my-approvals">
                         <li role="presentation" class="request" data-id="all-requests">
-                          <a href="http://localhost:8080/kinetic/DisplayPage?name=KD-Catalog&view=submissions&type=approvals">
+                          <a href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=approvals">
                           View All
                           </a>
                         </li>
