@@ -306,6 +306,17 @@
     };
 
     /**
+     * 
+     * @param {String} url
+     * @param {String} displaySelector
+     * @returns {undefined}
+     */
+    common.avatar = function(url, displaySelector) {
+        var avatarHtml = $('<img>').attr({'src':url,'alt':'Profile Image'});
+        $(displaySelector).append(avatarHtml);
+    };
+
+    /**
      * Used to prevent window scrolling without css
      * Using CSS can cause the window to adjust when the bar vanishes or reappears causing bad 
      * UI experience in some browsers.
