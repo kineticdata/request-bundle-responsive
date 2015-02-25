@@ -1,13 +1,22 @@
 <%
 String gravatarEmail = null;
 String fullName = null;
-if(context != null) {
+String profileURL = null;
+String profileImageURL = null; 
+
+if(context != null) { 
     // Retrieve email for the current user
-    KSSamplePeople samplePerson = KSSamplePeople.findByUsername(context, context.getUserName());
-    if(samplePerson != null) {
-        gravatarEmail = samplePerson.getEmail();
-        fullName = samplePerson.getFullName();
+    JSONObject profile = (JSONObject) request.getSession().getAttribute("Google User Profile");
+    
+    if(profile != null) {
+        JSONObject nameObj = (JSONObject) profile.get("name");
+        JSONObject imgObj = (JSONObject) profile.get("image");
+        gravatarEmail = context.getUserName();
+        profileImageURL = (String) imgObj.get("url");
+        profileURL = (String) profile.get("url");
+        fullName = (String) nameObj.get("givenName") + " " + nameObj.get("familyName");
     }
+
 %>
 <a class="profile" href="javascript:void(0)" data-target="div.user-card">
     <i class="gravatar-icon"></i>
@@ -25,11 +34,6 @@ if(context != null) {
             </div>
         </div>
     </div>
-    <div class="wrap">
-        <label for="preferred-language">Preferred Language</label>
-        <select name="preferred-language" id="preferred-language">
-        </select>
-    </div>
     <div class="actions background-gray-lightest">
         <div class="sign-out">
              <% if (logoutEnabled) {%>
@@ -44,8 +48,8 @@ if(context != null) {
 (function($, _) {
     $(function() {
         // Add gravatar image to ui
-        BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'i.gravatar-icon');
-        BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'div.user-card a.user');
+        BUNDLE.common.avatar($.trim('<%= profileImageURL %>'), 'i.gravatar-icon');
+        BUNDLE.common.avatar($.trim('<%= profileImageURL %>'), 'div.user-card a.user');
         // Setup parameters for menus
         var parentSelector = 'header.main';
         var triggerSelector = 'a.profile';
@@ -62,7 +66,7 @@ if(context != null) {
                     // Define userProfile link by trying to get the first one found from the package's links
                     var userProfile = _.first(_.compact(_.pluck(_.pluck(BUNDLE.config.packages, 'links'), 'userProfile')));
                     // Define url
-                    var url = BUNDLE.config['displayPageUrlSlug'] + userProfile['displayName'];
+                    var url = '<%= profileURL %>';
                     // Define params if not defined
                     var params = userProfile.params || {};
                     // Check size and append url params
@@ -70,7 +74,8 @@ if(context != null) {
                     // Define user profile anchor tag attributes
                     var userProfileAttributes = {
                         'href': url,
-                        'aria-label': userProfile.description
+                        'aria-label': userProfile.description,
+                        'target': '_blank'
                     };
                     // Build href user profile link
                     var profileWrap = $('<div>').addClass('profile').append(
