@@ -44,7 +44,7 @@
                     <div class='row' style='margin-bottom:.75em;'>
                       <h3>
                         <%=themeLocalizer.getString(category.getName())%>
-                        <a style='font-size:.5em;font-weight:normal;margin:0 .5em;color:#CCCCCC;' href='<%= bundle.getProperty("catalogUrl")%>&category=<%= URLEncoder.encode(category.getFullName(), "UTF-8")%>&view=category'View All Services <span style='margin-left:.25em;' class='fa fa-arrow-circle-o-right'></span></a>
+                        <a style='font-size:.5em;font-weight:normal;margin:0 .5em;color:#CCCCCC;' href='<%= bundle.getProperty("catalogUrl")%>&category=<%= URLEncoder.encode(category.getFullName(), "UTF-8")%>&view=category'>View All Services <span style='margin-left:.25em;' class='fa fa-arrow-circle-o-right'></span></a>
                       </h3>
                       <% for (Template template : category.getTemplates()) {%>
                         <% String[] icons = template.getTemplateAttributeValues("fa-class");%>
