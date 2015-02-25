@@ -1,12 +1,15 @@
 <%
 String gravatarEmail = null;
 String fullName = null;
-if(context != null) {
+
+if(context != null) { 
     // Retrieve email for the current user
-    KSSamplePeople samplePerson = KSSamplePeople.findByUsername(context, context.getUserName());
-    if(samplePerson != null) {
-        gravatarEmail = samplePerson.getEmail();
-        fullName = samplePerson.getFullName();
+    JSONObject profile = (JSONObject) request.getSession().getAttribute("Google User Profile");
+    
+    if(profile != null) {
+        JSONObject nameObj = (JSONObject) profile.get("name");
+        gravatarEmail = context.getUserName();
+        fullName = (String) nameObj.get("givenName") + " " + nameObj.get("familyName");
     }
 %>
 <a class="profile" href="javascript:void(0)" data-target="div.user-card">
@@ -24,11 +27,6 @@ if(context != null) {
                 <%= gravatarEmail%>
             </div>
         </div>
-    </div>
-    <div class="wrap">
-        <label for="preferred-language">Preferred Language</label>
-        <select name="preferred-language" id="preferred-language">
-        </select>
     </div>
     <div class="actions background-gray-lightest">
         <div class="sign-out">
