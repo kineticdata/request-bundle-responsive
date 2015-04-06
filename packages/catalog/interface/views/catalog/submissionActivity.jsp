@@ -105,8 +105,8 @@
                     </li>
                     <!-- End display cancelled request notes -->
                 <%}%>
-                <% for (String treeName : submission.getTaskTreeExecutions(context).keySet()) {%>
-                    <% for (Task task : submission.getTaskTreeExecutions(context).get(treeName)) {%>
+                <% for (Run run : submission.getRuns()) {%>
+                    <% for (Task task : run.getTasks()) {%>
                     <%
                         // Define ticket related data
                         String incidentId = null;
