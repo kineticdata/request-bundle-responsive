@@ -1,5 +1,7 @@
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashMap"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.Map"%>
 <%@page import="com.kd.arsHelpers.HelperContext"%>
 <%@page import="com.bmc.arsys.api.ARException"%>
 <%!
@@ -15,22 +17,22 @@
 
         /**
          * Used to lock the process so it's atomic when using the synchronized keyword
-         * 
+         *
          * @var Object
          */
         private static final Object submissionStatisticsLock = new Object();
 
         /**
-         * Used to store when the statistics were last retrieved
-         * 
-         * @var Long
+         * Used to store when the statistics for each catalog were last retrieved
+         *
+         * @var Map<String, Long
          */
-        private static volatile Long submissionStatisticslastRetrievedAt;
+        private static volatile Map<String, Long> submissionStatisticslastRetrievedAt;
 
         /**
-         * @var List<Template> of template models
+         * @var Map<String, List<Template>> List of template models per catalog
          */
-        private static volatile List<Template> submissionStatistics;
+        private static volatile Map<String, List<Template>> submissionStatistics = new HashMap<String, List<Template>>();
 
         /**
          * @var SubmissionStatisticsWorkerThread
@@ -49,13 +51,17 @@
             }
             // If the statistics haven't been loaded yet
             if (submissionStatisticslastRetrievedAt == null) {
+                submissionStatisticslastRetrievedAt = new HashMap<String, Long>();
+            }
+            // If the statistics haven't been loaded for the catalog yet
+            if (submissionStatisticslastRetrievedAt.get(catalog.getName()) == null) {
                 // Generate the statistics
                 CacheHelper.generateSubmissionStatistics(context, catalog, excludedTypes, maxResults);
             }
             // If the statistics are "old"
             else {
                 synchronized(submissionStatisticsLock) {
-                    if (System.currentTimeMillis() > submissionStatisticslastRetrievedAt + DURATION && submissionStatisticsWorker == null) {
+                    if (System.currentTimeMillis() > submissionStatisticslastRetrievedAt.get(catalog.getName()) + DURATION && submissionStatisticsWorker == null) {
                         // Create a new thread
                         submissionStatisticsWorker = new SubmissionStatisticsWorkerThread(context, catalog, excludedTypes, maxResults);
                         // Start the worker thread
@@ -64,21 +70,22 @@
                 }
             }
             // Return the "cached" statistics
-            return submissionStatistics;
+            return submissionStatistics.get(catalog.getName());
         }
 
         private static synchronized void generateSubmissionStatistics(HelperContext context, Catalog catalog, String[] excludedTypes, Integer maxResults) {
             // If the statistics are "old" (they may not be if multiple requests triggered
             // the generation of statistics before the first returned)
-            if (submissionStatisticslastRetrievedAt == null || System.currentTimeMillis() > submissionStatisticslastRetrievedAt + DURATION) {
+            if (submissionStatisticslastRetrievedAt.get(catalog.getName()) == null ||
+                    System.currentTimeMillis() > submissionStatisticslastRetrievedAt.get(catalog.getName()) + DURATION) {
                 // Get popular requests by catalog
                 String[] catalogNames = new String[] {catalog.getName()};
                 // Retrieve statistics
                 List<String> popularTemplateIds = SubmissionStatisticsHelper.getMostCommonTemplateIds(context, catalogNames, excludedTypes, maxResults);
                 // Use these names to get the template models
-                submissionStatistics = CacheHelper.getTemplatesById(context, catalog, popularTemplateIds);
+                submissionStatistics.put(catalog.getName(), CacheHelper.getTemplatesById(context, catalog, popularTemplateIds));
                 // Update the lastRetrievedAt
-                submissionStatisticslastRetrievedAt = System.currentTimeMillis();
+                submissionStatisticslastRetrievedAt.put(catalog.getName(), System.currentTimeMillis());
             }
         }
 
@@ -118,7 +125,7 @@
                 this.excludedTypes = excludedTypes;
                 this.maxResults = maxResults;
             }
-            
+
             public void run() {
                 CacheHelper.generateSubmissionStatistics(this.context, this.catalog, this.excludedTypes, this.maxResults);
                 CacheHelper.submissionStatisticsWorker = null;
