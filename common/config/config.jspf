@@ -10,7 +10,6 @@
     
     // Define url friendly slug, which is used in the urls below
     bundle.setProperty("slug", "Responsive-");
-    
     // Define catalog attributes
     Map<String,String> catalogAttributes = CatalogAttributeHelper.getCatalogAttributeConfiguration(
         session,
