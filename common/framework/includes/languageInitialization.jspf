@@ -22,7 +22,7 @@
     // Define preferred locale in Bundle properties
     bundle.setProperty("preferredLocale", preferredLocale);
     // Set real path to the common package on the webserver
-    String commonRealPath = getServletContext().getRealPath(bundle.relativeBundlePath() + "common");
+    String commonRealPath = getServletContext().getRealPath("/" + bundle.relativeBundlePath() + "common");
     // Set the absolute path to the directory containing the locale property files
     String commonTranslationPath = commonRealPath + File.separator + "assets" + File.separator + "languages";
     // Start the common resource bundle

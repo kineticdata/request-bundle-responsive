@@ -38,7 +38,7 @@
                 this.currentPackage = new File(packagePath).getName();
             }
             // Define packages path
-            String packagesDirectory = getServletContext().getRealPath(bundle.relativeBundlePath() + "packages");
+            String packagesDirectory = getServletContext().getRealPath("/" + bundle.relativeBundlePath() + "packages");
             // Define configurations by package
             Map<String,JsonBase> configurationsByPackage = new HashMap<String,JsonBase>();  
             // Define packages file
