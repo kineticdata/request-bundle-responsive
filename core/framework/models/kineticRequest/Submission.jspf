@@ -33,6 +33,9 @@
         // value is typically set by the KineticRequest_Submission_UpdateStatus
         // task handler).
         public static final String FIELD_VALIDATION_STATUS = "700002400";
+        // Task 4 source / server fields
+        public static final String FIELD_TASK_SERVER_ID = "770001020";
+        public static final String FIELD_TASK_SOURCE_NAME = "770001021";
 
         public static final String[] FIELD_IDS = new String[] {
             FIELD_CATALOG_NAME, FIELD_CREATE_DATE, FIELD_ID, FIELD_REQUEST_ID,
@@ -40,7 +43,7 @@
             FIELD_TEMPLATE_NAME, FIELD_STATUS, FIELD_REQUEST_STATUS, 
             FIELD_REQUEST_CLOSED_DATE, FIELD_VALIDATION_STATUS,FIELD_SURVEY_SENT_DATE,
             FIELD_SURVEY_COMPLETED_DATE,FIELD_ORIGINATING_REQUEST_ID,FIELD_ORIGINATING_FORM,
-            FIELD_MODIFIED_DATE,FIELD_ORIGINATING_ID
+            FIELD_MODIFIED_DATE,FIELD_ORIGINATING_ID,FIELD_TASK_SERVER_ID,FIELD_TASK_SOURCE_NAME
         };
 
         private SimpleEntry entry;
@@ -296,13 +299,41 @@
         
         public Run[] getRuns() {
             if (runs == null) {
-                if(getTemplate().getTaskEngine().equals("Kinetic Task 2/3")) {
+                if(getTaskServer() == null){
                     runs = Run.findBySourceId(context, "Kinetic Request", getId());
-                } else if(getTemplate().getTaskEngine().equals("Kinetic Task 4+")) {
+                } else {
                     runs = Run.findFromTask4(context, this);
                 }
             }
             return runs;
+        }
+
+        /**
+         * Helper function that retrieves the TaskServer instance that this
+         * submission used.  To get the task server we need to
+         * check the if the Task Server Id is not null.  If that is
+         * defined we then atttempt to retreive the task server record from the
+         * database.
+         */
+        public TaskServer getTaskServer() {
+            // Initialize the result.
+            TaskServer result = null;
+            // If the task server name attribute was configured on either we
+            // attempt to retrieve the task server record.
+            if (getTaskServerId() != null && getTaskServerId().length() > 0) {
+                TaskServer taskServer = TaskServer.findById(context, getTaskServerId());
+                // Raise an exception if a task server record with a matching
+                // name could not be found.
+                if (taskServer == null) {
+                    throw new RuntimeException("Could not find Task Server record with id '" + 
+                            getTaskServerId() + "' for template '" + getId() + "' in catalog '" +
+                            getCatalogName() + "'");
+                } else {
+                    result = taskServer;
+                }
+            }
+            // Return the result.
+            return result;
         }
 
         /***********************************************************************
@@ -330,7 +361,8 @@
         public String getModifiedDate() {return entry.getEntryFieldValue(FIELD_MODIFIED_DATE);}
         public String getType() {return entry.getEntryFieldValue(FIELD_TYPE);}
         public String getNotesForCustomer() {return entry.getEntryFieldValue(FIELD_NOTES_FOR_CUSTOMER);}
-        
+        public String getTaskServerId() {return entry.getEntryFieldValue(FIELD_TASK_SERVER_ID);}
+        public String getTaskSourceName() {return entry.getEntryFieldValue(FIELD_TASK_SOURCE_NAME);}
         /*
          * Returns the value of the specified additional field.  Note that if the field label passed
          * was not defined as an additional field on the query an error will be raised.

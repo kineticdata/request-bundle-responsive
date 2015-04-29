@@ -13,6 +13,10 @@
             put("KS_SRV_SurveyTemplate", new HashSet<String>() {{
                 add("700073501");
             }});
+            put("KS_SRV_CustomerSurvey", new HashSet<String>(){{
+                add("770001020");
+                add("770001021");
+            }});
         }};
 
         public static SimpleEntry[] find(HelperContext context, String formName, String qualification, String[] fieldIds) {

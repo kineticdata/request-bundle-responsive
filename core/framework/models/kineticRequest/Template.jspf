@@ -205,73 +205,14 @@
 
         public String getAnonymousUrl() {
             String anonymousUrl = entry.getEntryFieldValue(FIELD_ANONYMOUS_URL);
-            
             // If there is a display name
             if (getDisplayName() != null && !"".equals(getDisplayName())) {
                 // Replace the srv={ID} with name={DISPLAY_NAME}
                 anonymousUrl = anonymousUrl.replaceFirst("srv=.*$", "name="+getDisplayName());
             }
-
             return anonymousUrl;
         }
-        
-        /**
-         * Helper function that retrieves the TaskServer instance that this
-         * template is configured to use.  To get the task server we need to
-         * check the template/catalog attribute 'Task Server Name'.  If that is
-         * defined we then atttempt to retreive the task server record from the
-         * database.
-         */
-        public TaskServer getTaskServer() {
-            // Initialize the result.
-            TaskServer result = null;
-            // If the 'Task Server Name' attribute is configured for the
-            // template use that.  Otherwise check to see if the catalog has the
-            // attribute defined.
-            String taskServerName = null;
-            if (hasTemplateAttribute("Task Server Name")) {
-                taskServerName = getTemplateAttributeValue("Task Server Name");
-            } else if (getCatalog().hasAttribute("Task Server Name")) {
-                taskServerName = getCatalog().getAttributeValue("Task Server Name");
-            }
-            // If the task server name attribute was configured on either we
-            // attempt to retrieve the task server record.
-            if (taskServerName != null) {
-                TaskServer taskServer = TaskServer.findByName(context, taskServerName);
-                // Raise an exception if a task server record with a matching
-                // name could not be found.
-                if (taskServer == null) {
-                    throw new RuntimeException("Could not find Task Server record with name '" + 
-                            taskServerName + "' for template '" + getName() + "' in catalog '" +
-                            getCatalogName() + "'");
-                } else {
-                    result = taskServer;
-                }
-            }
-            // Return the result.
-            return result;
-        }
-        
-        /**
-         * Helper function that retrieves the task source name configuration of
-         * the template.  To get the proper value we first check the template
-         * and then check the catalog if its not defined on the template.  If
-         * the value is not configured for either null is returned.
-         */
-        public String getTaskSourceName() {
-            // Initialize the result.
-            String result = null;
-            // If the 'Task Source Name' attribute is configured for the
-            // template use that.  Otherwise check to see if the catalog has the
-            // attribute defined.
-            if (hasTemplateAttribute("Task Source Name")) {
-                result = getTemplateAttributeValue("Task Source Name");
-            } else if (getCatalog().hasAttribute("Task Source Name")) {
-                result = getCatalog().getAttributeValue("Task Source Name");
-            }
-            // Return the result.
-            return result;
-        }
+
         
         public String getCatalogName() {return entry.getEntryFieldValue(FIELD_CATALOG);}
         public String getDescription() {return entry.getEntryFieldValue(FIELD_DESCRIPTION);}

@@ -2,14 +2,14 @@
     public static class TaskServer {
         // Define fields present on the form.
         public static final String FORM_NAME = "KS_RQT_TaskServer";
-        public static final String FIELD_NAME = "700000000";
+        public static final String FIELD_ID = "179";
         public static final String FIELD_URL = "700000002";
         public static final String FIELD_AUTH_TOKEN = "700000001";
         
         // Define an array that specifies which fields should be retrieved from
         // the database.
         public static final String[] FIELD_IDS = new String[]{
-            FIELD_NAME, FIELD_URL, FIELD_AUTH_TOKEN
+            FIELD_ID, FIELD_URL, FIELD_AUTH_TOKEN
         };
         
         // Instance variables
@@ -20,11 +20,11 @@
             this.entry = entry;
         }
 
-        public static TaskServer findByName(HelperContext context, String name) {
+        public static TaskServer findById(HelperContext context, String id) {
             // Initialize the result.
             TaskServer result = null;
             // Build the qualification string.
-            String qualification = "'" + FIELD_NAME + "' = \"" + name + "\"";
+            String qualification = "'" + FIELD_ID + "' = \"" + id + "\"";
             // Query for the matching task server record.
             SimpleEntry entry = ArsBase.findSingle(context, FORM_NAME, qualification, FIELD_IDS);
             if (entry != null) {
@@ -35,7 +35,7 @@
         }
 
         // Field accessors
-        public String getName() {return entry.getEntryFieldValue(FIELD_NAME);}
+        public String getId() {return entry.getEntryFieldValue(FIELD_ID);}
         public String getUrl() {return entry.getEntryFieldValue(FIELD_URL);}
         public String getAuthToken() {return entry.getEntryFieldValue(FIELD_AUTH_TOKEN);}
     }

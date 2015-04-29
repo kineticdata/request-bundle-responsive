@@ -112,8 +112,8 @@
         public static Run[] findFromTask4(HelperContext context, Submission submission) {
             try {
                 // Get the configured task server for the submission/template.
-                TaskServer taskServer = submission.getTemplate().getTaskServer();
-                String sourceName = submission.getTemplate().getTaskSourceName();
+                TaskServer taskServer = submission.getTaskServer();
+                String sourceName = submission.getTaskSourceName();
                 String encodedSourceName = Encoder.encodePathSegment(sourceName);
                 String encodedSourceId = Encoder.encodeQueryParameter(submission.getRequestId());
 
