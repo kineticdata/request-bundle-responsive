@@ -59,7 +59,7 @@
                 // internal server after updating remedy forms/apps. Restart of 
                 // tomcat seems to fix the issue.
                 if(helper.getCache() == null){
-                    throw new RuntimeException("Error in ArsBase.jspf. Form cache is null. Restart Tomcat.");
+                    throw new RuntimeException("Error in ArsBase.jspf. Form cache is null and need to be rebuilt. Either update preferences in Kinetic Request admin console or restart Tomcat.");
                 }
 
                 for (String fieldId : helper.getCache().getForm(formName).getFieldIds()) {
@@ -84,7 +84,7 @@
                         // if it is an optional field.  If it is not an optional
                         // field we raise an error, otherwise we simply continue
                         // and the field will be omitted from the query.
-                        if (!OPTIONAL_FIELDS.get(formName).contains(fieldId)) {
+                        if (OPTIONAL_FIELDS.get(formName) != null && !OPTIONAL_FIELDS.get(formName).contains(fieldId)) {
                             throw new RuntimeException("The field " + fieldId +
                                     " does not exist on the form " + formName);
                         }
