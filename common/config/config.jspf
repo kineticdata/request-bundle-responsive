@@ -42,6 +42,12 @@
     // Define loader indicator image
     bundle.setProperty("loaderImageUrl", bundle.bundlePath + "common/assets/images/spinner.gif");
     
+    // Add common template id for bridges 
+    Template common = Template.findByDisplayName(context, customerRequest.getCatalogName(), bundle.getProperty("slug") + "Common");
+    if(common != null){
+        bundle.setProperty("commonTemplateId", common.getId());
+    }
+    
     // Loop through attributes and store them as bundle properties, which overrides any properties assigned above
     for (Map.Entry<String,String> attribute : catalogAttributes.entrySet()) {
         if(StringUtils.isNotBlank(attribute.getValue())) {

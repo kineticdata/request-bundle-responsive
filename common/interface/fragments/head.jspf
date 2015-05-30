@@ -69,6 +69,8 @@
         }
         return result;
     };
+    // Add common template id for exposing bridges
+    BUNDLE.config.commonTemplateId = '<%= bundle.getProperty("commonTemplateId")%>';
 </script>
 
 <!-- Common JavaScript Libraries -->
