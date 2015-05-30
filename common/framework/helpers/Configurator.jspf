@@ -33,7 +33,7 @@
             // Check if current package path is not null
             if(bundle.packagePath() != null) {
                 // Define package path
-                String packagePath = getServletContext().getRealPath(bundle.packagePath());
+                String packagePath = getServletContext().getRealPath("/" + bundle.packagePath());
                 // Update current package
                 this.currentPackage = new File(packagePath).getName();
             }

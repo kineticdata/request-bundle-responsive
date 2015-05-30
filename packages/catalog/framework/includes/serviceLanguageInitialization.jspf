@@ -12,7 +12,7 @@
     ResourceBundle templateSharedResourceBundle = ThemeLocalizer.getResourceBundle(
         "templateShared",
         bundle.getProperty("preferredLocale"),
-        getServletContext().getRealPath(bundle.relativePackagePath()) +
+        getServletContext().getRealPath("/" + bundle.relativePackagePath()) +
         File.separator + "assets" + File.separator + "languages"
     );
     // Set templateTranslationPath to package path for now

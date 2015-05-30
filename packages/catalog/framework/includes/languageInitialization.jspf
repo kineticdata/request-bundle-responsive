@@ -12,7 +12,7 @@
 --%>
 <% 
     // Set real path to the package on the webserver
-    String packageRealPath = getServletContext().getRealPath(bundle.relativePackagePath());
+    String packageRealPath = getServletContext().getRealPath("/" + bundle.relativePackagePath());
     // Set the absolute path to the directory containing the locale property files
     String packageTranslationPath = packageRealPath + File.separator + "assets" + File.separator + "languages";
     // Define the theme localizer object for this package
