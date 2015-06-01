@@ -122,7 +122,7 @@
                     widget.select.append($('<option>').val(value).text(value));
                 }
             });
-            widget.refresh = $('<a>').addClass('refresh').attr('href', 'javascript:void(0)').text('Refresh'.localize);
+            widget.refresh = $('<a>').addClass('refresh').attr('href', 'javascript:void(0)').text(BUNDLE.localize('Refresh'));
             widget.table = $('<table>').addClass('table kd-table');
             widget.information = $('<div>').addClass('information');
             widget.pagination = $('<nav>').addClass('pagination');
@@ -131,9 +131,9 @@
                 .append(widget.header.append(widget.refresh));
             if(widget.options.entries) {
                 widget.entriesSelection = $('<div>').addClass('entries-selection')
-                    .prepend($('<span>').append('Show'.localize))
+                    .prepend($('<span>').append(BUNDLE.localize('Show')))
                     .append(widget.select)
-                    .append($('<span>').append('entries'.localize));
+                    .append($('<span>').append(BUNDLE.localize('entries')));
                 widget.header.prepend(widget.entriesSelection);
                     
             }
@@ -265,7 +265,7 @@
                 var th = $('<th>');
                 // Set column label based on column label field or default column label to metaData field
                 var columnLabel = (metaData.columnLabel === undefined) ? metaData : metaData.columnLabel;
-                th.append(columnLabel.localize)
+                th.append(BUNDLE.localize(columnLabel))
                     .attr('data-sorting', false) // Data not working for th
                     .attr('data-field', fieldname)
                     .attr('data-sort-order', widget.options.sortOrder);
@@ -344,13 +344,13 @@
             }
             // Append information
             if(widget.options.info) {
-                widget.information.append('Showing'.localize + '&nbsp;')
+                widget.information.append(BUNDLE.localize('Showing') + '&nbsp;')
                     .append(widget._getIndex() + 1)
-                    .append('&nbsp;' + 'to'.localize + '&nbsp;')
+                    .append('&nbsp;' + BUNDLE.localize('to') + '&nbsp;')
                     .append(widget._getIndex() + tbody.find('tr').length)
-                    .append('&nbsp;' + 'of'.localize + '&nbsp;')
+                    .append('&nbsp;' + BUNDLE.localize('of') + '&nbsp;')
                     .append(widget.options.total)
-                    .append('&nbsp;'+ 'entries'.localize);
+                    .append('&nbsp;'+ BUNDLE.localize('entries'));
             }
             // Append table data
             widget.table.append(thead)

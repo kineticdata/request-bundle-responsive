@@ -98,6 +98,22 @@
          */
         public void setProperty(String name, String value) {properties.put(name, value);}
 
+        /**
+         * Retrieves the specified variable value (Allows objects).  This value may be null if
+         * a variable with that name has not been configured.
+         */
+        public Object getVariable(String name) {return variables.get(name);}
+
+        /**
+         * Sets the value of a variable.
+         */
+        public void setVariable(String name, Object value) {variables.put(name, value);}
+
+        /**
+         * Returns the collection of variable keys.
+         */
+        public java.util.Set<String> variableNames() {return properties.keySet();}
+
         /***********************************************************************
          * PATH METHODS
          **********************************************************************/

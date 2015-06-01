@@ -4,6 +4,7 @@
 <%-- // Determine if view is set to table. --%>
 <% if(StringUtils.isNotBlank(request.getParameter("look")) && 
     "table".equals(request.getParameter("look"))) {%>
+<script> console.log('equals table'); </script>
     <%-- Include the libraries for rendering a submission's table UI. --%>
     <!-- Page Libraries -->
     <link rel="stylesheet" href="<%=bundle.bundlePath()%>libraries/jquery.qtip/jquery.qtip.min.css" type="text/css" />
