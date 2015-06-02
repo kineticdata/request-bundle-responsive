@@ -27,6 +27,8 @@
         private static final String BUNDLE_DIR = "themes";
         // Initialize the properties hash
         private java.util.Map<String,String> properties = new java.util.TreeMap();
+        // Initialize the variables hash
+        private java.util.Map<String,Object> variables = new java.util.TreeMap();
         // Declare the path variables
         private String applicationPath;
         private String bundlePath;
