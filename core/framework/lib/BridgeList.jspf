@@ -38,6 +38,9 @@
         public int size() {
             return getModelList().size();
         }
+        public int total() {
+            return Integer.valueOf(metadata().get("count"));
+        }
         public Map<String, String> metadata() {
             return getRecordList().metadata();
         }
