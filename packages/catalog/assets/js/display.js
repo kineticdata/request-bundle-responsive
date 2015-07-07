@@ -50,7 +50,7 @@
             if($('div[label="Bottom of Page"]').length > 0) {
                 $('div[label="Bottom of Page"]').before('<div class="warningContainer">' + options.body + '</div>');
             } else {
-                $('div.templateButtonLayer').before('<div class="warningContainer">' + options.body + '</div>');
+                $('div.templateButtonLayer:first').before('<div class="warningContainer">' + options.body + '</div>');
             }
         }
     };
