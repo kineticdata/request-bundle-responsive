@@ -20,13 +20,13 @@
             // Update status to 200
             response.setStatus(HttpServletResponse.SC_OK);
             // Insert success messages
-            results.put("status", response.getStatusLine().getStatusCode());
+            //results.put("status", response.getStatusLine().getStatusCode());
             results.put("success", "Locale updated.");
         } else {
             // Setup error message
             Map<String,String> errors = new LinkedHashMap<String,String>();
             errors.put("locale", "The Locale specified does not exist.");
-            results.put("status", response.getStatusLine().getStatusCode());
+            //results.put("status", response.getStatusLine().getStatusCode());
             results.put("errors", errors);
         }
         // Output json string
