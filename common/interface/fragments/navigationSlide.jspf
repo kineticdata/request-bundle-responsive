@@ -17,28 +17,28 @@
         // Determine if package configuration available and build available links
         if(BUNDLE.config.packages) {
             // Pluck only the "links" from config.packages to be added to the main menus ui
-            _.each(_.compact(_.pluck(BUNDLE.config.packages, 'links')), function(link) {
-                // Loop through the link's properties
-                _.each(link, function(property) {
-                    // Only display main menu type items
-                    if(property['type'] === 'main-menu') {
-                        // Define url
-                        var url = BUNDLE.config['displayPageUrlSlug'] + property['displayName'];
-                        // Define params if not defined
-                        var params = property.params || {};
-                        // Check size and append url params
-                        if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
-                        // Define list element with link
-                        var li = $('<li>').addClass(property['class']).append(
-                            $('<a>').addClass('color-white color-hover-secondary').attr({
-                                'href': url,
-                                'aria-label': BUNDLE.localize(property.description)
-                            }).append(property.icon).append(BUNDLE.localize(property.label))
-                        );
-                        // Add links to main menus
-                        $('div.navigation-slide').find('ul').first().prepend(li);
-                    }
-                });
+            var linksArray = new Array();
+            _.each(_.compact(_.pluck(BUNDLE.config.packages, 'links')), function(packageLinks) {
+                // Collect all links together for sorting
+                linksArray = linksArray.concat( _.where(packageLinks, {type: 'main-menu'}));
+            });
+            // Sort and iterate over links
+            _.each(_.sortBy(linksArray, function(link){ return link.sortOrder || 100; }).reverse(), function(property) {
+                // Define url
+                var url = BUNDLE.config['displayPageUrlSlug'] + property['displayName'];
+                // Define params if not defined
+                var params = property.params || {};
+                // Check size and append url params
+                if(_.size(params) > 0) { url = url + '&' + $.param(params, true); }
+                // Define list element with link
+                var li = $('<li>').addClass(property['class']).append(
+                    $('<a>').addClass('color-white color-hover-secondary').attr({
+                        'href': url,
+                        'aria-label': BUNDLE.localize(property.description)
+                    }).append(property.icon).append(BUNDLE.localize(property.label))
+                );
+                // Add links to main menus
+                $('div.navigation-slide').find('ul').first().prepend(li);
             });
         }
     });

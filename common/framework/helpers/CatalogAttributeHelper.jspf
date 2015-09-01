@@ -3,17 +3,17 @@
      * Catalog Attribute Helper
      */
     public static class CatalogAttributeHelper {
-        public static Map<String,String> getCatalogAttributeConfiguration(
+        public static Map<String,List<String>> getCatalogAttributeConfiguration(
              HttpSession session,
              HelperContext systemContext,
              String catalogId
          ) {
              // Define map of catalog attributes
-             Map<String,String> results = new LinkedHashMap<String,String>();
+             Map<String,List<String>> results = new LinkedHashMap<String,List<String>>();
              // Determine if they exist in session by catalog id
              if(session.getAttribute(catalogId) != null) {
                  // Update to session catalog data
-                 results = (Map<String,String>) session.getAttribute(catalogId);
+                 results = (Map<String,List<String>>) session.getAttribute(catalogId);
              } else {
                  // Get catalog attribtues by catalog id and loop through them
                  for(CatalogAttribute attribute : CatalogAttribute.findByCategoryInstanceId(
@@ -21,8 +21,11 @@
                          catalogId
                      )
                  ) {
-                     // Add to map
-                     results.put(attribute.getName(), attribute.getValue());
+                    if (!results.containsKey(attribute.getName())) {
+                        results.put(attribute.getName(), new java.util.ArrayList<String>());
+                    }
+                    // Add to map
+                    results.get(attribute.getName()).add(attribute.getValue());
                  }
                  // Store in session
                  session.setAttribute(catalogId, results);

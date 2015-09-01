@@ -73,7 +73,8 @@
             "class": "home",
             "description": "Home",
             "icon": "<i class=\"fa fa-home\"></i>",
-            "displayName": "Catalog"
+            "displayName": "Catalog",
+            "sortOrder": 1
         },
         "popularRequests": {
             "type": "main-menu",
@@ -84,7 +85,8 @@
             "displayName": "Catalog",
             "params": {
                 "view": ["popularRequests"]
-            }
+            },
+            "sortOrder": 4
         },
         "requests": {
             "type": "main-menu",
@@ -96,7 +98,8 @@
             "params": {
                 "type": ["requests"],
                 "view": ["submissions"]
-            }
+            },
+            "sortOrder": 2
         },
         "approvals": {
             "type": "main-menu",
@@ -108,7 +111,8 @@
             "params": {
                 "type": ["approvals"],
                 "view": ["submissions"]
-            }
+            },
+            "sortOrder": 3
         },
         "userProfile": {
             "type": "main-menu",
@@ -117,7 +121,8 @@
             "description": "My Profile",
             "icon": "<i class=\"fa fa-user\"></i>",
             "displayName": "Profile",
-            "gravatar": false
+            "gravatar": false,
+            "sortOrder": 101
         },
         "siteFeedback": {
             "type": "footer",

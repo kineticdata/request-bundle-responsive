@@ -2,8 +2,8 @@
 <%@include file="../../../framework/includes/packageInitialization.jspf" %>
 <%@include file="../../../../../core/interface/fragments/packageJsInitialization.jspf" %>
 <%-- // Determine if view is set to table. --%>
-<% if(StringUtils.isNotBlank(request.getParameter("look")) && 
-    "table".equals(request.getParameter("look"))) {%>
+<% Boolean isTable = StringUtils.equals(request.getParameter("look"), "table"); %>
+<% if(isTable) {%>
 <script> console.log('equals table'); </script>
     <%-- Include the libraries for rendering a submission's table UI. --%>
     <!-- Page Libraries -->
@@ -45,7 +45,7 @@
                             <%-- Count the number of submissions that match the current query --%>
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
-                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=requests#<%=groupName%>">
+                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%><%=isTable ? "&look=table" : ""%>&view=submissions&type=requests#<%=groupName%>">
                                     <%=themeLocalizer.getString(groupName)%>&nbsp;(<%=count%>)
                                 </a>
                             </li>
@@ -57,7 +57,7 @@
                             <%-- Count the number of submissions that match the current query --%>
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
-                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=approvals#<%=groupName%>">
+                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%><%=isTable ? "&look=table" : ""%>&view=submissions&type=approvals#<%=groupName%>">
                                     <%=themeLocalizer.getString(groupName)%>&nbsp;(<%=count%>)
                                 </a>
                             </li>
@@ -75,7 +75,7 @@
                             <%-- Count the number of submissions that match the current query --%>
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
-                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=requests#<%=groupName%>">
+                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%><%=isTable ? "&look=table" : ""%>&view=submissions&type=requests#<%=groupName%>">
                                     <%=themeLocalizer.getString(groupName)%>&nbsp;(<%=count%>)
                                 </a>
                             </li>
@@ -87,7 +87,7 @@
                             <%-- Count the number of submissions that match the current query --%>
                             <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
                             <li class="">
-                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=approvals#<%=groupName%>">
+                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%><%=isTable ? "&look=table" : ""%>&view=submissions&type=approvals#<%=groupName%>">
                                     <%=themeLocalizer.getString(groupName)%>&nbsp;(<%=count%>)
                                 </a>
                             </li>

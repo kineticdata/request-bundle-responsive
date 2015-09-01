@@ -387,5 +387,9 @@
         // Start console
         BUNDLE.libraries.widgets.ConsoleTable('div.results', consoleOptions);
     };
+    
+    submissions.destroy = function(){
+        try { $('div.results').consoleTable('destroy'); } catch(exception) { /* Do nothing */ }
+    };
 
 })(jQuery, _);

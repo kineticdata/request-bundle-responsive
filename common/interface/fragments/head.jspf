@@ -72,6 +72,23 @@
     };
     // Add common template id for exposing bridges
     BUNDLE.config.commonTemplateId = '<%= bundle.getProperty("commonTemplateId")%>';
+    
+    // Create an object of catalog attributes
+    // Initialize the BUNDLE common hash
+    BUNDLE.common = BUNDLE.common || {};
+    BUNDLE.common.catalogAttributes = {};
+    // Add all catalog attribute properties
+    <% for (String propertyKey : (List<String>)bundle.getVariable("catalogAttributePropertyKeys")){ %>
+        BUNDLE.common.catalogAttributes["<%=propertyKey %>"] = (function(data){try {var result = JSON.parse(data); return result;} catch(e){return data;}})('<%=bundle.getProperty(propertyKey) %>');
+    <% } %>
+    // Add all catalog attribute variables
+    <% for (String variableKey : (List<String>)bundle.getVariable("catalogAttributeVariableKeys")){ %>
+        BUNDLE.common.catalogAttributes["<%=variableKey %>"] = [];
+        <% for (String variable : (List<String>)bundle.getVariable(variableKey)){ %>
+            BUNDLE.common.catalogAttributes["<%=variableKey %>"].push((function(data){try {var result = JSON.parse(data); return result;} catch(e){return data;}})('<%=variable %>'));
+        <% } %>
+    <% } %>
+    
 </script>
 
 <!-- Common JavaScript Libraries -->

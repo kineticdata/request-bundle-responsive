@@ -10,9 +10,8 @@
         $(window).on('hashchange', function()  {
             // Update submissions status
             submissions.status = decodeURI(document.location.hash.substr(1));
-            // Try to destroy console
-            // This allows the console to be initialized again
-            try { $('div.results').consoleList('destroy'); } catch(exception) { /* Do nothing */ }
+            // Destroy console. This allows the console to be initialized again
+            submissions.destroy();
             // Start console
             submissions.initialize({
                 'status': submissions.status,

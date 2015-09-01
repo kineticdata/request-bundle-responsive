@@ -319,5 +319,9 @@
             }
         });
     };
+    
+    submissions.destroy = function(){
+        try { $('div.results').consoleList('destroy'); } catch(exception) { /* Do nothing */ }
+    };
 
 })(jQuery, _);
