@@ -19,11 +19,13 @@
                 'entryOptionSelected': 10 // Define how many entries should display on load
             });
             // Clear all active links
-            $('header.sub div.container ul li').removeClass('active');
+            $('header.sub div.container ul:not(.mobile-submission-group) li').removeClass('active');
             // Set active link
             $('header a[data-group-name="' + submissions.status + '"]').parents('li').addClass('active');
+            // Set active link name for mobile view
+            $('header.sub ul.mobile-submission-group li a').text($('header.sub div.container ul li.active').first().text());
             // Set title based on active link
-            document.title = originalTitle + $.trim($('header.sub div.container ul li.active').text());
+            document.title = originalTitle + $.trim($('header.sub div.container ul li.active').first().text());
         });
 
         // Define submission group name hash

@@ -9,7 +9,7 @@ if(context != null) {
         fullName = samplePerson.getFullName();
     }
 %>
-<a class="profile" href="javascript:void(0)" data-target="div.user-card">
+<a class="profile color-white color-hover-secondary" href="javascript:void(0)" data-target="div.user-card">
     <i class="gravatar-icon"></i>
 </a>
 <div class="user-card hide" aria-hidden="true">
@@ -43,9 +43,19 @@ if(context != null) {
 <script type="text/javascript">
 (function($, _) {
     $(function() {
-        // Add gravatar image to ui
-        BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'i.gravatar-icon');
-        BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'div.user-card a.user');
+    	// Build icon
+    	var userLink = BUNDLE.config.packages && BUNDLE.config.packages.catalog ? _.findWhere(BUNDLE.config.packages.catalog.links, {class: 'profile'}) : null;
+        if (userLink){
+        	if (userLink.gravatar){
+                // Add gravatar image to ui
+                BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'i.gravatar-icon');
+                BUNDLE.common.gravatar($.trim('<%= gravatarEmail %>'), 'div.user-card a.user');
+        	}
+        	else {
+        		$('a.profile i').replaceWith($(userLink.icon));
+        		$('div.user-card a.user').hide();
+        	}
+        }
         // Setup parameters for menus
         var parentSelector = 'header.main';
         var triggerSelector = 'a.profile';
@@ -158,8 +168,13 @@ if(context != null) {
 </script>
 <style type="text/css">
     header.main a.profile {
-        line-height: 50px;
+        padding: 8px 0 0 0;
         float: right;
+        line-height: 42px;
+    }
+    header.main a.profile i {
+        font-size: 20px;
+        padding: 0 4px;
     }
     header.main a.profile img {
         display: inline-block;
@@ -171,6 +186,7 @@ if(context != null) {
         box-sizing: border-box;
         height: 24px;
         width: 24px;
+        margin-top: -8px;
     }
     header.main div.user-card {
         white-space: nowrap;

@@ -22,6 +22,7 @@
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/jquery/jquery-ui-1.10.3.custom.min.css" />
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/font-awesome/css/font-awesome.min.css" />
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/jquery.qtip/jquery.qtip.min.css" />
+<link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>libraries/jquery.notifie/jquery.notifie.css" />
 
 <!-- Common Stylesheets -->
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/assets/css/common.css" />
@@ -87,6 +88,7 @@
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/jquery.qtip/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/underscore/underscore-min.js"></script>
+<script type="text/javascript" src="<%=bundle.bundlePath()%>libraries/jquery.notifie/jquery.notifie.js"></script>
 
 <!-- Common JavaScript -->
 <script type="text/javascript" src="<%=bundle.bundlePath()%>common/assets/js/client.js"></script>

@@ -1,5 +1,6 @@
 {
     "package": "catalog",
+    "displayName": "Catalog"
     "languages": {
       "en_US" : "English"
     },
@@ -114,8 +115,9 @@
             "label": "Update Profile",
             "class": "profile",
             "description": "My Profile",
-            "icon": "<i class=\"gravatar-icon\"></i>",
-            "displayName": "Profile"
+            "icon": "<i class=\"fa fa-user\"></i>",
+            "displayName": "Profile",
+            "gravatar": false
         },
         "siteFeedback": {
             "type": "footer",

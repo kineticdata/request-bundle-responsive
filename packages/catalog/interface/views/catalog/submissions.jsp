@@ -35,7 +35,40 @@
 <% if (context != null) { %>
     <header class="sub background-gray-lightest">
         <div class="container">
-            <ul class="unstyled">
+            <button class="visible-xs btn btn-primary dropdown-toggle pull-left" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			    <span class="caret"></span>
+			</button>
+            <ul class="unstyled dropdown-menu">
+                <% if(bundle.getProperty("submissionType").equals("requests")) {%>
+                    <% for (String groupName : submissionGroups.keySet()) { %>
+                        <% if(requestsFilter.contains(groupName)) {%>
+                            <%-- Count the number of submissions that match the current query --%>
+                            <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
+                            <li class="">
+                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=requests#<%=groupName%>">
+                                    <%=themeLocalizer.getString(groupName)%>&nbsp;(<%=count%>)
+                                </a>
+                            </li>
+                        <%}%>
+                    <% }%>
+                <% } else if(bundle.getProperty("submissionType").equals("approvals")) {%>
+                    <% for (String groupName : submissionGroups.keySet()) { %>
+                        <% if(approvalsFilter.contains(groupName)) {%>
+                            <%-- Count the number of submissions that match the current query --%>
+                            <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
+                            <li class="">
+                                <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("catalogUrl")%>&view=submissions&type=approvals#<%=groupName%>">
+                                    <%=themeLocalizer.getString(groupName)%>&nbsp;(<%=count%>)
+                                </a>
+                            </li>
+                        <%}%>
+                    <% }%>
+                <%}%>
+            </ul>
+            <ul class="mobile-submission-group visible-xs">
+                <li class="active"><a></a></li>
+            </ul>
+            <ul class="unstyled hidden-xs">
                 <% if(bundle.getProperty("submissionType").equals("requests")) {%>
                     <% for (String groupName : submissionGroups.keySet()) { %>
                         <% if(requestsFilter.contains(groupName)) {%>

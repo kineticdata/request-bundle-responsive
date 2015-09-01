@@ -246,7 +246,7 @@ header.sub div.container > ul {
   line-height: 40px;
   padding: 0;
   white-space: nowrap;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 header.sub div.container > ul > li {
   display: inline;
@@ -262,8 +262,28 @@ header.sub div.container > ul > li.active > a {
   text-decoration: none;
   border-bottom: 2px solid;
   @include transition(border-color .218s);
-  
 }
+header.sub div.container > ul.dropdown-menu > li > a {
+  margin: 0;
+  padding: 8px;
+}
+
+@media (max-width: 767px) {
+  header.sub div.container > ul > li > a:focus,
+  header.sub div.container > ul > li > a:hover,
+  header.sub div.container > ul > li.active > a {
+    border-bottom: 0;
+  }  
+  header.sub div.container > button {
+    margin: 5px 8px;
+  }
+}
+@media (min-width: 768px) {
+  header.sub div.container > ul.dropdown-menu {
+    display: none;
+  }
+}
+
 /* Navigation slide */
 div.navigation-slide {
   display: none;
