@@ -1,8 +1,9 @@
 /**
  * Notifie JS
- * Version 0.1
+ * Version 0.2.1
  * 
  * Library that extends jQuery to add a .notifie(options) function for displaying alerts and confirmations.
+ * Requires jQuery, Bootstrap, FontAwesome
  * 
  * Parameters
  * 
@@ -11,9 +12,9 @@
  * 
  * Options (All of these are optional. If you pass it, it will overwrite the default.)
  * 
- * 	-parent:		String -> jQuery selector
+ * 	-anchor:		String -> jQuery selector
  * 					Default: null
- * 					Finds the closest element matching this selector to use as parent of the notifications.
+ * 					Finds the closest element matching this selector to use as anchor of the notifications.
  * 					Examples: 'div' or 'li.main'
  * 				
  * 	-type:			String -> 'alert' or 'confirm
@@ -28,6 +29,16 @@
  * 					Default: 'Error'
  * 					Text to display inside the notification.
  * 
+ *  -margin:		Object -> Available properties: inherit[true|false|padding], margin[#px|#px #px|...], margin-top[#px], margin-bottom, margin-left, margin-right
+ *                  Default: {inherit:true}
+ *                  Sets the margins of the notification. 
+ *                  Examples: {inherit:true} -> Will copy the margins of the anchor.
+ *                            {inherit:true, 'margin-top':'10px'} -> Will copy the margins of the anchor, and then set the top margin to 10px.
+ *                            {inherit:false, 'margin-top':'10px'} or {'margin-top':'10px'} -> Will set the top margin to 10px. Will not set any other margins.
+ *                            {'margin':'5px'} -> Will set all margins to 5px.
+ *                            {inherit:true, 'margin-bottom':'inverse'} -> Will copy the margins of the anchor, but will use the inverse of the bottom margin.
+ *                                (ie. If the anchor's margin-bottom is 5px, the notification will get a margin-bottom of -5px)
+ * 
  * 	-onShow:		Function
  * 					Default: function(){}
  * 					Function to call when the notification is shown. Context is the calling element.
@@ -36,9 +47,9 @@
  * 					Default: function(){}
  * 					Function to call when alert is closed or confirm button is pressed in confirmation notification.
  * 				
- * 	-onConfirm:		Function
+ * 	-onReject:		Function
  * 					Default: function(){}
- * 					Function to call when confirmation notification is closed or confirm button is pressed in confirmation notification.
+ * 					Function to call when confirmation notification is closed or reject button is pressed in confirmation notification.
  * 
  * 	-clearExisting:	Boolean
  * 					Default: true
@@ -77,11 +88,11 @@
  * 
  * 	-exit:			Boolean
  * 					Default: false
- * 					If true, this .notifie() call will only close the notification(s) at the parent level
+ * 					If true, this .notifie() call will only close the notification(s) at the anchor level
  * 
  * 	-recurseExit:	Boolean
  * 					Default: false
- * 					Applies only if exit is true. If true, closes all notifications at the parent level and inside all children of the parent.
+ * 					Applies only if exit is true. If true, closes all notifications at the anchor level and inside all children of the anchor.
  * 
  */
 jQuery.fn.extend({
@@ -89,10 +100,11 @@ jQuery.fn.extend({
 		var self = $(this);
 		// Merge passed in options with defaults
 		options = jQuery.extend(true, {
-			parent: null,
+			anchor: null,
 			type: "alert",
 			severity: "danger",
 			message: "Error",
+			margin: {inherit:true},
 			onShow: function(){},
 			onConfirm: function(){},
 			onReject: function(){},
@@ -109,7 +121,7 @@ jQuery.fn.extend({
 		}, options || {});
 		
 		// Get owner of notification
-		var owner = self.closest(options.parent).length ? self.closest(options.parent) : self;
+		var owner = self.closest(options.anchor).length ? self.closest(options.anchor) : self;
 			
 		// Close existing notification(s)
 		if (options.exit){
@@ -136,21 +148,54 @@ jQuery.fn.extend({
 			var isConfirm = options.type === "confirm";
 			
 			// Build notification container
-			var notification = $("<div>").addClass("notifie clearfix hide alert alert-" + options.severity);
+			var notification = $("<div>").addClass("notifie clearfix alert alert-" + options.severity);
+			
+			// Set margins of notification
+			if (options.margin){
+				var margin = {};
+				// If margin property exists, set that as the margin
+				if (options.margin.margin){
+					// Set CSS
+					notification.css('margin', options.margin.margin);
+				}
+				// If inherit is true
+				else if (options.margin.inherit){
+					var inheritFrom = options.margin.inherit === 'padding' ? 'padding-' : 'margin-';
+					// If margin value is set, use it, otherwise inherit
+					margin['margin-top'] = options.margin['margin-top'] || owner.css(inheritFrom + 'top');
+					margin['margin-bottom'] = options.margin['margin-bottom'] || owner.css(inheritFrom + 'bottom');
+					margin['margin-left'] = options.margin['margin-left'] || owner.css(inheritFrom + 'left');
+					margin['margin-right'] = options.margin['margin-right'] || owner.css(inheritFrom + 'right');
+					
+					// Set CSS
+					notification.css(margin);
+				}
+				// Otherwise inherit is false
+				else {
+					// If margin value is set, use it
+					if (options.margin['margin-top']) margin['margin-top'] = options.margin['margin-top'];
+					if (options.margin['margin-bottom']) margin['margin-bottom'] = options.margin['margin-bottom'];
+					if (options.margin['margin-left']) margin['margin-left'] = options.margin['margin-left'];
+					if (options.margin['margin-right']) margin['margin-right'] = options.margin['margin-right'];
+					
+					// Set CSS
+					notification.css(margin);
+				}
+			}
 			
 			// Add custom exit event triggered when user manually closes the notification
 			notification.on('exit', function(e, confirm){
 				// Hide the notification
 				$(this).slideUp(options.duration, function(){
+					// Enable self on exit if it was disabled
+					if (options.disable){
+						self.prop('disabled', false);
+					}
 					// If confirm is not undefined, call a callback function
 					if (confirm !== undefined){
 						// If confirm is true or notification is alert, call onConfirm, else call onReject
 						if (confirm || isAlert) options.onConfirm.call(self);
 						else options.onReject.call(self);
-					}
-					// Enable self on exit if it was disabled
-					if (options.disable){
-						self.prop('disabled', false);
 					}
 					// Remove the notification
 					$(this).remove();
@@ -172,7 +217,7 @@ jQuery.fn.extend({
 			// If confirm, build buttons
 			if (isConfirm){
 				// Build button group
-				var buttons = $("<div>").addClass("notifie-buttons border-top alert-" + options.severity).appendTo(notification);
+				var buttons = $("<div>").addClass("notifie-buttons alert-" + options.severity).appendTo(notification);
 				
 				// Create button
 				var rejectBtn = $("<button>").addClass("btn btn-danger btn-sm pull-right reject").appendTo(buttons);
@@ -198,7 +243,7 @@ jQuery.fn.extend({
 			}
 			
 			// Clear any existing notifications if required
-			if (options.clearExisting) owner.siblings('div.notifie').trigger('exit', false);
+			if (options.clearExisting) owner.prevUntil(':not(div.notifie)').trigger('exit', false);
 			// Add as sibling immediately before owner
 			owner.before(notification);
 			
@@ -226,6 +271,12 @@ jQuery.fn.extend({
 /**
  * Change Log
  * 
+ * v0.2.1 2015-09-10
+ * 	- Fixed some styling issues and clearExisting issue where not all existing notifications were being cleared.
+ * v0.2 2015-09-09
+ * 	- Change parent option name to anchor. 
+ *  - Fixed bug where sibling elements would clear each other's notifications.
+ *  - Added margin option to set margins around notification. 
  * v0.1 2015-08-24
  * 	- Initial implementation. Includes alert and confirm notifications. 
  *
