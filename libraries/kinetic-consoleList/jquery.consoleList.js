@@ -390,7 +390,7 @@
             // Initialize object
             var pages = new Object();
             var pageNumbers = new Array();
-            if(currentPageRange.length => 1) {
+            if(currentPageRange.length >= 1) {
                 // Setup prev
                 if(currentPage !== startPage) {
                     pages['prev'] = new Object({
