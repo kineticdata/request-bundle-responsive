@@ -2,7 +2,7 @@
     <div class="container">        
         <nav>
             <ul class="nav" role="navigation">
-                <li class="dropdown background-hover-gradient-primary border-gray-light dropdown-toggle">
+                <li tabindex class="dropdown background-hover-gradient-primary border-gray-light dropdown-toggle" aria-label="<%=themeLocalizer.getString("Browse by")%> <%=themeLocalizer.getString("Category")%>">
                     <span class="nav-button-inner">
                         <span>
                             <%=themeLocalizer.getString("Browse by")%>

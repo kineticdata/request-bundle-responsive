@@ -1,7 +1,7 @@
-<a class="main-menus color-white color-hover-secondary" tabindex="4" href="javascript:void(0)" data-target="div.main-menus" data-description="<%=ThemeLocalizer.getString(commonResourceBundle,"Navigate")%>">
+<a class="main-menus color-white color-hover-secondary" tabindex href="javascript:void(0)" data-aria-haspopup="true" target="div.main-menus" data-description="<%=ThemeLocalizer.getString(commonResourceBundle,"Navigate")%>">
     <i class="fa fa-th"></i>
 </a>
-<div class="main-menus background-white hide" aria-hidden="true">
+<div class="main-menus background-white hide" aria-hidden="true" >
     <ul class="list-unstyled clearfix"></ul>
 </div>
 <script type="text/javascript">
