@@ -19,7 +19,7 @@
     <div class="container">
         <!-- Small device head -->
         <div class="hidden-md hidden-lg">
-            <button type="button" class="fa fa-bars btn btn-primary" data-target="div.navigation-slide">
+            <button tabindex="1" type="button" class="fa fa-bars btn btn-primary" data-target="div.navigation-slide">
             </button>
             <%@include file="logo.jspf"%>
         </div>
