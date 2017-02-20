@@ -1,4 +1,4 @@
-<a class="logo color-white color-hover-white" tabindex>
+<a class="logo color-white color-hover-white">
     <!-- <img alt="<%= bundle.getProperty("companyName") %>" src="<%= bundle.bundlePath()%>common/assets/images/logo.png" /> -->
     <div class="company">
         <div class="name">

@@ -16,9 +16,9 @@
 <form class="portal-search " method="get">
     <p>
         <label class="hide" for="search"></label>
-        <input id="search" tabindex class="form-control" type="text" name="q" value="<%=bundle.getProperty("portalSearchValue")%>" autofocus="autofocus" />
+        <input id="search" class="form-control" type="text" name="q" value="<%=bundle.getProperty("portalSearchValue")%>" autofocus="autofocus" />
         <span>
-            <button class="btn btn-primary fa fa-search" type="submit" tabindex ></button>
+            <button class="btn btn-primary fa fa-search" type="submit"></button>
         <span>
     </p>
 </form>

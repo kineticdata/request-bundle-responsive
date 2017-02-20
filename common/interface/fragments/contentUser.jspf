@@ -9,7 +9,7 @@ if(context != null) {
         fullName = samplePerson.getFullName();
     }
 %>
-<a class="profile color-white color-hover-secondary" href="javascript:void(0)" data-target="div.user-card" tabindex>
+<a class="profile color-white color-hover-secondary" href="javascript:void(0)" data-target="div.user-card">
     <i class="gravatar-icon"></i>
 </a>
 <div class="user-card hide" aria-hidden="true">
